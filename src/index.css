@@ -1,0 +1,27 @@
+.fc{
+    /* border:1px solid gray; */
+    padding: 10px;
+}
+.fc-dayGridMonth-button , .fc-timeGridWeek-button , .fc-timeGridDay-button {
+    background: #0d6efd !important;
+    border: none !important;
+    outline: none !important; 
+    padding: 5px 20px !important;
+    margin: 0 0 0 10px !important;
+    border-radius: 5px !important;
+}
+.fc-prev-button, .fc-button, .fc-button-primary{
+    background: #0d6efd !important;
+    border: none !important;
+    outline: none !important; 
+    margin: 0 0 0 5px !important;
+}
+.fc-today-button{
+    background: #20c997 !important;
+}
+.fc-toolbar-title{
+    color: #0d6efd;
+}
+.fc-event-title , .fc-sticky{
+    cursor: pointer !important;
+}

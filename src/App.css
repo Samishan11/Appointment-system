@@ -1,0 +1,22 @@
+/* .fc-scrollgrid-sync-table{
+    width: 80vw;
+}
+.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard{
+    width: 80vw;
+}
+.fc-scrollgrid-sync-table{
+    width: 80vh;
+}
+.fc-col-header {
+    width: 80vw;
+}
+.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard{
+    width: 80vw;
+}
+.fc-header-toolbar fc-toolbar {
+    width: 80vw;
+} */
+.fc .fc-media-screen .fc-direction-ltr .fc-theme-standard{
+    border:1px solid gray;
+    display: none;
+}
