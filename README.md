@@ -1,2 +1,3 @@
 # dental-frontend
-npm start
+npm version patch
+npm publish
