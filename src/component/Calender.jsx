@@ -20,11 +20,11 @@ const Calender = ({ events }) => {
             // mapping the events and showing as popup omn hover 
             eventDidMount={(info) => {
                 return new bootstrap.Popover(info.el, {
-                    title: `<a href="/detail">${info.event.title}</a>`,
+                    title: `${info.event.title} <a href="/detail">view</a>`,
                     // placement: "auto",
-                    trigger: "hover",
+                    trigger: "click",
                     // customClass: "popoverStyle",
-                    content: info.event.display,
+                    content: `${info.event.display} <a href="/detail">view</a>`,
                     html: true,
                 });
             }}

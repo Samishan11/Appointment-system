@@ -182,8 +182,36 @@
   .nice-dates {
       width: 100%;
   }
-
+  .react-ios-time-picker-main, .react-ios-time-picker-input{
+      width: 100%;
+  }
   .button_book,
   button {
       width: 100%;
+  }
+  .booking{
+    position: relative;
+    
+  }
+  .booking p::after{
+    position: absolute;
+    background: rgb(0, 172, 177);
+    content: "";
+    height: 25px;
+    width: 3px;
+    left: -10px;
+    top: 16px;
+  }
+  .contact{
+    position: relative;
+    
+  }
+  .contact p::after{
+    position: absolute;
+    background: rgb(0, 172, 177);
+    content: "";
+    height: 25px;
+    width: 3px;
+    left: -10px;
+    top: 0;
   }
