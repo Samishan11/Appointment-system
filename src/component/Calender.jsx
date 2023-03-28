@@ -6,7 +6,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 const Calender = ({ events }) => {
-    console.log(events)
     return (
         <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -21,9 +20,9 @@ const Calender = ({ events }) => {
             // mapping the events and showing as popup omn hover 
             eventDidMount={(info) => {
                 return new bootstrap.Popover(info.el, {
-                    title: `<a href="dfasfsa">${info.event.title}</a>`,
+                    title: `<a href="/detail">${info.event.title}</a>`,
                     // placement: "auto",
-                    trigger: "click",
+                    trigger: "hover",
                     // customClass: "popoverStyle",
                     content: info.event.display,
                     html: true,

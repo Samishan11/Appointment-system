@@ -1,27 +1,189 @@
-.fc{
-    /* border:1px solid gray; */
-    padding: 10px;
-}
-.fc-dayGridMonth-button , .fc-timeGridWeek-button , .fc-timeGridDay-button {
-    background: #0d6efd !important;
-    border: none !important;
-    outline: none !important; 
-    padding: 5px 20px !important;
-    margin: 0 0 0 10px !important;
-    border-radius: 5px !important;
-}
-.fc-prev-button, .fc-button, .fc-button-primary{
-    background: #0d6efd !important;
-    border: none !important;
-    outline: none !important; 
-    margin: 0 0 0 5px !important;
-}
-.fc-today-button{
-    background: #20c997 !important;
-}
-.fc-toolbar-title{
-    color: #0d6efd;
-}
-.fc-event-title , .fc-sticky{
-    cursor: pointer !important;
-}
+  /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto+Flex:wght@300&display=swap'); */
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300&display=swap');
+
+  .fc {
+      padding: 10px;
+  }
+
+  html {
+      font-family: 'Roboto Flex', sans-serif;
+  }
+
+  body {
+      font-family: 'Roboto Flex', sans-serif;
+  }
+
+  .fc-dayGridMonth-button,
+  .fc-timeGridWeek-button,
+  .fc-timeGridDay-button {
+      background: #0d6efd !important;
+      border: none !important;
+      outline: none !important;
+      padding: 5px 20px !important;
+      margin: 0 0 0 10px !important;
+      border-radius: 5px !important;
+  }
+
+  .fc-prev-button,
+  .fc-button,
+  .fc-button-primary {
+      background: #0d6efd !important;
+      border: none !important;
+      outline: none !important;
+      margin: 0 0 0 5px !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .fc-today-button {
+      background: #20c997 !important;
+  }
+
+  .fc-toolbar-title {
+      color: #0d6efd;
+  }
+
+  .fc-event-title,
+  .fc-sticky {
+      cursor: pointer !important;
+  }
+
+  .fc-toolbar-chunk {
+      display: flex;
+  }
+
+  .fc-daygrid-day-top,
+  .fc-col-header-cell-cushion,
+  .fc-daygrid-day-number {
+      text-decoration: none;
+  }
+
+  @media only screen and (max-width:500px) {
+      .fc {
+          overflow-x: scroll;
+      }
+
+      .fc-dayGridMonth-button,
+      .fc-timeGridWeek-button,
+      .fc-timeGridDay-button {
+          width: 50px !important;
+          height: 30px !important;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+      }
+
+      .fc-prev-button,
+      .fc-button,
+      .fc-button-primary {
+          width: 20px !important;
+          height: 30px !important;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .fc-today-button {
+          width: 50px !important;
+          height: 30px !important;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+      }
+
+      .fc-toolbar-title {
+          width: 50px !important;
+          height: 30px !important;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+      }
+
+      .fc-event-title,
+      .fc-sticky {
+          cursor: pointer !important
+      }
+
+      .fc-toolbar-title {
+          font-size: 1rem !important;
+      }
+  }
+
+  @media only screen and (max-width:768px) {
+      .fc {
+          overflow-x: scroll;
+      }
+
+      .fc-dayGridMonth-button,
+      .fc-timeGridWeek-button,
+      .fc-timeGridDay-button {
+          width: 80px !important;
+          height: 35px !important;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+      }
+
+      .fc-prev-button,
+      .fc-button,
+      .fc-button-primary {
+          width: 30px;
+          height: 30px;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+      }
+
+      .fc-today-button {
+          width: 50px;
+          height: 35px !important;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+      }
+
+      .fc-toolbar-title {
+          width: 50px;
+          overflow: hidden !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+      }
+
+      .fc-event-title,
+      .fc-sticky {
+          cursor: pointer !important
+      }
+
+      .fc-toolbar-title {
+          font-size: 1rem !important;
+      }
+  }
+
+  .nice-dates {
+      width: 100%;
+  }
+
+  .button_book,
+  button {
+      width: 100%;
+  }
