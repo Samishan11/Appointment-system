@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import image from "../../assets/doctor.jpg";
+import image from "../../../assets/doctor.jpg";
 import { enGB } from 'date-fns/locale'
 import { DatePicker } from 'react-nice-dates'
 import 'react-nice-dates/build/style.css';
-import banner from "../../assets/banner.png"
-import banner1 from "../../assets/banner-top.png"
-import banner2 from "../../assets/banner-right.png"
 import { TimePicker } from 'react-ios-time-picker';
 const Detail = () => {
     const [date, setDate] = useState(
@@ -65,6 +62,7 @@ const Detail = () => {
                                                 {({ inputProps, focused }) => (
                                                     <>
                                                         <input
+                                                        disabled
                                                             type="date"
                                                             style={{ position: "relative" }}
                                                             className={

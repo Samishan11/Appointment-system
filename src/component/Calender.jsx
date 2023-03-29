@@ -17,10 +17,11 @@ const Calender = ({ events }) => {
             }}
             // events 
             events={events}
+            eventColor={"#" + Math.floor(Math.random() * 16777215).toString(16)}
             // mapping the events and showing as popup omn hover 
             eventDidMount={(info) => {
                 return new bootstrap.Popover(info.el, {
-                    title: `${info.event.title} <a href="/detail">view</a>`,
+                    title: `<a href="/detail">${info.event.title}</a>`,
                     // placement: "auto",
                     trigger: "click",
                     // customClass: "popoverStyle",

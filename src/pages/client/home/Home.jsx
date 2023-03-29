@@ -1,5 +1,5 @@
 import React from 'react'
-import Calender from '../../component/Calender';
+import Calender from '../../../component/Calender';
 
 const Home = () => {
     const events = [
