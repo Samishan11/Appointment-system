@@ -1,62 +1,20 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Sidenav from '../../component/Sidenav';
-import { appointment } from '../../../../redux/reducer/slice/appointmentSlice';
+import { appointment, add } from '../../../../redux/reducer/slice/appointmentSlice';
+import img from "../../../../assets/doctor.jpg"
 const Appointment = () => {
     const [navcollapse, setNavcollapse] = useState(false);
-    const appointmentd = useSelector(appointment)
-    console.log(appointmentd)
-
+    const appointmentd = useSelector((state) => state.appointment)
+    // console.log(appointmentd)
+    const dispatch = useDispatch();
     function onclick() {
         setNavcollapse(!navcollapse)
         console.log('navcollapse');
     }
 
     // dummy data for the appointment  
-    const data = [
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        }
-    ]
+
 
     // dynamic form control 
     const [inputFields, setInputFields] = useState([
@@ -80,13 +38,14 @@ const Appointment = () => {
     const submitForm = (e) => {
         e.preventDefault();
         const formdata = new FormData();
-        // formdata.append("image", image)
+        formdata.append("image", image)
         formdata.append("title", inputFields[0].title)
         formdata.append("description", inputFields[0].description)
         formdata.append("date", inputFields[0].date)
         formdata.append("time", inputFields[0].time)
-        console.log(inputFields[0])
-        console.log(image)
+        // console.log(inputFields[0])
+        dispatch(add({ inputFields: inputFields[0], image }))
+        // dispatch(add(formdata))
     }
 
 
@@ -109,37 +68,39 @@ const Appointment = () => {
                         <div className="row">
                             <div className="col-6 col-md-4 col-lg-3"><button data-bs-toggle="modal" data-bs-target="#exampleModal" className='btn btn-outline-primary my-2'>Add Appointment</button></div>
                             <div className='mt-3'>
-                            <h6>RECENT APPOINTMENT</h6>
-                            <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
-                                <table class="table table-border">
-                                    <thead className='text-secondary'>
-                                    <tr className=''>
-                                            <th scope="col">Title</th>
-                                            <th scope="col">Doctor Name</th>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Time</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.map((data, ind) => {
-                                            return (
-                                                <tr key={ind + 1}>
-                                                    <td>{data.title}</td>
-                                                    <td>{data.doctor}</td>
-                                                    <td>{data.date}</td>
-                                                    <td>{data.time}</td>
-                                                    <td className='d-flex'>
-                                                       <button style={{width:"30px"}} className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
-                                                       <button style={{width:"30px"}} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
+                                <h6>RECENT APPOINTMENT</h6>
+                                <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
+                                    <table class="table table-border">
+                                        <thead className='text-secondary'>
+                                            <tr className=''>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Doctor</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {appointmentd.map((data, ind) => {
+                                                return (
+                                                    <tr key={ind + 1}>
+                                                        <td>{data.title}</td>
+                                                        <td>{data.doctor}</td>
+                                                        <td><img width={50} height={50} src={data.image ? URL.createObjectURL(data.image) : img} alt="image" /></td>
+                                                        <td>{data.date}</td>
+                                                        <td>{data.time}</td>
+                                                        <td className=''>
+                                                            <button style={{ width: "30px" }} className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
+                                                            <button style={{ width: "30px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -171,7 +132,7 @@ const Appointment = () => {
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="exampleInputEmail1">Image</label>
-                                                                    <input onChange={event => setImage(event.target.value)} name='image' type="file" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                    <input onChange={event => setImage(event.target.files[0])} name='image' type="file" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
                                                                 </div>
                                                             </div>
                                                             <div className="col-12 col-md-12 my-2">

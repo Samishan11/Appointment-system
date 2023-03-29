@@ -4,22 +4,48 @@ const appointmentSlice = createSlice({
     name: 'appointment',
     initialState: [
         {
-            a:"a",
-            b:"a",
-            c:"a"
+            title: "Title",
+            doctor: "Doctor",
+            date: "2023/02/29",
+            time: "11 AM",
+        },
+        {
+            title: "Title",
+            doctor: "Doctor",
+            date: "2023/02/29",
+            time: "11 AM",
+        },
+        {
+            title: "Title",
+            doctor: "Doctor",
+            date: "2023/02/29",
+            time: "11 AM",
+        },
+        {
+            title: "Title",
+            doctor: "Doctor",
+            date: "2023/02/29",
+            time: "11 AM",
+        },
+        {
+            title: "Title",
+            doctor: "Doctor",
+            date: "2023/02/29",
+            time: "11 AM",
         }
     ],
     reducers: {
-        appointment: (state, action)=>{
-            state.push(initialState)
+        appointment: (state, action) => {
+            console.log(action)
+            state = appointment
         },
-        add: (state, action) => {
+        add: (state, action, image) => {
+            console.log(action)
             const appointment = {
-                id: uuid(),
-                title: action.payload.title,
-                date: action.payload.date,
-                time: action.payload.time,
-                description: action.payload.description,
+                title: action.payload.inputFields.title,
+                date: action.payload.inputFields.date,
+                time: action.payload.inputFields.time,
+                description: action.payload.inputFields.description,
                 image: action.payload.image,
             };
 
@@ -28,6 +54,6 @@ const appointmentSlice = createSlice({
     }
 });
 
-export const { add ,appointment } = appointmentSlice.actions;
+export const { add, appointment } = appointmentSlice.actions;
 
 export default appointmentSlice.reducer;
