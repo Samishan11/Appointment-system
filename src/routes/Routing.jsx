@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Detail from '../../src/pages/client/detail/Detail'
 import Home from '../../src/pages/client/home/Home'
 import Event from '../pages/admin/component/Event'
+import Appointment from '../pages/admin/pages/appointment/Appointment'
 import Dashboard from '../pages/admin/pages/dashboard/Dashboard'
 const Routing = () => {
     return (
@@ -12,6 +13,7 @@ const Routing = () => {
                 <Route exact path='/detail' element={<Detail />} /> 
                 <Route exact path='/event' element={<Event />} /> 
                 <Route exact path='/dashboard' element={<Dashboard />} /> 
+                <Route exact path='/appointment' element={<Appointment />} /> 
             </Routes>
         </Router>
     )

@@ -2,9 +2,8 @@
   @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300&display=swap');
 
   .nav_active {
-      color: #0c243a;
+      color: rgb(3, 17, 34) !important;
   }
-
   .fc {
       padding: 10px;
   }
