@@ -1,17 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import Sidenav from '../../component/Sidenav';
-import { appointment, add } from '../../../../redux/reducer/slice/appointmentSlice';
+import { appointment, add, deleteAppointment, fetchAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
 import img from "../../../../assets/doctor.jpg"
+import axios from 'axios';
 const Appointment = () => {
+
     const [navcollapse, setNavcollapse] = useState(false);
     const appointmentd = useSelector((state) => state.appointment)
-    // console.log(appointmentd)
     const dispatch = useDispatch();
+    console.log(appointmentd.appointment)
     function onclick() {
         setNavcollapse(!navcollapse)
         console.log('navcollapse');
     }
+
+    useEffect(() => {
+        dispatch(fetchAppointment())
+    }, [])
 
     // dummy data for the appointment  
 
@@ -21,7 +27,7 @@ const Appointment = () => {
         {
             title: "",
             description: "",
-            date: Date.now(),
+            date: "",
             time: ""
         }
     ])
@@ -35,19 +41,34 @@ const Appointment = () => {
         setInputFields(data);
     }
     // submit form 
-    const submitForm = (e) => {
-        e.preventDefault();
-        const formdata = new FormData();
-        formdata.append("image", image)
-        formdata.append("title", inputFields[0].title)
-        formdata.append("description", inputFields[0].description)
-        formdata.append("date", inputFields[0].date)
-        formdata.append("time", inputFields[0].time)
-        // console.log(inputFields[0])
-        dispatch(add({ inputFields: inputFields[0], image }))
-        // dispatch(add(formdata))
+    const submitForm = async (e) => {
+        try {
+            e.preventDefault();
+            const formdata = new FormData();
+            formdata.append("image", image)
+            formdata.append("title", inputFields[0].title)
+            formdata.append("description", inputFields[0].description)
+            formdata.append("date", inputFields[0].date)
+            formdata.append("time", inputFields[0].time)
+            dispatch(add({ inputFields: inputFields[0], image }))
+            var a = await axios.post("http://localhost:5000/api/appointment/add", formdata)
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
+    const dataURLToBlob = (dataurl) => {
+        let arr = dataurl.split(',');
+        let mime = arr[0].match(/:(.*?);/)[1];
+        let bstr = atob(arr[1]);
+        let n = bstr.length;
+        let u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+    }
 
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
@@ -74,7 +95,6 @@ const Appointment = () => {
                                         <thead className='text-secondary'>
                                             <tr className=''>
                                                 <th scope="col">Title</th>
-                                                <th scope="col">Doctor</th>
                                                 <th scope="col">Image</th>
                                                 <th scope="col">Date</th>
                                                 <th scope="col">Time</th>
@@ -82,21 +102,25 @@ const Appointment = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {appointmentd.map((data, ind) => {
-                                                return (
-                                                    <tr key={ind + 1}>
-                                                        <td>{data.title}</td>
-                                                        <td>{data.doctor}</td>
-                                                        <td><img width={50} height={50} src={data.image ? URL.createObjectURL(data.image) : img} alt="image" /></td>
-                                                        <td>{data.date}</td>
-                                                        <td>{data.time}</td>
-                                                        <td className=''>
-                                                            <button style={{ width: "30px" }} className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
-                                                            <button style={{ width: "30px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
+                                            {
+                                                appointmentd.appointment ?
+                                                appointmentd.appointment.map((data, ind) => {
+                                                    return (
+                                                        <tr key={ind + 1}>
+                                                            <td>{data.title}</td>
+                                                            <td><img width={50} height={50} src={image? URL.createObjectURL(image) : data.image.url} alt="image" /></td>
+                                                            <td>{data.date}</td>
+                                                            <td>{data.time}</td>
+                                                            <td className=''>
+                                                                <button style={{ width: "30px" }} className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
+                                                                <button onClick={() => dispatch(deleteAppointment(data._id))} style={{ width: "30px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                                :
+                                                ""
+                                            }
                                         </tbody>
                                     </table>
                                 </div>

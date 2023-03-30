@@ -8,6 +8,7 @@ function App() {
   return (
     <Provider store={store}>
       <Routing />
+      <ToastContainer />
     </Provider>
   )
 }
