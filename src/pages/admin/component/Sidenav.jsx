@@ -12,7 +12,7 @@ const Sidenav = ({ tab }) => {
             <div className="list-group position-relative list-group-flush my-3">
                 <Link id='dashboard' to="/dashboard" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i className="fas fa-tachometer-alt me-2" />Dashboard</Link>
                 <Link id="appointment" to="/appointment" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i className="fa-sharp fa-solid fa-plus me-2"></i>Add Appoinment</Link>
-                <Link id='user' to="#" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i id='nav_active' className="fa-solid fa-calendar-days me-2" />Event</Link>
+                <Link id='event' to="/event" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i id='nav_active' className="fa-solid fa-calendar-days me-2" />Event</Link>
                 <Link id='user' to="#" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i id='nav_active' className="fa-solid fa-people-roof me-2" />Manage User</Link>
                 <div className="logout mt-5  ">
                     <div className="col-8 mx-auto">

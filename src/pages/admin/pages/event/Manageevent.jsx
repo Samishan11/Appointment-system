@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import Sidenav from '../../component/Sidenav';
-import { add, deleteManageevent, fetchManageevent, singleManageevent, updateManageevent } from '../../../../redux/reducer/slice/ManageeventSlice';
 import axios from 'axios';
-import Loading from '../../component/loading';
-import { toast } from 'react-toastify';
+import Calender from '../../../../component/Calender';
 const Manageevent = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
-    const Manageeventd = useSelector((state) => state.Manageevent)
-    const singleManageeventData = useSelector((state) => state.Manageevent.singleManageevent)
     const dispatch = useDispatch();
     function onclick() {
         setNavcollapse(!navcollapse)
     }
-    useEffect(() => {
-        dispatch(fetchManageevent())
-    }, [])
 
     // dynamic form control 
     const [inputFields, setInputFields] = useState([
@@ -87,206 +80,58 @@ const Manageevent = () => {
             console.log(error)
         }
     }
+    const events = [
+        {
+            title: "Dental Doctro A",
+            start: "2023-03-01",
+            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        },
+        {
+            title: "Dental Doctor B",
+            start: "2023-03-15",
+            end: "2023-03-17",
+            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        },
+        {
+            title: "Dental Doctor C",
+            start: "2023-03-10",
+            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        },
+        {
+            title: "Dental Doctor C",
+            start: "2023-03-10",
+            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        },
+        {
+            title: "Dental Doctor D",
+            start: "2023-03-28",
+            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        }
+    ];
 
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
             {/* Sidebar */}
             <div style={{ zIndex: '999' }} className="sidenav">
-                <Sidenav tab={"Manageevent"} />
+                <Sidenav tab={"event"} />
             </div>
             {/* Page Content */}
             <div id="page-content-wrapper" className='bg-light'>
                 <nav style={{ zIndex: '1' }} className="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                     <div className="d-flex align-items-center">
                         <i onClick={onclick} className="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle" />
+                        <h2 className="fs-2 m-0">Event</h2>
                     </div>
                 </nav>
                 {/* Manageevent table  */}
                 <div className=" mx-auto">
                     <div className="container">
                         <div className="row">
-                            <div className="col-6 col-md-4 col-lg-3"><button data-bs-toggle="modal" data-bs-target="#exampleModal" className='btn btn-outline-primary my-2'>Add Manageevent</button></div>
-                            <div className='mt-3'>
-                                <h6>RECENT Manageevent</h6>
-                                {
-                                    Manageeventd.Manageevent.length === 0 ?
-                                        <Loading /> :
-                                        <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
-                                            <table class="table table-border">
-                                                <thead className='text-secondary'>
-                                                    <tr className=''>
-                                                        <th scope="col">Title</th>
-                                                        <th scope="col">Image</th>
-                                                        <th scope="col">Date</th>
-                                                        <th scope="col">Time</th>
-                                                        <th scope="col">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        Manageeventd.Manageevent ?
-                                                            Manageeventd.Manageevent.map((data, ind) => {
-                                                                return (
-                                                                    <tr key={ind + 1}>
-                                                                        <td>{data.title}</td>
-                                                                        <td><img className='avatar_sm' src={image ? URL.createObjectURL(image) : data.image.url} alt="image" /></td>
-                                                                        <td>{new Date(data.date).toDateString()}</td>
-                                                                        <td>{`${data.time} PM`}</td>
-                                                                        <td className=''>
-                                                                            <button onClick={() => {
-                                                                                dispatch(singleManageevent(data))
-                                                                                setInputFieldsUpdate([
-                                                                                    {
-                                                                                        _id: data._id,
-                                                                                        title: data.title,
-                                                                                        date: data.date,
-                                                                                        time: data.time,
-                                                                                        description: data.description,
-                                                                                    }
-                                                                                ])
-                                                                            }} style={{ width: "30px" }} data-bs-toggle="modal" data-bs-target="#updatemodal" className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
-                                                                            <button onClick={() => _deleteManageevent(data._id)} style={{ width: "30px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
-                                                                        </td>
-                                                                    </tr>
-                                                                );
-                                                            })
-                                                            :
-                                                            ""
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                }
+                            <div className='mt-3 px-3'>
+                                <h6>MANAGE EVENTS</h6>
+                               < Calender events={events} />
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            {/* modal pop up  */}
-            {/* Modal */}
-            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-3" id="exampleModalLabel">Add Manageevent</h1>
-                            <button type="button" className="btn-close text-danger fas fa-times" data-bs-dismiss="modal" aria-label="Close" ></button>
-                        </div>
-                        <form id='contact-form' style={{ fontSize: '1rem' }} className="container validate-form">
-                            <div className="modal-body">
-                                <div className='container  pb-5'>
-                                    <div className="container bg-white d-block mx-auto">
-                                        <div className="row">
-                                            {
-                                                inputFields.map((input, ind) => {
-                                                    return (
-                                                        <>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Title</label>
-                                                                    <input onChange={event => handleFormChange(ind, event)} name='title' value={input.title} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Image</label>
-                                                                    <input onChange={event => setImage(event.target.files[0])} name='image' type="file" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Date</label>
-                                                                    <input onChange={event => handleFormChange(ind, event)} name='date' type="date" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Time</label>
-                                                                    <input onChange={event => handleFormChange(ind, event)} name='time' type="time" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Description</label>
-                                                                    <textarea onChange={event => handleFormChange(ind, event)} name='description' type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description here" />
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button onClick={submitForm} type="sumbit" className="btn btn-outline-primary">Save</button>
-                                <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            {/* update modal */}
-            <div className="modal fade" id="updatemodal" tabIndex={-1} aria-labelledby="updatemodalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-3" id="updatemodalLabel">Update Manageevent</h1>
-                            <button type="button" className="btn-close text-danger fas fa-times" data-bs-dismiss="modal" aria-label="Close" ></button>
-                        </div>
-                        <form onSubmit={updateAppoint} id='contact-form' style={{ fontSize: '1rem' }} className="container validate-form">
-                            <div className="modal-body">
-                                <div className='container  pb-5'>
-                                    <div className="container bg-white d-block mx-auto">
-                                        <div className="row">
-                                            {
-                                                inputFieldsUpdate.map((input, ind) => {
-                                                    return (
-                                                        <>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">{input.title}</label>
-                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='title' value={inputFieldsUpdate[0]?.title} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={singleManageeventData.title} />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Image</label>
-                                                                    <input onChange={event => setImage(event.target.files[0])} name='image' type="file" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Date</label>
-                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='date' value={inputFieldsUpdate[0]?.date} type="date" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={"Enter title here"} />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Time</label>
-                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='time' value={inputFieldsUpdate[0]?.time} type="time" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-12 col-md-12 my-2">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Description</label>
-                                                                    <textarea onChange={event => handleFormChangeUpdate(ind, event)} name='description' value={inputFieldsUpdate[0]?.description} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description here" />
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="sumbit" className="btn btn-outline-primary">Save</button>
-                                <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

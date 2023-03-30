@@ -99,6 +99,7 @@ const Appointment = () => {
                 <nav style={{ zIndex: '1' }} className="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                     <div className="d-flex align-items-center">
                         <i onClick={onclick} className="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle" />
+                        <h2 className="fs-2 m-0">Appointment</h2>
                     </div>
                 </nav>
                 {/* appointment table  */}
@@ -106,7 +107,7 @@ const Appointment = () => {
                     <div className="container">
                         <div className="row">
                             <div className="col-6 col-md-4 col-lg-3"><button data-bs-toggle="modal" data-bs-target="#exampleModal" className='btn btn-outline-primary my-2'>Add Appointment</button></div>
-                            <div className='mt-3'>
+                            <div className='mt-5'>
                                 <h6>RECENT APPOINTMENT</h6>
                                 {
                                     appointmentd.appointment.length === 0 ?
