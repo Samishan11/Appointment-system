@@ -8,14 +8,12 @@ import { toast } from 'react-toastify';
 const Appointment = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
-    const [title, settitle] = useState('');
     const appointmentd = useSelector((state) => state.appointment)
     const singleAppointmentData = useSelector((state) => state.appointment.singleAppointment)
     const dispatch = useDispatch();
     function onclick() {
         setNavcollapse(!navcollapse)
     }
-
     useEffect(() => {
         dispatch(fetchAppointment())
     }, [])
@@ -131,19 +129,19 @@ const Appointment = () => {
                                                                 return (
                                                                     <tr key={ind + 1}>
                                                                         <td>{data.title}</td>
-                                                                        <td><img width={50} height={50} src={image ? URL.createObjectURL(image) : data.image.url} alt="image" /></td>
-                                                                        <td>{data.date}</td>
-                                                                        <td>{data.time}</td>
+                                                                        <td><img className='avatar_sm' src={image ? URL.createObjectURL(image) : data.image.url} alt="image" /></td>
+                                                                        <td>{new Date(data.date).toDateString()}</td>
+                                                                        <td>{`${data.time} PM`}</td>
                                                                         <td className=''>
                                                                             <button onClick={() => {
                                                                                 dispatch(singleAppointment(data))
                                                                                 setInputFieldsUpdate([
                                                                                     {
-                                                                                        _id: singleAppointmentData._id,
-                                                                                        title: singleAppointmentData.title,
-                                                                                        date: singleAppointmentData.date,
-                                                                                        time: singleAppointmentData.time,
-                                                                                        description: singleAppointmentData.description,
+                                                                                        _id: data._id,
+                                                                                        title: data.title,
+                                                                                        date: data.date,
+                                                                                        time: data.time,
+                                                                                        description: data.description,
                                                                                     }
                                                                                 ])
                                                                             }} style={{ width: "30px" }} data-bs-toggle="modal" data-bs-target="#updatemodal" className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
@@ -237,7 +235,7 @@ const Appointment = () => {
                             <h1 className="modal-title fs-3" id="updatemodalLabel">Update Appointment</h1>
                             <button type="button" className="btn-close text-danger fas fa-times" data-bs-dismiss="modal" aria-label="Close" ></button>
                         </div>
-                        <form onSubmit={ updateAppoint } id='contact-form' style={{ fontSize: '1rem' }} className="container validate-form">
+                        <form onSubmit={updateAppoint} id='contact-form' style={{ fontSize: '1rem' }} className="container validate-form">
                             <div className="modal-body">
                                 <div className='container  pb-5'>
                                     <div className="container bg-white d-block mx-auto">

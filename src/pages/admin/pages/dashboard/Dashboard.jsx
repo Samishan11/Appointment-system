@@ -4,7 +4,7 @@ import { fetchAppointment } from '../../../../redux/reducer/slice/appointmentSli
 import Loading from '../../component/loading';
 import Sidenav from '../../component/Sidenav';
 const Dashboard = () => {
-    const dispatch =useDispatch();
+    const dispatch = useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
     const appointmentd = useSelector((state) => state.appointment)
     function onclick() {
@@ -34,7 +34,7 @@ const Dashboard = () => {
                             <div className="col-md-4">
                                 <div className="p-3 bg-primary text-white shadow-sm d-flex justify-content-around align-items-center rounded">
                                     <div>
-                                        <h3 className="fs-2">{ appointmentd.appointment.length}</h3>
+                                        <h3 className="fs-2">{appointmentd.appointment.length}</h3>
                                         <p className="fs-5">Appointments</p>
                                     </div>
                                     <i class="fa-solid fa-calendar-check primary-text border rounded-full h2 secondary-bg p-3"></i>
@@ -60,7 +60,7 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='mt-3'>
+                        <div className='mt-5 px-2'>
                             <h6>RECENT APPOINTMENT</h6>
                             {
                                 appointmentd.appointment.length === 0 ?
@@ -82,15 +82,15 @@ const Dashboard = () => {
                                                             return (
                                                                 <tr key={ind + 1}>
                                                                     <td>{data.title}</td>
-                                                                    <td><img width={50} height={50} src={ data.image.url} alt="image" /></td>
+                                                                    <td><img className='avatar_sm' src={data.image.url} alt="image" /></td>
                                                                     <td>{data.date}</td>
                                                                     <td>{data.time}</td>
-                                                                    
+
                                                                 </tr>
                                                             );
                                                         })
                                                         :
-                                                        ""
+                                                        null
                                                 }
                                             </tbody>
                                         </table>

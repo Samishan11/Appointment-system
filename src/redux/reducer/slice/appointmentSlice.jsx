@@ -65,28 +65,14 @@ const appointmentSlice = createSlice({
         },
         // update an appointment
         updateAppointment: (state, action) => {
-            // console.log(action.payload)
-            // const findIndex = state.appointment.findIndex(val => val._id === action.payload.id);
-            // console.log(findIndex)
-            // if (state.appointment[findIndex]) {
-            //     state.appointment[findIndex].title = action.payload.title,
-            //         state.appointment[findIndex].date = action.payload.date,
-            //         state.appointment[findIndex].time = action.payload.time,
-            //         state.appointment[findIndex].description = action.payload.description,
-            //         state.appointment[findIndex].image = action.payload.image
-            //     // toast.info("Product Update Sucessfully",{position:'top-right'})
-            // } else {
-            //     // toast.error("SOmeting went wrong",{position:'top-right'})
-            // }
-            state.appointment.map((val)=>{
-                if(val._id === action.payload[0].id){
+            state.appointment.map((val) => {
+                if (val._id === action.payload[0]._id) {
                     val.title = action.payload[0].title,
-                    val.date = action.payload[0].date,
-                    val.time = action.payload[0].time,
-                    val.description = action.payload[0].description,
-                    val.image = action.payload.image
+                        val.date = action.payload[0].date,
+                        val.time = action.payload[0].time,
+                        val.description = action.payload[0].description,
+                        val.image = action.payload.image
                 }
-                console.log(action.payload[0])
             })
         },
         // deleting an appointment
