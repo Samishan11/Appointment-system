@@ -1,77 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
+import Loading from '../../component/loading';
 import Sidenav from '../../component/Sidenav';
 const Dashboard = () => {
+    const dispatch =useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
-
+    const appointmentd = useSelector((state) => state.appointment)
     function onclick() {
         setNavcollapse(!navcollapse)
         console.log('navcollapse');
     }
-
-    // dummy data for the appointment  
-    const data = [
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-        {
-            title: "Title",
-            doctor: "Doctor",
-            date: "2023/02/29",
-            time: "11 AM",
-        },
-    ]
-
+    useEffect(() => {
+        dispatch(fetchAppointment())
+    }, [])
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
             {/* Sidebar */}
@@ -92,7 +34,7 @@ const Dashboard = () => {
                             <div className="col-md-4">
                                 <div className="p-3 bg-primary text-white shadow-sm d-flex justify-content-around align-items-center rounded">
                                     <div>
-                                        <h3 className="fs-2">{231}</h3>
+                                        <h3 className="fs-2">{ appointmentd.appointment.length}</h3>
                                         <p className="fs-5">Appointments</p>
                                     </div>
                                     <i class="fa-solid fa-calendar-check primary-text border rounded-full h2 secondary-bg p-3"></i>
@@ -118,37 +60,42 @@ const Dashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='my-5'>
+                        <div className='mt-3'>
                             <h6>RECENT APPOINTMENT</h6>
-                            <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
-                                <table class="table table-border">
-                                    <thead className='text-secondary'>
-                                    <tr className=''>
-                                            <th scope="col">Title</th>
-                                            <th scope="col">Doctor Name</th>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Time</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.map((data, ind) => {
-                                            return (
-                                                <tr key={ind + 1}>
-                                                    <td>{data.title}</td>
-                                                    <td>{data.doctor}</td>
-                                                    <td>{data.date}</td>
-                                                    <td>{data.time}</td>
-                                                    <td className='d-flex'>
-                                                       <button style={{width:"30px"}} className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
-                                                       <button style={{width:"30px"}} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
-                                                    </td>
+                            {
+                                appointmentd.appointment.length === 0 ?
+                                    <Loading /> :
+                                    <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
+                                        <table class="table table-border">
+                                            <thead className='text-secondary'>
+                                                <tr className=''>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Image</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Time</th>
                                                 </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    appointmentd.appointment ?
+                                                        appointmentd.appointment.map((data, ind) => {
+                                                            return (
+                                                                <tr key={ind + 1}>
+                                                                    <td>{data.title}</td>
+                                                                    <td><img width={50} height={50} src={ data.image.url} alt="image" /></td>
+                                                                    <td>{data.date}</td>
+                                                                    <td>{data.time}</td>
+                                                                    
+                                                                </tr>
+                                                            );
+                                                        })
+                                                        :
+                                                        ""
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            }
                         </div>
                     </div>
                 </div>

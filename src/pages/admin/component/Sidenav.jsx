@@ -7,7 +7,7 @@ const Sidenav = ({ tab }) => {
         document.querySelector(`#${tab}`).classList.add("nav_active");
     }, [tab]);
     return (
-        <div style={{ background: "hwb(216 17% 3%)", width: "240px", zIndex: '999' }} className="fixed-top" id="sidebar-wrapper">
+        <div style={{ background: "hwb(216 17% 3%)", height: '100vh', width: "240px", zIndex: '999' }} className="fixed-top" id="sidebar-wrapper">
             <div className="sidebar-heading py-4 primary-text fs-6 fw-bold text-uppercase border-bottom"><Link style={{ 'textDecoration': 'none' }} to={'/'}> <h3 className='text-light'>ADMIN-DASH</h3> </Link></div>
             <div className="list-group position-relative list-group-flush my-3">
                 <Link id='dashboard' to="/dashboard" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i className="fas fa-tachometer-alt me-2" />Dashboard</Link>
@@ -16,7 +16,7 @@ const Sidenav = ({ tab }) => {
                 <Link id='user' to="#" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i id='nav_active' className="fa-solid fa-people-roof me-2" />Manage User</Link>
                 <div className="logout mt-5  ">
                     <div className="col-8 mx-auto">
-                        <button className='btn btn-sm py-1 position-absolute btn-outline-light' style={{ bottom: "-250px", left: "40px", width: "150px" }}>Logout</button>
+                        <button className='btn btn-sm py-1 position-absolute btn-outline-light' style={{ bottom: "-90%", left: "40px", width: "150px" }}>Logout</button>
                     </div>
                 </div>
             </div>

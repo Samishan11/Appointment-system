@@ -19,6 +19,7 @@ const Routing = () => {
                 <Route exact path='/login' element={<Login />} /> 
                 <Route exact path='/register' element={<Appointment />} /> 
             </Routes>
+            <ToastContainer />
         </Router>
     )
 }

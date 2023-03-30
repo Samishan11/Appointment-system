@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import Sidenav from '../../component/Sidenav';
-import { appointment, add, deleteAppointment, fetchAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
-import img from "../../../../assets/doctor.jpg"
+import { add, deleteAppointment, fetchAppointment, singleAppointment, updateAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
 import axios from 'axios';
+import Loading from '../../component/loading';
+import { toast } from 'react-toastify';
 const Appointment = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
+    const [title, settitle] = useState('');
     const appointmentd = useSelector((state) => state.appointment)
+    const singleAppointmentData = useSelector((state) => state.appointment.singleAppointment)
     const dispatch = useDispatch();
-    console.log(appointmentd.appointment)
     function onclick() {
         setNavcollapse(!navcollapse)
-        console.log('navcollapse');
     }
 
     useEffect(() => {
         dispatch(fetchAppointment())
     }, [])
 
-    // dummy data for the appointment  
-
-
     // dynamic form control 
     const [inputFields, setInputFields] = useState([
         {
+            title: "",
+            description: "",
+            date: "",
+            time: ""
+        }
+    ])
+    // dynamic form control 
+    const [inputFieldsUpdate, setInputFieldsUpdate] = useState([
+        {
+            _id: "",
             title: "",
             description: "",
             date: "",
@@ -39,6 +47,12 @@ const Appointment = () => {
         let data = [...inputFields];
         data[index][event.target.name] = event.target.value;
         setInputFields(data);
+    }
+    const handleFormChangeUpdate = (index, event) => {
+        let data = [...inputFieldsUpdate];
+        data[index][event.target.name] = event.target.value
+        setInputFieldsUpdate(data);
+
     }
     // submit form 
     const submitForm = async (e) => {
@@ -58,16 +72,22 @@ const Appointment = () => {
 
     }
 
-    const dataURLToBlob = (dataurl) => {
-        let arr = dataurl.split(',');
-        let mime = arr[0].match(/:(.*?);/)[1];
-        let bstr = atob(arr[1]);
-        let n = bstr.length;
-        let u8arr = new Uint8Array(n);
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
+    // delete appointment 
+    const _deleteAppointment = async (id) => {
+        try {
+            dispatch(deleteAppointment(id))
+            var res = await axios.delete(`http://localhost:5000/api/appointment/delete/${id}`)
+        } catch (error) {
+            console.log(error)
         }
-        return new Blob([u8arr], { type: mime });
+    }
+    const updateAppoint = async (e) => {
+        e.preventDefault();
+        try {
+            dispatch(updateAppointment(inputFieldsUpdate, image))
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -90,40 +110,55 @@ const Appointment = () => {
                             <div className="col-6 col-md-4 col-lg-3"><button data-bs-toggle="modal" data-bs-target="#exampleModal" className='btn btn-outline-primary my-2'>Add Appointment</button></div>
                             <div className='mt-3'>
                                 <h6>RECENT APPOINTMENT</h6>
-                                <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
-                                    <table class="table table-border">
-                                        <thead className='text-secondary'>
-                                            <tr className=''>
-                                                <th scope="col">Title</th>
-                                                <th scope="col">Image</th>
-                                                <th scope="col">Date</th>
-                                                <th scope="col">Time</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                appointmentd.appointment ?
-                                                appointmentd.appointment.map((data, ind) => {
-                                                    return (
-                                                        <tr key={ind + 1}>
-                                                            <td>{data.title}</td>
-                                                            <td><img width={50} height={50} src={image? URL.createObjectURL(image) : data.image.url} alt="image" /></td>
-                                                            <td>{data.date}</td>
-                                                            <td>{data.time}</td>
-                                                            <td className=''>
-                                                                <button style={{ width: "30px" }} className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
-                                                                <button onClick={() => dispatch(deleteAppointment(data._id))} style={{ width: "30px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })
-                                                :
-                                                ""
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
+                                {
+                                    appointmentd.appointment.length === 0 ?
+                                        <Loading /> :
+                                        <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
+                                            <table class="table table-border">
+                                                <thead className='text-secondary'>
+                                                    <tr className=''>
+                                                        <th scope="col">Title</th>
+                                                        <th scope="col">Image</th>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Time</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        appointmentd.appointment ?
+                                                            appointmentd.appointment.map((data, ind) => {
+                                                                return (
+                                                                    <tr key={ind + 1}>
+                                                                        <td>{data.title}</td>
+                                                                        <td><img width={50} height={50} src={image ? URL.createObjectURL(image) : data.image.url} alt="image" /></td>
+                                                                        <td>{data.date}</td>
+                                                                        <td>{data.time}</td>
+                                                                        <td className=''>
+                                                                            <button onClick={() => {
+                                                                                dispatch(singleAppointment(data))
+                                                                                setInputFieldsUpdate([
+                                                                                    {
+                                                                                        _id: singleAppointmentData._id,
+                                                                                        title: singleAppointmentData.title,
+                                                                                        date: singleAppointmentData.date,
+                                                                                        time: singleAppointmentData.time,
+                                                                                        description: singleAppointmentData.description,
+                                                                                    }
+                                                                                ])
+                                                                            }} style={{ width: "30px" }} data-bs-toggle="modal" data-bs-target="#updatemodal" className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
+                                                                            <button onClick={() => _deleteAppointment(data._id)} style={{ width: "30px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                );
+                                                            })
+                                                            :
+                                                            ""
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -187,6 +222,70 @@ const Appointment = () => {
                             </div>
                             <div className="modal-footer">
                                 <button onClick={submitForm} type="sumbit" className="btn btn-outline-primary">Save</button>
+                                <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {/* update modal */}
+            <div className="modal fade" id="updatemodal" tabIndex={-1} aria-labelledby="updatemodalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-3" id="updatemodalLabel">Update Appointment</h1>
+                            <button type="button" className="btn-close text-danger fas fa-times" data-bs-dismiss="modal" aria-label="Close" ></button>
+                        </div>
+                        <form onSubmit={ updateAppoint } id='contact-form' style={{ fontSize: '1rem' }} className="container validate-form">
+                            <div className="modal-body">
+                                <div className='container  pb-5'>
+                                    <div className="container bg-white d-block mx-auto">
+                                        <div className="row">
+                                            {
+                                                inputFieldsUpdate.map((input, ind) => {
+                                                    return (
+                                                        <>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">{input.title}</label>
+                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='title' value={inputFieldsUpdate[0]?.title} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={singleAppointmentData.title} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Image</label>
+                                                                    <input onChange={event => setImage(event.target.files[0])} name='image' type="file" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Date</label>
+                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='date' value={inputFieldsUpdate[0]?.date} type="date" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={"Enter title here"} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Time</label>
+                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='time' value={inputFieldsUpdate[0]?.time} type="time" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Description</label>
+                                                                    <textarea onChange={event => handleFormChangeUpdate(ind, event)} name='description' value={inputFieldsUpdate[0]?.description} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description here" />
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="sumbit" className="btn btn-outline-primary">Save</button>
                                 <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                             </div>
                         </form>
