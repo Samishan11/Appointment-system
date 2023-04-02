@@ -84,28 +84,28 @@ const Manageevent = () => {
         {
             title: "Dental Doctro A",
             start: "2023-03-01",
-            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         },
         {
             title: "Dental Doctor B",
             start: "2023-03-15",
             end: "2023-03-17",
-            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         },
         {
             title: "Dental Doctor C",
             start: "2023-03-10",
-            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         },
         {
             title: "Dental Doctor C",
             start: "2023-03-10",
-            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         },
         {
             title: "Dental Doctor D",
             start: "2023-03-28",
-            display:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         }
     ];
 
@@ -129,7 +129,7 @@ const Manageevent = () => {
                         <div className="row">
                             <div className='mt-3 px-3'>
                                 <h6>MANAGE EVENTS</h6>
-                               < Calender events={events} />
+                                < Calender events={events} selectable={true} editable={true} addAble={true} />
                             </div>
                         </div>
                     </div>

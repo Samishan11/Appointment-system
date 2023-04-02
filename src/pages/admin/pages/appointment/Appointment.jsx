@@ -4,7 +4,6 @@ import Sidenav from '../../component/Sidenav';
 import { add, deleteAppointment, fetchAppointment, singleAppointment, updateAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
 import axios from 'axios';
 import Loading from '../../component/loading';
-import { toast } from 'react-toastify';
 const Appointment = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
@@ -62,8 +61,8 @@ const Appointment = () => {
             formdata.append("description", inputFields[0].description)
             formdata.append("date", inputFields[0].date)
             formdata.append("time", inputFields[0].time)
-            dispatch(add({ inputFields: inputFields[0], image }))
-            var a = await axios.post("http://localhost:5000/api/appointment/add", formdata)
+            var response = await axios.post("http://localhost:5000/api/appointment/add", formdata)
+            dispatch(add(response.data.data))
         } catch (error) {
             console.log(error)
         }
@@ -82,7 +81,14 @@ const Appointment = () => {
     const updateAppoint = async (e) => {
         e.preventDefault();
         try {
+            const formdata = new FormData();
+            formdata.append("image", image)
+            formdata.append("title", inputFieldsUpdate[0].title)
+            formdata.append("description", inputFieldsUpdate[0].description)
+            formdata.append("date", inputFieldsUpdate[0].date)
+            formdata.append("time", inputFieldsUpdate[0].time)
             dispatch(updateAppointment(inputFieldsUpdate, image))
+            var res = await axios.put(`http://localhost:5000/api/appointment/update/${inputFieldsUpdate[0]._id}`, formdata)
         } catch (error) {
             console.log(error)
         }

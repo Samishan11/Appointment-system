@@ -7,7 +7,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-const Calender = ({ events }) => {
+const Calender = ({ events , selectable ,editable ,addAble  }) => {
     return (
         <>
             <FullCalendar
@@ -30,8 +30,8 @@ const Calender = ({ events }) => {
                 }}
                 // events 
                 events={events}
-                selectable={true}
-                editable={true}
+                selectable={selectable}
+                editable={editable}
                 dayMaxEvents={true}
                 aspectRatio={6}
                 eventColor={"#" + Math.floor(Math.random() * 16777215).toString(16)}
@@ -47,9 +47,9 @@ const Calender = ({ events }) => {
                     });
                 }}
                 dateClick={function (arg) {
-                    document.querySelector("#openModal").click()
-                    document.querySelector(".modal-body").html = ""
-                    document.querySelector(".modal-body").html = "<h3>" + arg.dateStr + "</h3>"
+                  {addAble &&   document.querySelector("#openModal").click()
+                  document.querySelector(".modal-body").html = ""
+                  document.querySelector(".modal-body").html = "<h3>" + arg.dateStr + "</h3>"}
                 }}
                 height={"80vh"}
             />

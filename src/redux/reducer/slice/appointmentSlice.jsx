@@ -13,6 +13,7 @@ export const fetchAppointment = createAsyncThunk('appointment/fetchAppointment',
     const response = await axios.get(`${proxy}/appointment/get`);
     return response.data.data
 })
+
 // appointment slice 
 const appointmentSlice = createSlice({
     name: 'appointment',
@@ -38,14 +39,14 @@ const appointmentSlice = createSlice({
     reducers: {
         //    add appointment 
         add: (state, action, image) => {
-            console.log(action)
+            console.log(action.payload)
             const appointment = {
-                _id: Math.random(),
-                title: action.payload.inputFields.title,
-                date: action.payload.inputFields.date,
-                time: action.payload.inputFields.time,
-                description: action.payload.inputFields.description,
-                image: action.payload.image,
+                _id: action.payload._id,
+                title: action.payload.title,
+                date: action.payload.date,
+                time: action.payload.time,
+                description: action.payload.description,
+                image: action.payload.image.url,
             };
             // toast.info("Product Update Sucessfully",{position:'top-right'})
 
