@@ -7,6 +7,8 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
     const appointmentd = useSelector((state) => state.appointment)
+    const booking = useSelector((state) => state.booking.booking)
+    const user = useSelector((state) => state.user.user)
     function onclick() {
         setNavcollapse(!navcollapse)
         console.log('navcollapse');
@@ -34,8 +36,8 @@ const Dashboard = () => {
                             <div className="col-md-4">
                                 <div className="p-3 bg-primary text-white shadow-sm d-flex justify-content-around align-items-center rounded">
                                     <div>
-                                        <h3 className="fs-2">{appointmentd.appointment.length}</h3>
-                                        <p className="fs-5">Appointments</p>
+                                        <h3 className="fs-2">{booking.length}</h3>
+                                        <p className="fs-5">Bookings</p>
                                     </div>
                                     <i class="fa-solid fa-calendar-check primary-text border rounded-full h2 secondary-bg p-3"></i>
                                     {/* <i className="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3" /> */}
@@ -44,7 +46,7 @@ const Dashboard = () => {
                             <div className="col-md-4">
                                 <div className="p-3 bg-primary text-white shadow-sm d-flex justify-content-around align-items-center rounded">
                                     <div>
-                                        <h3 className="fs-2">{321}</h3>
+                                        <h3 className="fs-2">{user.length}</h3>
                                         <p className="fs-5">Users</p>
                                     </div>
                                     <i className="fa-solid fa-people-roof fs-1 primary-text border rounded-full secondary-bg p-3" />
@@ -53,7 +55,7 @@ const Dashboard = () => {
                             <div className="col-md-4">
                                 <div className="p-3 bg-primary text-white shadow-sm d-flex justify-content-around align-items-center rounded">
                                     <div>
-                                        <h3 className="fs-2">{21}</h3>
+                                        <h3 className="fs-2">{appointmentd.appointment.length}</h3>
                                         <p className="fs-5">Events</p>
                                     </div>
                                     <i className="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3" />
@@ -82,7 +84,7 @@ const Dashboard = () => {
                                                             return (
                                                                 <tr key={ind + 1}>
                                                                     <td>{data.title}</td>
-                                                                    <td><img className='avatar_sm' src={data.image.url} alt="image" /></td>
+                                                                    <td><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
                                                                     <td>{data.date}</td>
                                                                     <td>{data.time}</td>
 

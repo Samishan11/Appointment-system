@@ -3,10 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import Sidenav from '../../component/Sidenav';
 import axios from 'axios';
 import Calender from '../../../../component/Calender';
+import { fetchAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
 const Manageevent = () => {
-
-    const [navcollapse, setNavcollapse] = useState(false);
     const dispatch = useDispatch();
+    const appointment = useSelector(state => state.appointment.appointment)
+    useEffect(() => {
+        dispatch(fetchAppointment())
+    }, [])
+    const [navcollapse, setNavcollapse] = useState(false);
     function onclick() {
         setNavcollapse(!navcollapse)
     }
@@ -72,6 +76,7 @@ const Manageevent = () => {
             console.log(error)
         }
     }
+
     const updateAppoint = async (e) => {
         e.preventDefault();
         try {
@@ -80,34 +85,8 @@ const Manageevent = () => {
             console.log(error)
         }
     }
-    const events = [
-        {
-            title: "Dental Doctro A",
-            start: "2023-03-01",
-            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        },
-        {
-            title: "Dental Doctor B",
-            start: "2023-03-15",
-            end: "2023-03-17",
-            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        },
-        {
-            title: "Dental Doctor C",
-            start: "2023-03-10",
-            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        },
-        {
-            title: "Dental Doctor C",
-            start: "2023-03-10",
-            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        },
-        {
-            title: "Dental Doctor D",
-            start: "2023-03-28",
-            display: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        }
-    ];
+
+
 
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
@@ -129,7 +108,7 @@ const Manageevent = () => {
                         <div className="row">
                             <div className='mt-3 px-3'>
                                 <h6>MANAGE EVENTS</h6>
-                                < Calender events={events} selectable={true} editable={true} addAble={true} />
+                                < Calender events={appointment} selectable={true} editable={true} addAble={true} />
                             </div>
                         </div>
                     </div>

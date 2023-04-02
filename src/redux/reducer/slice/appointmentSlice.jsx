@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { PROXY_URI } from '../../proxy/proxy';
 const initialState = {
     loading: false,
     appointment: [],
     error: "",
     singleAppointment: {}
 }
-const proxy = 'http://localhost:5000/api'
+
 // fetching api 
 export const fetchAppointment = createAsyncThunk('appointment/fetchAppointment', async () => {
-    const response = await axios.get(`${proxy}/appointment/get`);
+    const response = await axios.get(`${PROXY_URI}/appointment/get`);
     return response.data.data
 })
 
@@ -38,8 +38,7 @@ const appointmentSlice = createSlice({
     },
     reducers: {
         //    add appointment 
-        add: (state, action, image) => {
-            console.log(action.payload)
+        add: (state, action) => {
             const appointment = {
                 _id: action.payload._id,
                 title: action.payload.title,

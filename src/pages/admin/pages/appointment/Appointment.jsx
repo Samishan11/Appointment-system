@@ -37,7 +37,7 @@ const Appointment = () => {
         }
     ])
     // image hook 
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(null);
 
     // input handel event on input change 
     const handleFormChange = (index, event) => {
@@ -133,10 +133,16 @@ const Appointment = () => {
                                                     {
                                                         appointmentd.appointment ?
                                                             appointmentd.appointment.map((data, ind) => {
+                                                                console.log(image)
                                                                 return (
                                                                     <tr key={ind + 1}>
                                                                         <td>{data.title}</td>
-                                                                        <td><img className='avatar_sm' src={image ? URL.createObjectURL(image) : data.image.url} alt="image" /></td>
+                                                                        {
+                                                                            image !== null ?
+                                                                                <td><img className='avatar_sm' src={image && URL.createObjectURL(image)} alt="image" /></td> :
+                                                                                <td><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
+
+                                                                        }
                                                                         <td>{new Date(data.date).toDateString()}</td>
                                                                         <td>{`${data.time} PM`}</td>
                                                                         <td className=''>

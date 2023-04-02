@@ -1,13 +1,41 @@
 import React from "react";
-import $ from "jquery";
-import * as bootstrap from "bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+// import $ from "jquery"
+//Bootstrap libraries
+import * as bootstrap from "bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { TimePicker } from 'react-ios-time-picker';
+import { useDispatch } from "react-redux";
+// import { updateAppointment } from "../redux/reducer/slice/appointmentSlice";
+import { PROXY_URI } from "../redux/proxy/proxy";
+import axios from "axios";
+const Calender = ({ events, selectable, editable }) => {
+    const dispatch = useDispatch();
+    const [date, setDate] = React.useState(
+        new Date()
+    );
 
-const Calender = ({ events , selectable ,editable ,addAble  }) => {
+
+    const [formData, setFormData] = React.useState({
+        title: "",
+        description: "",
+        date: new Date()
+    })
+    // set time
+    const [value, onChange] = React.useState('10:00');
+
+    const updateEvent = async (id, date) => {
+        try {
+
+            var res = await axios.put(`${PROXY_URI}/appointment/update/${id}`, { date })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <FullCalendar
@@ -20,16 +48,25 @@ const Calender = ({ events , selectable ,editable ,addAble  }) => {
                 }}
                 eventAdd={() => {
                     return new bootstrap.Popover(info.el, {
-                        title: `<a href="/detail"></a>`,
+                        title: `<p id="detailLink" href="/detail"></p>`,
                         // placement: "auto",
                         trigger: "click",
                         // customClass: "popoverStyle",
-                        content: `$<a href="/detail">view</a>`,
+                        content: `<p  href="/detail">view</p>`,
                         html: true,
                     });
                 }}
                 // events 
                 events={events}
+                eventDrop={(arg) => {
+                    // console.log(arg.event._instance.range.start)
+                    updateEvent(arg.event.extendedProps._id, arg.event._instance.range.start)
+                }}
+                // datesSet={(dateInfo) => {
+                //     console.log(dateInfo.start) //start of the range the calendar date
+                //     console.log(dateInfo.end) //end of the range the calendar date
+                // }}
+                // eventChange={(arg) => { console.log(arg)  }}
                 selectable={selectable}
                 editable={editable}
                 dayMaxEvents={true}
@@ -38,35 +75,80 @@ const Calender = ({ events , selectable ,editable ,addAble  }) => {
                 // mapping the events and showing as popup omn hover 
                 eventDidMount={(info) => {
                     return new bootstrap.Popover(info.el, {
-                        title: `<a href="/detail">${info.event.title}</a>`,
+                        title: `<p id="titleLink">${info.event.title}</p>`,
                         // placement: "auto",
                         trigger: "click",
                         // customClass: "popoverStyle",
-                        content: `${info.event.display} <a href="/detail">view</a>`,
+                        content: `${info.event.extendedProps.description} <a href=${`/detail/${info.event.extendedProps._id}`}>view</a>`,
                         html: true,
                     });
                 }}
-                dateClick={function (arg) {
-                  {addAble &&   document.querySelector("#openModal").click()
-                  document.querySelector(".modal-body").html = ""
-                  document.querySelector(".modal-body").html = "<h3>" + arg.dateStr + "</h3>"}
-                }}
+                // dateClick={function (arg) {
+                //     {
+                //         addAble &&
+                //             document.querySelector("#openModal").click()
+                //         document.querySelector(".modal-body").html = ""
+                //         document.querySelector(".modal-body").html = "<h3>" + arg.dateStr + "</h3>"
+                //     }
+                // }}
                 height={"80vh"}
             />
             <button id={"openModal"} data-bs-toggle="modal" data-bs-target="#myModal"></button>
             <div className="modal" id="myModal">
-                <div className="modal-dialog">
+                <div className="modal-dialog modal-lg">
                     <div className="modal-content">
-                    <div className="modal-header">
+                        <div className="modal-header">
                             <h1 className="modal-title fs-3" id="updatemodalLabel">Update Appointment</h1>
                             <button type="button" className="btn-close text-danger fas fa-times" data-bs-dismiss="modal" aria-label="Close" ></button>
                         </div>
-                        <div className="modal-body text-center">
-                            <input name="fasdfasd"></input>
+                        <div className="modal-body">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="event_form mt-3">
+                                        <div className="form-group">
+                                            <div className="font-control">
+                                                <input placeholder='Event Title' type="text" className='form-control py-2 mt-2' />
+                                            </div>
+                                        </div>
+                                        <div className="form-group mt-4">
+                                            <div className="font-control">
+                                                <input placeholder='Location' type="text" className='form-control py-2 mt-2' />
+                                            </div>
+                                        </div>
+                                        <div className="form-group mt-4">
+                                            <div class="input-group date" data-provide="datepicker">
+
+                                                <input
+
+                                                    type="date"
+                                                    style={{ position: "relative" }}
+                                                    className={
+                                                        "form-control rounded text-sm text-secondary"
+                                                    }
+                                                    placeholder=" Expiry date"
+                                                />
+                                                {/* <i style={{ position: "absolute", right: '5%', top: "25%" }} className='fa-solid fa-calendar'></i> */}
+
+                                            </div>
+                                        </div>
+                                        <div className="form mt-4">
+                                            <div class="input-group date" data-provide="datepicker">
+                                                <TimePicker onChange={onChange} value={value} />
+                                                <i style={{ position: "absolute", right: '1.5%', top: "25%" }} className='fa-solid fa-clock'></i>
+                                            </div>
+                                        </div>
+                                        <div className="form-group mt-4">
+                                            <div className="font-control">
+                                                <textarea placeholder='Detail' type="text" className='form-control py-3 mt-2' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="modal-footer">
-                        <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
