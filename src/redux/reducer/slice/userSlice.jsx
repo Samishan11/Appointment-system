@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PROXY_URI } from "../../proxy/proxy";
+import { toast } from "react-toastify";
 const initialState = {
     loading: false,
     user: [],
@@ -46,20 +47,22 @@ const userSlice = createSlice({
         },
         updateUser: (state, action) => {
             console.log(action.payload)
-            state.user.map((val)=>{
-                if(val._id === action.payload._id){
+            state.user.map((val) => {
+                if (val._id === action.payload._id) {
                     val.username = action.payload.username,
-                    val.email = action.payload.email,
-                    val.image = action.payload.image,
-                    val.password = action.payload.password
+                        val.email = action.payload.email,
+                        val.image = action.payload.image,
+                        val.password = action.payload.password
                 }
             })
+            toast.success("User Update Sucessfully", { position: 'top-right' })
         },
         deleteuser: (state, action) => {
             state.user = state.user.filter((val) => val._id !== action.payload);
+            toast.success("User Deleted Sucessfully", { position: 'top-right' })
         }
     }
 })
-export const { user , updateUser ,deleteuser } = userSlice.actions;
+export const { user, updateUser, deleteuser } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PROXY_URI } from "../../proxy/proxy";
+import { toast } from "react-toastify";
 const initialState = {
     loading: false,
     booking: [],
@@ -44,18 +45,21 @@ const bookingSlice = createSlice({
                 email: action.payload.email,
                 appointment: action.payload.appointment,
             };
+            toast.success("Appointment has been booked", { position: 'top-right' })
 
             state.booking.push(booking);
         },
-        updateBooking: (state, action , status) => {
+        updateBooking: (state, action, status) => {
             state.booking.map((val) => {
                 if (val._id === action.payload._id) {
                     val.status = status
                 }
             })
+            toast.success("Appointment Updated", { position: 'top-right' })
         },
         deleteBooking: (state, action) => {
             state.booking = state.booking.filter((val) => val._id !== action.payload);
+            toast.success("Appointment deleted", { position: 'top-right' })
         }
     }
 })
