@@ -5,6 +5,7 @@ import { add, deleteAppointment, fetchAppointment, singleAppointment, updateAppo
 import axios from 'axios';
 import Loading from '../../component/loading';
 import { toast } from 'react-toastify';
+import { PROXY_URI } from '../../../../redux/proxy/proxy';
 const Appointment = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
@@ -65,7 +66,7 @@ const Appointment = () => {
             formdata.append("date", inputFields[0].date)
             formdata.append("time", inputFields[0].time)
             formdata.append("time_end", inputFields[0].time_end)
-            var response = await axios.post("http://localhost:5000/api/appointment/add", formdata)
+            var response = await axios.post(`${PROXY_URI}/appointment/add`, formdata)
             dispatch(add(response.data.data))
             toast.success("Appointment add sucessfully")
         } catch (error) {
@@ -78,7 +79,7 @@ const Appointment = () => {
     const _deleteAppointment = async (id) => {
         try {
             dispatch(deleteAppointment(id))
-            var res = await axios.delete(`http://localhost:5000/api/appointment/delete/${id}`)
+            var res = await axios.delete(`${PROXY_URI}/appointment/delete/${id}`)
         } catch (error) {
             toast.error(error.response.data.message)
         }
@@ -94,7 +95,7 @@ const Appointment = () => {
             formdata.append("time", inputFieldsUpdate[0].time)
             formdata.append("time_end", inputFieldsUpdate[0].time_end)
             dispatch(updateAppointment(inputFieldsUpdate, image))
-            var res = await axios.put(`http://localhost:5000/api/appointment/update/${inputFieldsUpdate[0]._id}`, formdata)
+            var res = await axios.put(`${PROXY_URI}/appointment/update/${inputFieldsUpdate[0]._id}`, formdata)
         } catch (error) {
             toast.error(error.response.data.message)
         }
