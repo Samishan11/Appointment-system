@@ -92,14 +92,12 @@ const appointmentSlice = createSlice({
                         val.time = action.payload[0].time,
                         val.description = action.payload[0].description,
                         val.image = action.payload.image
-                    toast.success("Appointment Update Sucessfully", { position: 'top-right' })
                 }
             })
         },
         // deleting an appointment
         deleteAppointment: (state, action) => {
             state.appointment = state.appointment.filter((val) => val._id !== action.payload);
-            toast.success("Appointment Delete Sucessfully", { position: 'top-right' })
         },
     }
 });

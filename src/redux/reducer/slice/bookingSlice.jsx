@@ -45,7 +45,6 @@ const bookingSlice = createSlice({
                 email: action.payload.email,
                 appointment: action.payload.appointment,
             };
-            toast.success("Appointment has been booked", { position: 'top-right' })
 
             state.booking.push(booking);
         },
@@ -55,11 +54,9 @@ const bookingSlice = createSlice({
                     val.status = status
                 }
             })
-            toast.success("Appointment Updated", { position: 'top-right' })
         },
         deleteBooking: (state, action) => {
             state.booking = state.booking.filter((val) => val._id !== action.payload);
-            toast.success("Appointment deleted", { position: 'top-right' })
         }
     }
 })

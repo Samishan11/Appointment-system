@@ -55,11 +55,9 @@ const userSlice = createSlice({
                         val.password = action.payload.password
                 }
             })
-            toast.success("User Update Sucessfully", { position: 'top-right' })
         },
         deleteuser: (state, action) => {
             state.user = state.user.filter((val) => val._id !== action.payload);
-            toast.success("User Deleted Sucessfully", { position: 'top-right' })
         }
     }
 })

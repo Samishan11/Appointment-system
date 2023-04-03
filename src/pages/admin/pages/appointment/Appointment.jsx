@@ -24,7 +24,8 @@ const Appointment = () => {
             title: "",
             description: "",
             date: "",
-            time: ""
+            time: "",
+            time_end: ""
         }
     ])
     // dynamic form control 
@@ -34,7 +35,8 @@ const Appointment = () => {
             title: "",
             description: "",
             date: "",
-            time: ""
+            time: "",
+            time_end: ""
         }
     ])
     // image hook 
@@ -62,8 +64,10 @@ const Appointment = () => {
             formdata.append("description", inputFields[0].description)
             formdata.append("date", inputFields[0].date)
             formdata.append("time", inputFields[0].time)
+            formdata.append("time_end", inputFields[0].time_end)
             var response = await axios.post("http://localhost:5000/api/appointment/add", formdata)
             dispatch(add(response.data.data))
+            toast.success("Appointment add sucessfully")
         } catch (error) {
             toast.error(error.response.data.message)
         }
@@ -88,6 +92,7 @@ const Appointment = () => {
             formdata.append("description", inputFieldsUpdate[0].description)
             formdata.append("date", inputFieldsUpdate[0].date)
             formdata.append("time", inputFieldsUpdate[0].time)
+            formdata.append("time_end", inputFieldsUpdate[0].time_end)
             dispatch(updateAppointment(inputFieldsUpdate, image))
             var res = await axios.put(`http://localhost:5000/api/appointment/update/${inputFieldsUpdate[0]._id}`, formdata)
         } catch (error) {
@@ -126,7 +131,8 @@ const Appointment = () => {
                                                         <th scope="col">Title</th>
                                                         <th scope="col">Image</th>
                                                         <th scope="col">Date</th>
-                                                        <th scope="col">Time</th>
+                                                        <th scope="col">Time Start</th>
+                                                        <th scope="col">Time End</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
                                                 </thead>
@@ -134,7 +140,15 @@ const Appointment = () => {
                                                     {
                                                         appointmentd.appointment ?
                                                             appointmentd.appointment.map((data, ind) => {
-                                                                console.log(image)
+                                                                // var hms = data?.time
+                                                                // var a = hms?.split(':');
+                                                                // var hms1 = data?.time_end
+                                                                // var a1 = hms1?.split(':');
+                                                                // var seconds = (+a[0]) * 60;
+                                                                // var seconds1 = (+a1[0]) * 60;
+                                                                // const interval = (seconds1 - seconds)
+                                                                // console.log(interval)
+                                                                // const finalInterval = (interval >= 60 ? (interval / 60) + " hour" : interval + " min")
                                                                 return (
                                                                     <tr key={ind + 1}>
                                                                         <td>{data.title}</td>
@@ -145,7 +159,8 @@ const Appointment = () => {
 
                                                                         }
                                                                         <td>{new Date(data.date).toDateString()}</td>
-                                                                        <td>{`${data.time} PM`}</td>
+                                                                        <td>{`${data.time} ${data.time >= "12:00" ? "PM" : "AM"}`}</td>
+                                                                        <td>{`${data.time_end} ${data.time_end >= "12:00" ? "PM" : "AM"}`}</td>
                                                                         <td className=''>
                                                                             <button onClick={() => {
                                                                                 dispatch(singleAppointment(data))
@@ -155,6 +170,7 @@ const Appointment = () => {
                                                                                         title: data.title,
                                                                                         date: data.date,
                                                                                         time: data.time,
+                                                                                        time_end: data.time_end,
                                                                                         description: data.description,
                                                                                     }
                                                                                 ])
@@ -214,8 +230,14 @@ const Appointment = () => {
                                                             </div>
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Time</label>
+                                                                    <label htmlFor="exampleInputEmail1">Time Start</label>
                                                                     <input onChange={event => handleFormChange(ind, event)} name='time' type="time" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Time End</label>
+                                                                    <input onChange={event => handleFormChange(ind, event)} name='time_end' type="time" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
                                                                 </div>
                                                             </div>
                                                             <div className="col-12 col-md-12 my-2">
@@ -278,8 +300,14 @@ const Appointment = () => {
                                                             </div>
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Time</label>
+                                                                    <label htmlFor="exampleInputEmail1">Time Start</label>
                                                                     <input onChange={event => handleFormChangeUpdate(ind, event)} name='time' value={inputFieldsUpdate[0]?.time} type="time" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Time End</label>
+                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='time_end' value={inputFieldsUpdate[0]?.time_end} type="time" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
                                                                 </div>
                                                             </div>
                                                             <div className="col-12 col-md-12 my-2">
