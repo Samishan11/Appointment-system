@@ -17,7 +17,10 @@ const Sidenav = ({ tab }) => {
                 <Link id='user' to="/manageuser" className="list-group-item list-group-item-action bg-transparent tab_btn text-light py-3"><i id='nav_active' className="fa-solid fa-people-roof me-2" />Manage User</Link>
                 <div className="logout mt-5  ">
                     <div className="col-8 mx-auto">
-                        <button className='btn btn-sm py-1 position-absolute btn-outline-light' style={{ bottom: "-90%", left: "40px", width: "150px" }}>Logout</button>
+                        <button onClick={() => {
+                            localStorage.removeItem("token")
+                            window.location = "/"
+                        }} className='btn btn-sm py-1 position-absolute btn-outline-light' style={{ bottom: "-90%", left: "40px", width: "150px" }}>Logout</button>
                     </div>
                 </div>
             </div>
