@@ -14,6 +14,11 @@ export const fetchAppointment = createAsyncThunk('appointment/fetchAppointment',
     const response = await axios.get(`${PROXY_URI}/appointment/get`);
     return response.data.data
 })
+// fetching single api 
+export const fetchSingleAppointment = createAsyncThunk('appointment/fetchSingleAppointment', async (id) => {
+    var response = await axios.get(`${PROXY_URI}/appointment/${id}`);
+    return response.data.data
+})
 
 // appointment slice 
 const appointmentSlice = createSlice({
@@ -23,17 +28,32 @@ const appointmentSlice = createSlice({
     extraReducers: (builder) => {
         // check weather the loading false here
         builder.addCase(fetchAppointment.pending, (state) => {
-            state.loading = false
+            state.loading = true
         })
         // check weather the loading true here
         builder.addCase(fetchAppointment.fulfilled, (state, action) => {
-            state.loading = true
+            state.loading = false
             state.appointment = action.payload
         })
         // if error occors 
         builder.addCase(fetchAppointment.rejected, (state, action) => {
             state.loading = true
             state.appointment = []
+            state.error = action.error.message
+        })
+         // check weather the loading false here
+         builder.addCase(fetchSingleAppointment.pending, (state) => {
+            state.loading = true
+        })
+        // check weather the loading true here
+        builder.addCase(fetchSingleAppointment.fulfilled, (state, action) => {
+            state.loading = false
+            state.singleAppointment = action.payload
+        })
+        // if error occors 
+        builder.addCase(fetchSingleAppointment.rejected, (state, action) => {
+            state.loading = true
+            state.singleAppointment = {}
             state.error = action.error.message
         })
     },

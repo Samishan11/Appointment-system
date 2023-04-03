@@ -7,39 +7,50 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PROXY_URI } from '../../../redux/proxy/proxy';
 import Loading from '../../admin/component/loading';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addBooking } from '../../../redux/reducer/slice/bookingSlice';
+import { fetchSingleAppointment } from '../../../redux/reducer/slice/appointmentSlice';
+import { toast } from 'react-toastify';
 
 const Detail = () => {
     const dispatch = useDispatch();
-    const { id } = useParams()
-    const [date, setDate] = useState(
-        new Date()
-    );
-    const [appointmentData, setappointmentData] = useState(null);
+    const { id } = useParams();
+    // 
     useEffect(() => {
-        var fetchAPi = async () => {
-            var res = await axios.get(`${PROXY_URI}/appointment/${id}`);
-            setappointmentData(res?.data?.data)
-        }
-        fetchAPi()
+        dispatch(fetchSingleAppointment(id))
     }, [])
+    
+    const appointmentData = useSelector(state => state.appointment.singleAppointment)
+
+    // 
     const [formData, setFormdata] = useState({
         username: '',
         email: '',
-        date: appointmentData?.date ? new Date(appointmentData?.data) : new Date(),
-        time: appointmentData?.time ? appointmentData?.time : "10:00",
+        date: appointmentData?.date ? new Date( appointmentData?.date) : new Date(),
+        time: appointmentData?.time ? appointmentData?.time : "10:00 AM",
         appointment: id
     })
+
+    // 
     const [value, onChange] = useState('10:00');
 
+    // 
     const formChange = (e) => {
         setFormdata({ ...formData, [e.target.name]: e.target.value })
     }
 
     const booking = async () => {
-        var res = await axios.post(`${PROXY_URI}/bookin\g`, formData)
-        dispatch(addBooking(res.data.data))
+        try {
+            var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if (formData.email.match(validRegex)) {
+                var res = await axios.post(`${PROXY_URI}/booking`, formData)
+                dispatch(addBooking(res.data.data))
+            } else {
+                toast.error("Invalid Email!!")
+            }
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
     }
 
     return (
@@ -101,16 +112,12 @@ const Detail = () => {
                                                     <input placeholder='Email' type="email" name='email' onChange={e => formChange(e)} className='form-control py-2 mt-2' />
                                                 </div>
                                             </div>
-                                            {/* <div className="form-group mt-4">
-                                                    <div className="font-control">
-                                                        <textarea placeholder='Message' type="text" className='form-control py-3 mt-2' />
-                                                    </div>
-                                                </div> */}
+
                                         </div>
                                         <div className="forms">
                                             <div className="form mt-4">
                                                 <div class="input-group date" data-provide="datepicker">
-                                                    <DatePicker date={date} onDateChange={setDate} locale={enGB}>
+                                                    <DatePicker date={formData?.date} locale={enGB}>
                                                         {({ inputProps, focused }) => (
                                                             <>
                                                                 <input
