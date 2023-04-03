@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 // import { updateAppointment } from "../redux/reducer/slice/appointmentSlice";
 import { PROXY_URI } from "../redux/proxy/proxy";
 import axios from "axios";
+import { toast } from "react-toastify";
 const Calender = ({ events, selectable, editable }) => {
     const dispatch = useDispatch();
     const [date, setDate] = React.useState(
@@ -30,9 +31,20 @@ const Calender = ({ events, selectable, editable }) => {
     const updateEvent = async (id, date) => {
         try {
 
-            var res = await axios.put(`${PROXY_URI}/appointment/update/${id}`, { date })
+            // get the year month and date from the full date 
+            const date_ = new Date(date);
+            function padTo2Digits(num) {
+                return num.toString().padStart(2, '0');
+            }
+            const year = date_.getFullYear();
+            const month = padTo2Digits(date_.getMonth() + 1);
+            const day = padTo2Digits(date_.getDate());
+            const newdate = [year, month, day].join('-');
+            // fetching api here 
+            var res = await axios.put(`${PROXY_URI}/appointment/update/${id}`, { date: newdate })
+            toast.success(res.data.message)
         } catch (error) {
-            console.log(error)
+            toast.error(error.response.data.message)
         }
     }
 

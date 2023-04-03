@@ -43,7 +43,7 @@ const Booking = () => {
             await axios.delete(`${PROXY_URI}/booking/delete/${id}`)
             dispatch(deleteBooking(id))
         } catch (error) {
-            console.log(error)
+            toast.error(error.response.data.message)
         }
     }
 

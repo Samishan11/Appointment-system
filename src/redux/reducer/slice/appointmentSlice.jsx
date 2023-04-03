@@ -48,7 +48,7 @@ const appointmentSlice = createSlice({
                 description: action.payload.description,
                 image: action.payload.image.url,
             };
-            toast.success("Product Add Sucessfully", { position: 'top-right' })
+            toast.success("Appointment Add Sucessfully", { position: 'top-right' })
             state.appointment.push(appointment);
         },
         // get single appointent data 

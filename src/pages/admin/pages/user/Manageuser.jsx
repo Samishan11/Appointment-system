@@ -24,7 +24,7 @@ const Manageuser = () => {
             axios.delete(`${PROXY_URI}/delete-user/${id}`)
             dispatch(deleteuser(id))
         } catch (error) {
-            console.log(error.message)
+            toast.error(error.response.data.message)
         }
     }
 
@@ -50,7 +50,7 @@ const Manageuser = () => {
             var res = await axios.put(`${PROXY_URI}/update-user/${form._id}`, form)
             dispatch(updateUser(form))
         } catch (error) {
-            console.log(error)
+            toast.error(error.response.data.message)
         }
     }
     const [img, setImg] = useState("");

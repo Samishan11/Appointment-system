@@ -12,18 +12,19 @@ const Login = () => {
     const navigate = useNavigate()
 
     const handleSubmit = async () => {
-        const res = await axios.post("http://localhost:5000/api/login-user", { email, password })
-        console.log(res.data)
-        if (res.data.message) {
-            if (res.data.isAdmin) {
-                localStorage.setItem("token", res.data.token)
-                window.location = "/dashboard"
-            } else {
-                toast.error('User not verify!!')
+        try {
+            const res = await axios.post("http://localhost:5000/api/login-user", { email, password })
+            console.log(res.data)
+            if (res.data.message) {
+                if (res.data.isAdmin) {
+                    localStorage.setItem("token", res.data.token)
+                    window.location = "/dashboard"
+
+                }
+                toast.success("User LoggedIn")
             }
-        }
-        else {
-            toast.error(res.data.message)
+        } catch (error) {
+            toast.error(error.response.data.message)
         }
     }
 

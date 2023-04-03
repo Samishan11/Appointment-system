@@ -28,7 +28,7 @@ const Detail = () => {
         username: '',
         email: '',
         date: appointmentData?.date ? new Date(appointmentData?.data) : new Date(),
-        time: appointmentData?.time ? appointmentData?.time : "00:00",
+        time: appointmentData?.time ? appointmentData?.time : "10:00",
         appointment: id
     })
     const [value, onChange] = useState('10:00');
@@ -38,7 +38,7 @@ const Detail = () => {
     }
 
     const booking = async () => {
-        var res = await axios.post(`${PROXY_URI}/booking`, formData)
+        var res = await axios.post(`${PROXY_URI}/bookin\g`, formData)
         dispatch(addBooking(res.data.data))
     }
 

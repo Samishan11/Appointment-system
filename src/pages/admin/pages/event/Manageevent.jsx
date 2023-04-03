@@ -82,7 +82,7 @@ const Manageevent = () => {
         try {
             dispatch(updateManageevent(inputFieldsUpdate, image))
         } catch (error) {
-            console.log(error)
+            toast.error(error.response.data.message)
         }
     }
 

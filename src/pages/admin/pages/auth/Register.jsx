@@ -19,9 +19,14 @@ const Register = () => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
     const handleSubmit = async () => {
-        const res = await axios.post("http://localhost:5000/api/register-user", form)
-        if (res.data) {
-            navigate("/login")
+        try {
+            const res = await axios.post("http://localhost:5000/api/register-user", form)
+            if (res.data.success) {
+                navigate("/login")
+                toast.success("User register sucessfully.")
+            }
+        } catch (error) {
+            toast.error(error.response.data.message)
         }
     }
 

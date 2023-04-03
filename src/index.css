@@ -4,6 +4,7 @@
   .nav_active {
       color: rgb(0, 43, 95) !important;
   }
+
   .fc {
       padding: 10px;
   }
@@ -227,6 +228,6 @@
   }
 
   /*  */
-  #layoutAuthentication{
-    background: #000;
+  #layoutAuthentication {
+      background: #000;
   }
