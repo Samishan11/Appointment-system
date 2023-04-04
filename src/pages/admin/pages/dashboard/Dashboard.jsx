@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
+import { fetchAppointment, getInterval } from '../../../../redux/reducer/slice/appointmentSlice';
 import Loading from '../../component/loading';
 import Sidenav from '../../component/Sidenav';
+import { fetchBooking } from '../../../../redux/reducer/slice/bookingSlice';
 const Dashboard = () => {
     const dispatch = useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
+    const [load, setLoad] = useState(0);
     const appointmentd = useSelector((state) => state.appointment)
-    const booking = useSelector((state) => state.booking.booking)
+    const booking = useSelector((state) => state.booking.booking.slice(load, load+1))
     const user = useSelector((state) => state.user.user)
     function onclick() {
         setNavcollapse(!navcollapse)
@@ -15,6 +17,7 @@ const Dashboard = () => {
     }
     useEffect(() => {
         dispatch(fetchAppointment())
+        dispatch(fetchBooking())
     }, [])
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
@@ -63,38 +66,39 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className='mt-5 px-2'>
-                            <h6>RECENT APPOINTMENT</h6>
+                            <h6>RECENT BOOKINGS</h6>
                             {
-                                appointmentd.appointment.length === 0 ?
+                                booking.length === 0 ?
                                     <Loading /> :
                                     <div className='border rounded shadow bg-light text-secondary px-4' style={{ width: "100%", overflowX: "hidden" }}>
                                         <table class="table table-border">
                                             <thead className='text-secondary'>
                                                 <tr className=''>
-                                                    <th scope="col">Title</th>
-                                                    <th scope="col">Image</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Time</th>
+                                                    <th scope="col">username</th>
+                                                    <th scope="col">email</th>
+                                                    <th scope="col">appointment id</th>
+                                                    <th scope="col">date</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {
-                                                    appointmentd.appointment ?
-                                                        appointmentd.appointment.map((data, ind) => {
+                                                    booking ?
+                                                        booking?.slice(0, 9)?.map((data, ind) => {
                                                             return (
                                                                 <tr key={ind + 1}>
-                                                                    <td>{data.title}</td>
-                                                                    <td><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
-                                                                    <td>{data.date}</td>
-                                                                    <td>{data.time}</td>
+                                                                    <td>{data.username}</td>
+                                                                    <td>{`${data.email}`}</td>
+                                                                    <td>{`${data.appointment}`}</td>
+                                                                    <td>{new Date(data.booked_on).toDateString()}</td>
 
                                                                 </tr>
                                                             );
                                                         })
                                                         :
-                                                        null
+                                                        <Loading />
                                                 }
                                             </tbody>
+                                            <buttton onClick={() => setLoad(load + 1)} className="btn btn-outline-primary px-4 mt-3">Load More</buttton>
                                         </table>
                                     </div>
                             }

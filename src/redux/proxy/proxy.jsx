@@ -1,1 +1,1 @@
-export const PROXY_URI = 'https://dental-api.up.railway.app/api'
+export const PROXY_URI =  "http://localhost:5000/api"

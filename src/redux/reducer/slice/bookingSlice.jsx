@@ -45,7 +45,7 @@ const bookingSlice = createSlice({
                 email: action.payload.email,
                 appointment: action.payload.appointment,
             };
-
+            toast.success("Appointment has been booked.")
             state.booking.push(booking);
         },
         updateBooking: (state, action, status) => {
