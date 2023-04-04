@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import Sidenav from '../../component/Sidenav';
-import { add, deleteAppointment, fetchAppointment, singleAppointment, updateAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
+import { add, deleteAppointment, fetchAppointment, getInterval, singleAppointment, updateAppointment } from '../../../../redux/reducer/slice/appointmentSlice';
 import axios from 'axios';
 import Loading from '../../component/loading';
 import { toast } from 'react-toastify';
@@ -55,6 +55,7 @@ const Appointment = () => {
         setInputFieldsUpdate(data);
 
     }
+    const [loading, setLoading] = useState(false);
     // submit form 
     const submitForm = async (e) => {
         try {
@@ -67,8 +68,12 @@ const Appointment = () => {
             formdata.append("time", inputFields[0].time)
             formdata.append("time_end", inputFields[0].time_end)
             var response = await axios.post(`${PROXY_URI}/appointment/add`, formdata)
+            if (response.data.success) {
+                setLoading(false)
+            } else {
+                setLoading(true)
+            }
             dispatch(add(response.data.data))
-            toast.success("Appointment add sucessfully")
         } catch (error) {
             toast.error(error.response.data.message)
         }
@@ -80,6 +85,7 @@ const Appointment = () => {
         try {
             dispatch(deleteAppointment(id))
             var res = await axios.delete(`${PROXY_URI}/appointment/delete/${id}`)
+            toast.success(res.data.message)
         } catch (error) {
             toast.error(error.response.data.message)
         }
@@ -96,10 +102,24 @@ const Appointment = () => {
             formdata.append("time_end", inputFieldsUpdate[0].time_end)
             dispatch(updateAppointment(inputFieldsUpdate, image))
             var res = await axios.put(`${PROXY_URI}/appointment/update/${inputFieldsUpdate[0]._id}`, formdata)
+            toast.success(res.data.message)
         } catch (error) {
             toast.error(error.response.data.message)
         }
     }
+    // get time interval
+    // const getInterval = (a) => {
+    //     const date = new Date(a.date)
+    //     const dateString = date.toISOString().slice(0, 10);
+    //     const startTimeStr = a.time;
+    //     const endTimeStr = a.time_end;
+    //     const startDate = new Date(dateString + "T" + startTimeStr);
+    //     const endDate = new Date(dateString + "T" + endTimeStr);
+    //     const diffInMs = endDate.getTime() - startDate.getTime();
+    //     const diffInMin = Math.round(diffInMs / (1000 * 60));
+    //     const finalInterval =  diffInMin >= 60 ? parseInt(diffInMin/60) + " hour" : diffInMin+" minute"
+    //     return finalInterval;
+    // }
 
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
@@ -142,29 +162,24 @@ const Appointment = () => {
                                                     {
                                                         appointmentd.appointment ?
                                                             appointmentd.appointment.map((data, ind) => {
-                                                                const date = new Date(data.date)
-                                                                const dateString = date.toISOString().slice(0, 10);
-                                                                const startTimeStr = data.time;
-                                                                const endTimeStr = data.time_end;
-                                                                const startDate = new Date(dateString + "T" + startTimeStr);
-                                                                const endDate = new Date(dateString + "T" + endTimeStr);
-                                                                const diffInMs = endDate.getTime() - startDate.getTime();
-                                                                const diffInMin = Math.round(diffInMs / (1000 * 60));
+                                                                
+                                                            //    console.log( getInterval(data))
                                                                 return (
                                                                     <tr key={ind + 1}>
                                                                         <td>{data.title}</td>
                                                                         {
-                                                                            image !== null ?
-                                                                                <td><img className='avatar_sm' src={image && URL.createObjectURL(image)} alt="image" /></td> :
-                                                                                <td><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
+
+                                                                            <td key={ind + 1}><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
+                                                                            //  :
+                                                                            // <td><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
 
                                                                         }
                                                                         <td>{new Date(data.date).toDateString()}</td>
                                                                         <td>{`${data.time} ${data.time >= "12:00" ? "PM" : "AM"}`}</td>
                                                                         <td>{`${data.time_end} ${data.time_end >= "12:00" ? "PM" : "AM"}`}</td>
                                                                         {
-                                                                            !data.interval ? <td>{diffInMin >= 60 ? parseInt(diffInMin / 60) + " hour" : diffInMin + ' minute'}</td> :
-                                                                                <td>{data.interval >= 60 ? parseInt(data.interval / 60) + " hour" : data.interval + ' minute'}</td>
+                                                                            !data.interval ? <td>{ getInterval(data)}</td> :
+                                                                                <td>{data.interval >= 60 ? parseInt(data.interval / 60)  : data.interval }</td>
                                                                         }
                                                                         <td className=''>
                                                                             <button onClick={() => {
@@ -261,8 +276,13 @@ const Appointment = () => {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button onClick={submitForm} type="sumbit" className="btn btn-outline-primary">Save</button>
-                                <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                                {
+                                    loading ? <Loading /> :
+                                        <>
+                                            <button onClick={submitForm} type="sumbit" className="btn btn-outline-primary">Save</button>
+                                            <button type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                                        </>
+                                }
                             </div>
                         </form>
                     </div>

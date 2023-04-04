@@ -20,6 +20,19 @@ export const fetchSingleAppointment = createAsyncThunk('appointment/fetchSingleA
     return response.data.data
 })
 
+export const getInterval = (a) => {
+    const date = new Date(a.date)
+    const dateString = date.toISOString().slice(0, 10);
+    const startTimeStr = a.time;
+    const endTimeStr = a.time_end;
+    const startDate = new Date(dateString + "T" + startTimeStr);
+    const endDate = new Date(dateString + "T" + endTimeStr);
+    const diffInMs = endDate.getTime() - startDate.getTime();
+    const diffInMin = Math.round(diffInMs / (1000 * 60));
+    const finalInterval =  diffInMin >= 60 ? parseInt(diffInMin/60) + " hour" : diffInMin+" minute"
+    return finalInterval;
+}
+
 // appointment slice 
 const appointmentSlice = createSlice({
     name: 'appointment',
@@ -60,16 +73,7 @@ const appointmentSlice = createSlice({
     reducers: {
         //    add appointment 
         add: (state, action) => {
-            // get the time interval for the two date in minute
-            const date = new Date(action.payload.date)
-            const dateString = date.toISOString().slice(0, 10);
-            const startTimeStr = action.payload.time;
-            const endTimeStr = action.payload.time_end;
-            const startDate = new Date(dateString+"T" + startTimeStr);
-            const endDate = new Date(dateString+"T" + endTimeStr);
-            const diffInMs = endDate.getTime() - startDate.getTime();
-            const diffInMin = Math.round(diffInMs / (1000 * 60));
-            copnst 
+           
             const appointment = {
                 _id: action.payload._id,
                 title: action.payload.title,
@@ -77,7 +81,7 @@ const appointmentSlice = createSlice({
                 time: action.payload.time,
                 description: action.payload.description,
                 image: action.payload.image.url,
-                interval: diffInMin
+                interval: getInterval(action.payload)
             };
             toast.success("Appointment Add Sucessfully", { position: 'top-right' })
             state.appointment.push(appointment);

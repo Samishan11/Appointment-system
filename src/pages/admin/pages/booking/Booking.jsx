@@ -40,7 +40,8 @@ const Booking = () => {
     // delete Booking 
     const _deleteBooking = async (id) => {
         try {
-            await axios.delete(`${PROXY_URI}/booking/delete/${id}`)
+            var res = await axios.delete(`${PROXY_URI}/booking/delete/${id}`)
+            toast.success(res.data.message)
             dispatch(deleteBooking(id))
         } catch (error) {
             toast.error(error.response.data.message)
