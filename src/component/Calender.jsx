@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { TimePicker } from 'react-ios-time-picker';
 import { useDispatch } from "react-redux";
 // import { updateAppointment } from "../redux/reducer/slice/appointmentSlice";
-import { PROXY_URI } from "../redux/proxy/proxy";
 import axios from "axios";
 import { toast } from "react-toastify";
 const Calender = ({ events, selectable, editable }) => {
@@ -41,7 +40,7 @@ const Calender = ({ events, selectable, editable }) => {
             const day = padTo2Digits(date_.getDate());
             const newdate = [year, month, day].join('-');
             // fetching api here 
-            var res = await axios.put(`${PROXY_URI}/appointment/update/${id}`, { date: newdate })
+            var res = await axios.put(`${import.meta.env.VITE_PROXY_URI}/appointment/update/${id}`, { date: newdate })
             toast.success(res.data.message)
         } catch (error) {
             toast.error(error.response.data.message)

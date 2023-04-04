@@ -5,7 +5,6 @@ import 'react-nice-dates/build/style.css';
 import { TimePicker } from 'react-ios-time-picker';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { PROXY_URI } from '../../../redux/proxy/proxy';
 import Loading from '../../admin/component/loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBooking } from '../../../redux/reducer/slice/bookingSlice';
@@ -43,7 +42,7 @@ const Detail = () => {
         try {
             var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
             if (formData.email.match(validRegex)) {
-                var res = await axios.post(`${PROXY_URI}/booking`, formData)
+                var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/booking`, formData)
                 dispatch(addBooking(res.data.data))
             } else {
                 toast.error("Invalid Email!!")

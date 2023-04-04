@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { PROXY_URI } from '../../proxy/proxy';
 import { toast } from 'react-toastify';
 const initialState = {
     loading: false,
@@ -11,12 +10,12 @@ const initialState = {
 
 // fetching api 
 export const fetchAppointment = createAsyncThunk('appointment/fetchAppointment', async () => {
-    const response = await axios.get(`${PROXY_URI}/appointment/get`);
+    const response = await axios.get(`${import.meta.env.VITE_PROXY_URI}/appointment/get`);
     return response.data.data
 })
 // fetching single api 
 export const fetchSingleAppointment = createAsyncThunk('appointment/fetchSingleAppointment', async (id) => {
-    var response = await axios.get(`${PROXY_URI}/appointment/${id}`);
+    var response = await axios.get(`${import.meta.env.VITE_PROXY_URI}/appointment/${id}`);
     return response.data.data
 })
 

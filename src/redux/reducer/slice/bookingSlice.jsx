@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { PROXY_URI } from "../../proxy/proxy";
 import { toast } from "react-toastify";
 const initialState = {
     loading: false,
@@ -9,7 +8,7 @@ const initialState = {
 }
 
 export const fetchBooking = createAsyncThunk('booking/fetchBooking', async () => {
-    var res = await axios.get(`${PROXY_URI}/booking/get`)
+    var res = await axios.get(`${import.meta.env.VITE_PROXY_URI}/booking/get`)
     return res.data.data;
 })
 

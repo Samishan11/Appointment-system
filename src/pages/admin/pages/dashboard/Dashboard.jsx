@@ -7,9 +7,8 @@ import { fetchBooking } from '../../../../redux/reducer/slice/bookingSlice';
 const Dashboard = () => {
     const dispatch = useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
-    const [load, setLoad] = useState(0);
     const appointmentd = useSelector((state) => state.appointment)
-    const booking = useSelector((state) => state.booking.booking.slice(load, load+1))
+    const booking = useSelector((state) => state.booking.booking.slice(0,8))
     const user = useSelector((state) => state.user.user)
     function onclick() {
         setNavcollapse(!navcollapse)
@@ -85,7 +84,7 @@ const Dashboard = () => {
                                                     booking ?
                                                         booking?.slice(0, 9)?.map((data, ind) => {
                                                             return (
-                                                                <tr key={ind + 1}>
+                                                                <tr className='py-4' key={ind + 1}>
                                                                     <td>{data.username}</td>
                                                                     <td>{`${data.email}`}</td>
                                                                     <td>{`${data.appointment}`}</td>
@@ -98,7 +97,6 @@ const Dashboard = () => {
                                                         <Loading />
                                                 }
                                             </tbody>
-                                            <buttton onClick={() => setLoad(load + 1)} className="btn btn-outline-primary px-4 mt-3">Load More</buttton>
                                         </table>
                                     </div>
                             }

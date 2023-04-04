@@ -4,7 +4,6 @@ import Sidenav from '../../component/Sidenav';
 import Loading from '../../component/loading';
 import { deleteuser, fetchuser, updateUser } from '../../../../redux/reducer/slice/userSlice';
 import axios from 'axios';
-import { PROXY_URI } from '../../../../redux/proxy/proxy';
 const Manageuser = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
@@ -21,7 +20,7 @@ const Manageuser = () => {
     // delete user
     const deleteUserOnClick = async (id) => {
         try {
-            axios.delete(`${PROXY_URI}/delete-user/${id}`)
+            axios.delete(`${import.meta.env.VITE_PROXY_URI}/delete-user/${id}`)
             dispatch(deleteuser(id))
         } catch (error) {
             toast.error(error.response.data.message)
@@ -47,7 +46,7 @@ const Manageuser = () => {
     const updateUserFetch = async (e) => {
         // e.preventDefault();
         try {
-            var res = await axios.put(`${PROXY_URI}/update-user/${form._id}`, form)
+            var res = await axios.put(`${import.meta.env.VITE_PROXY_URI}/update-user/${form._id}`, form)
             dispatch(updateUser(form))
         } catch (error) {
             toast.error(error.response.data.message)
@@ -58,7 +57,7 @@ const Manageuser = () => {
         setImg(e.target.files[0])
         const fd = new FormData()
         fd.append('image', e.target.files[0])
-        var res = await axios.put(`${PROXY_URI}/update-profile/${id}`, fd)
+        var res = await axios.put(`${import.meta.env.VITE_PROXY_URI}/update-profile/${id}`, fd)
         dispatch(updateUser(res.data.data))
     }
     return (

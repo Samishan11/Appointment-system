@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import img from "../../../../assets/hr.jpg"
-import { PROXY_URI } from '../../../../redux/proxy/proxy'
 const Login = () => {
 
     const [email, setEmail] = useState('')
@@ -14,7 +13,7 @@ const Login = () => {
 
     const handleSubmit = async () => {
         try {
-            const res = await axios.post(`${PROXY_URI}/login-user`, { email, password })
+            const res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/login-user`, { email, password })
             console.log(res.data)
             if (res.data.message) {
                 if (res.data.isAdmin) {

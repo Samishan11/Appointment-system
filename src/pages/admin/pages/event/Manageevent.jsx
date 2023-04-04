@@ -49,44 +49,6 @@ const Manageevent = () => {
         setInputFieldsUpdate(data);
 
     }
-    // submit form 
-    const submitForm = async (e) => {
-        try {
-            e.preventDefault();
-            const formdata = new FormData();
-            formdata.append("image", image)
-            formdata.append("title", inputFields[0].title)
-            formdata.append("description", inputFields[0].description)
-            formdata.append("date", inputFields[0].date)
-            formdata.append("time", inputFields[0].time)
-            dispatch(add({ inputFields: inputFields[0], image }))
-            var a = await axios.post("http://localhost:5000/api/Manageevent/add", formdata)
-        } catch (error) {
-            console.log(error)
-        }
-
-    }
-
-    // delete Manageevent 
-    const _deleteManageevent = async (id) => {
-        try {
-            dispatch(deleteManageevent(id))
-            var res = await axios.delete(`http://localhost:5000/api/Manageevent/delete/${id}`)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const updateAppoint = async (e) => {
-        e.preventDefault();
-        try {
-            dispatch(updateManageevent(inputFieldsUpdate, image))
-        } catch (error) {
-            toast.error(error.response.data.message)
-        }
-    }
-
-
 
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">

@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { PROXY_URI } from "../../proxy/proxy";
-import { toast } from "react-toastify";
 const initialState = {
     loading: false,
     user: [],
@@ -9,7 +7,7 @@ const initialState = {
 }
 
 export const fetchuser = createAsyncThunk('user/fetchuser', async () => {
-    var res = await axios.get(`${PROXY_URI}/get-user`)
+    var res = await axios.get(`${import.meta.env.VITE_PROXY_URI}/get-user`)
     return res.data.data;
 })
 

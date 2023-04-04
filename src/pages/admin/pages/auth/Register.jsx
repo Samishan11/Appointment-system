@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import img from "../../../../assets/hr.jpg"
-import { PROXY_URI } from '../../../../redux/proxy/proxy'
 const Register = () => {
     const navigate = useNavigate();
     // forms
@@ -21,7 +20,7 @@ const Register = () => {
     }
     const handleSubmit = async () => {
         try {
-            const res = await axios.post(`${PROXY_URI}/register-user`, form)
+            const res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/register-user`, form)
             if (res.data.success) {
                 navigate("/login")
                 toast.success("User register sucessfully.")

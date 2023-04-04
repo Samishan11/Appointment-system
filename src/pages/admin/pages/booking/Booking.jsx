@@ -4,7 +4,6 @@ import Sidenav from '../../component/Sidenav';
 import axios from 'axios';
 import Loading from '../../component/loading';
 import { deleteBooking, fetchBooking, updateBooking } from '../../../../redux/reducer/slice/bookingSlice';
-import { PROXY_URI } from '../../../../redux/proxy/proxy';
 const Booking = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
@@ -25,7 +24,7 @@ const Booking = () => {
         setStatus(e.target.value)
         const updateAppointment = async () => {
             try {
-                var res = await axios.put(`${PROXY_URI}/booking/update/${id}`, {
+                var res = await axios.put(`${import.meta.env.VITE_PROXY_URI}/booking/update/${id}`, {
                     status: e.target.value
                 })
                 dispatch(updateBooking(id, e.target.value))
@@ -40,7 +39,7 @@ const Booking = () => {
     // delete Booking 
     const _deleteBooking = async (id) => {
         try {
-            var res = await axios.delete(`${PROXY_URI}/booking/delete/${id}`)
+            var res = await axios.delete(`${import.meta.env.VITE_PROXY_URI}/booking/delete/${id}`)
             toast.success(res.data.message)
             dispatch(deleteBooking(id))
         } catch (error) {

@@ -5,7 +5,6 @@ import Routing from './routes/Routing';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function App() {
-
   return (
     <Provider store={store}>
       <Routing />
