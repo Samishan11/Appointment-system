@@ -20,7 +20,7 @@ const Sidenav = ({ tab }) => {
                         <button onClick={() => {
                             localStorage.removeItem("token")
                             window.location = "/"
-                        }} className='btn btn-sm py-1 position-absolute btn-outline-light' style={{ bottom: "-90%", left: "40px", width: "150px" }}>Logout</button>
+                        }} className='btn btn-sm py-1 position-absolute btn-outline-light' style={{ bottom: "-80%", left: "40px", width: "150px" }}>Logout</button>
                     </div>
                 </div>
             </div>
