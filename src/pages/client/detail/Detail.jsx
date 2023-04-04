@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 const Detail = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
+    
     // 
     useEffect(() => {
         dispatch(fetchSingleAppointment(id))
@@ -21,7 +22,7 @@ const Detail = () => {
     
     const appointmentData = useSelector(state => state.appointment.singleAppointment)
 
-    // 
+    // handel input  
     const [formData, setFormdata] = useState({
         username: '',
         email: '',
@@ -33,19 +34,24 @@ const Detail = () => {
     // 
     const [value, onChange] = useState('10:00');
 
-    // 
+    // handel form 
     const formChange = (e) => {
         setFormdata({ ...formData, [e.target.name]: e.target.value })
     }
 
+    // booking 
     const booking = async () => {
         try {
             var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-            if (formData.email.match(validRegex)) {
-                var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/booking`, formData)
-                dispatch(addBooking(res.data.data))
-            } else {
-                toast.error("Invalid Email!!")
+            if(!formData.username || !formData.email){
+                toast.error("Fill All The Fields!!")
+            }else{
+                if (formData.email.match(validRegex)) {
+                    var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/booking`, formData)
+                    dispatch(addBooking(res.data.data))
+                } else {
+                    toast.error("Invalid Email!!")
+                }
             }
         } catch (error) {
             toast.error(error.response.data.message)
