@@ -134,6 +134,7 @@ const Appointment = () => {
                                                         <th scope="col">Date</th>
                                                         <th scope="col">Time Start</th>
                                                         <th scope="col">Time End</th>
+                                                        <th scope="col">Interval</th>
                                                         <th scope="col">Action</th>
                                                     </tr>
                                                 </thead>
@@ -141,15 +142,14 @@ const Appointment = () => {
                                                     {
                                                         appointmentd.appointment ?
                                                             appointmentd.appointment.map((data, ind) => {
-                                                                // var hms = data?.time
-                                                                // var a = hms?.split(':');
-                                                                // var hms1 = data?.time_end
-                                                                // var a1 = hms1?.split(':');
-                                                                // var seconds = (+a[0]) * 60;
-                                                                // var seconds1 = (+a1[0]) * 60;
-                                                                // const interval = (seconds1 - seconds)
-                                                                // console.log(interval)
-                                                                // const finalInterval = (interval >= 60 ? (interval / 60) + " hour" : interval + " min")
+                                                                const date = new Date(data.date)
+                                                                const dateString = date.toISOString().slice(0, 10);
+                                                                const startTimeStr = data.time;
+                                                                const endTimeStr = data.time_end;
+                                                                const startDate = new Date(dateString + "T" + startTimeStr);
+                                                                const endDate = new Date(dateString + "T" + endTimeStr);
+                                                                const diffInMs = endDate.getTime() - startDate.getTime();
+                                                                const diffInMin = Math.round(diffInMs / (1000 * 60));
                                                                 return (
                                                                     <tr key={ind + 1}>
                                                                         <td>{data.title}</td>
@@ -162,6 +162,10 @@ const Appointment = () => {
                                                                         <td>{new Date(data.date).toDateString()}</td>
                                                                         <td>{`${data.time} ${data.time >= "12:00" ? "PM" : "AM"}`}</td>
                                                                         <td>{`${data.time_end} ${data.time_end >= "12:00" ? "PM" : "AM"}`}</td>
+                                                                        {
+                                                                            !data.interval ? <td>{diffInMin >= 60 ? parseInt(diffInMin / 60) + " hour" : diffInMin + ' minute'}</td> :
+                                                                                <td>{data.interval >= 60 ? parseInt(data.interval / 60) + " hour" : data.interval + ' minute'}</td>
+                                                                        }
                                                                         <td className=''>
                                                                             <button onClick={() => {
                                                                                 dispatch(singleAppointment(data))
@@ -172,6 +176,7 @@ const Appointment = () => {
                                                                                         date: data.date,
                                                                                         time: data.time,
                                                                                         time_end: data.time_end,
+
                                                                                         description: data.description,
                                                                                     }
                                                                                 ])

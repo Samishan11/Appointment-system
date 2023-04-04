@@ -41,8 +41,8 @@ const appointmentSlice = createSlice({
             state.appointment = []
             state.error = action.error.message
         })
-         // check weather the loading false here
-         builder.addCase(fetchSingleAppointment.pending, (state) => {
+        // check weather the loading false here
+        builder.addCase(fetchSingleAppointment.pending, (state) => {
             state.loading = true
         })
         // check weather the loading true here
@@ -60,6 +60,16 @@ const appointmentSlice = createSlice({
     reducers: {
         //    add appointment 
         add: (state, action) => {
+            // get the time interval for the two date in minute
+            const date = new Date(action.payload.date)
+            const dateString = date.toISOString().slice(0, 10);
+            const startTimeStr = action.payload.time;
+            const endTimeStr = action.payload.time_end;
+            const startDate = new Date(dateString+"T" + startTimeStr);
+            const endDate = new Date(dateString+"T" + endTimeStr);
+            const diffInMs = endDate.getTime() - startDate.getTime();
+            const diffInMin = Math.round(diffInMs / (1000 * 60));
+            copnst 
             const appointment = {
                 _id: action.payload._id,
                 title: action.payload.title,
@@ -67,6 +77,7 @@ const appointmentSlice = createSlice({
                 time: action.payload.time,
                 description: action.payload.description,
                 image: action.payload.image.url,
+                interval: diffInMin
             };
             toast.success("Appointment Add Sucessfully", { position: 'top-right' })
             state.appointment.push(appointment);
