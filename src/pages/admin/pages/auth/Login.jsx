@@ -9,8 +9,7 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const navigate = useNavigate()
-
+    // handel login request here
     const handleSubmit = async () => {
         try {
             const res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/login-user`, { email, password })

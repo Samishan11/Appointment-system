@@ -9,13 +9,15 @@ const Manageuser = () => {
     const [navcollapse, setNavcollapse] = useState(false);
     const user = useSelector((state) => state.user.user)
     const dispatch = useDispatch();
+
+    // 
     function onclick() {
         setNavcollapse(!navcollapse)
     }
+
     useEffect(() => {
         dispatch(fetchuser())
     }, [])
-
 
     // delete user
     const deleteUserOnClick = async (id) => {
@@ -52,7 +54,10 @@ const Manageuser = () => {
             toast.error(error.response.data.message)
         }
     }
+    
     const [img, setImg] = useState("");
+
+    // on image change 
     const onImageChange = async (e, id) => {
         setImg(e.target.files[0])
         const fd = new FormData()

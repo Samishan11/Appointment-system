@@ -10,14 +10,19 @@ const Dashboard = () => {
     const appointmentd = useSelector((state) => state.appointment)
     const booking = useSelector((state) => state.booking.booking.slice(0,8))
     const user = useSelector((state) => state.user.user)
+
+    // 
     function onclick() {
         setNavcollapse(!navcollapse)
         console.log('navcollapse');
     }
+
+    // 
     useEffect(() => {
         dispatch(fetchAppointment())
         dispatch(fetchBooking())
     }, [])
+
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
             {/* Sidebar */}

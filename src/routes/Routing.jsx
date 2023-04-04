@@ -20,13 +20,13 @@ const Routing = () => {
                 <Route exact path='/detail/:id' element={<Detail />} />
                 <Route exact path='/login' element={<Login />} />
                 <Route exact path='/register' element={<Register />} />
+                {/* protected routes here  */}
                 <Route element={<PrivetRoute />} >
                     <Route exact path='/booking' element={<Booking />} />
                     <Route exact path='/event' element={<Manageevent />} />
                     <Route exact path='/dashboard' element={<Dashboard />} />
                     <Route exact path='/appointment' element={<Appointment />} />
                     <Route exact path='/manageuser' element={<Manageuser />} />
-
                 </Route>
             </Routes>
             <ToastContainer />

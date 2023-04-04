@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
 const initialState = {
     loading: false,
     appointment: [],
@@ -13,12 +14,14 @@ export const fetchAppointment = createAsyncThunk('appointment/fetchAppointment',
     const response = await axios.get(`${import.meta.env.VITE_PROXY_URI}/appointment/get`);
     return response.data.data
 })
+
 // fetching single api 
 export const fetchSingleAppointment = createAsyncThunk('appointment/fetchSingleAppointment', async (id) => {
     var response = await axios.get(`${import.meta.env.VITE_PROXY_URI}/appointment/${id}`);
     return response.data.data
 })
 
+// get the time interval
 export const getInterval = (a) => {
     const date = new Date(a.date)
     const dateString = date.toISOString().slice(0, 10);
@@ -105,7 +108,8 @@ const appointmentSlice = createSlice({
                         val.date = action.payload[0].date,
                         val.time = action.payload[0].time,
                         val.description = action.payload[0].description,
-                        val.image = action.payload.image
+                        val.image = action.payload.image,
+                        val.interval = getInterval(action.payload)
                 }
             })
         },

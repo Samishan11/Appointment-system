@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import img from "../../../../assets/hr.jpg"
 const Register = () => {
     const navigate = useNavigate();
+    
     // forms
     const [form, setForm] = useState({
         username: "",
@@ -18,6 +19,8 @@ const Register = () => {
     const onChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
+
+    // handel register user 
     const handleSubmit = async () => {
         try {
             const res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/register-user`, form)

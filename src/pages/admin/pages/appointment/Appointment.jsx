@@ -28,6 +28,7 @@ const Appointment = () => {
             time_end: ""
         }
     ])
+
     // dynamic form control 
     const [inputFieldsUpdate, setInputFieldsUpdate] = useState([
         {
@@ -39,6 +40,7 @@ const Appointment = () => {
             time_end: ""
         }
     ])
+
     // image hook 
     const [image, setImage] = useState(null);
 
@@ -48,12 +50,15 @@ const Appointment = () => {
         data[index][event.target.name] = event.target.value;
         setInputFields(data);
     }
+
+    // handel form on change 
     const handleFormChangeUpdate = (index, event) => {
         let data = [...inputFieldsUpdate];
         data[index][event.target.name] = event.target.value
         setInputFieldsUpdate(data);
 
     }
+
     const [loading, setLoading] = useState(false);
     // submit form 
     const submitForm = async (e) => {
@@ -89,6 +94,8 @@ const Appointment = () => {
             toast.error(error.response.data.message)
         }
     }
+
+    // update appointment 
     const updateAppoint = async (e) => {
         e.preventDefault();
         try {
@@ -106,19 +113,7 @@ const Appointment = () => {
             toast.error(error.response.data.message)
         }
     }
-    // get time interval
-    // const getInterval = (a) => {
-    //     const date = new Date(a.date)
-    //     const dateString = date.toISOString().slice(0, 10);
-    //     const startTimeStr = a.time;
-    //     const endTimeStr = a.time_end;
-    //     const startDate = new Date(dateString + "T" + startTimeStr);
-    //     const endDate = new Date(dateString + "T" + endTimeStr);
-    //     const diffInMs = endDate.getTime() - startDate.getTime();
-    //     const diffInMin = Math.round(diffInMs / (1000 * 60));
-    //     const finalInterval =  diffInMin >= 60 ? parseInt(diffInMin/60) + " hour" : diffInMin+" minute"
-    //     return finalInterval;
-    // }
+
 
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
@@ -161,24 +156,18 @@ const Appointment = () => {
                                                     {
                                                         appointmentd.appointment ?
                                                             appointmentd.appointment.map((data, ind) => {
-                                                                
-                                                            //    console.log( getInterval(data))
                                                                 return (
                                                                     <tr key={ind + 1}>
                                                                         <td>{data.title}</td>
                                                                         {
-
                                                                             <td key={ind + 1}><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
-                                                                            //  :
-                                                                            // <td><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
-
                                                                         }
                                                                         <td>{new Date(data.date).toDateString()}</td>
                                                                         <td>{`${data.time} ${data.time >= "12:00" ? "PM" : "AM"}`}</td>
                                                                         <td>{`${data.time_end} ${data.time_end >= "12:00" ? "PM" : "AM"}`}</td>
                                                                         {
-                                                                            !data.interval ? <td>{ getInterval(data)}</td> :
-                                                                                <td>{data.interval >= 60 ? parseInt(data.interval / 60)  : data.interval }</td>
+                                                                            !data.interval ? <td>{getInterval(data)}</td> :
+                                                                                <td>{data.interval >= 60 ? parseInt(data.interval / 60) : data.interval}</td>
                                                                         }
                                                                         <td className=''>
                                                                             <button onClick={() => {

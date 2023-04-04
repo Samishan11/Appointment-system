@@ -10,7 +10,10 @@ const Manageevent = () => {
     useEffect(() => {
         dispatch(fetchAppointment())
     }, [])
+    
     const [navcollapse, setNavcollapse] = useState(false);
+
+    // 
     function onclick() {
         setNavcollapse(!navcollapse)
     }
@@ -43,12 +46,7 @@ const Manageevent = () => {
         data[index][event.target.name] = event.target.value;
         setInputFields(data);
     }
-    const handleFormChangeUpdate = (index, event) => {
-        let data = [...inputFieldsUpdate];
-        data[index][event.target.name] = event.target.value
-        setInputFieldsUpdate(data);
 
-    }
 
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">

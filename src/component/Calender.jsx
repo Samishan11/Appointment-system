@@ -3,21 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-// import $ from "jquery"
-//Bootstrap libraries
 import * as bootstrap from "bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { TimePicker } from 'react-ios-time-picker';
 import { useDispatch } from "react-redux";
-// import { updateAppointment } from "../redux/reducer/slice/appointmentSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 const Calender = ({ events, selectable, editable }) => {
-    const dispatch = useDispatch();
-    const [date, setDate] = React.useState(
-        new Date()
-    );
-
 
     const [formData, setFormData] = React.useState({
         title: "",
@@ -27,6 +19,7 @@ const Calender = ({ events, selectable, editable }) => {
     // set time
     const [value, onChange] = React.useState('10:00');
 
+    // update the event 
     const updateEvent = async (id, date) => {
         try {
 

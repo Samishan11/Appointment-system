@@ -1,16 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+
+// declaring initial state here 
 const initialState = {
     loading: false,
     user: [],
     error: ""
 }
 
+// fetcing user data here 
 export const fetchuser = createAsyncThunk('user/fetchuser', async () => {
     var res = await axios.get(`${import.meta.env.VITE_PROXY_URI}/get-user`)
     return res.data.data;
 })
 
+// user slice 
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -33,6 +37,7 @@ const userSlice = createSlice({
         })
     },
     reducers: {
+        // add user 
         adduser: (state, action) => {
             console.log(action.payload)
             const user = {
@@ -43,6 +48,7 @@ const userSlice = createSlice({
             };
             state.user.push(user);
         },
+        // update user 
         updateUser: (state, action) => {
             console.log(action.payload)
             state.user.map((val) => {
@@ -54,11 +60,13 @@ const userSlice = createSlice({
                 }
             })
         },
+        // delete user 
         deleteuser: (state, action) => {
             state.user = state.user.filter((val) => val._id !== action.payload);
         }
     }
 })
+
 export const { user, updateUser, deleteuser } = userSlice.actions;
 
 export default userSlice.reducer;

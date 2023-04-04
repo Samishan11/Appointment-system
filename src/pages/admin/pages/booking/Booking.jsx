@@ -5,13 +5,17 @@ import axios from 'axios';
 import Loading from '../../component/loading';
 import { deleteBooking, fetchBooking, updateBooking } from '../../../../redux/reducer/slice/bookingSlice';
 const Booking = () => {
-
+    
+    const dispatch = useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
     const booking = useSelector((state) => state.booking.booking)
-    const dispatch = useDispatch();
+
+    // 
     function onclick() {
         setNavcollapse(!navcollapse)
     }
+
+    // 
     useEffect(() => {
         dispatch(fetchBooking())
     }, [])
@@ -19,7 +23,7 @@ const Booking = () => {
     // status input field
     const [status, setStatus] = useState("")
 
-    // oninput change
+    // handel input change
     const onInputChange = (e, id) => {
         setStatus(e.target.value)
         const updateAppointment = async () => {
@@ -34,7 +38,6 @@ const Booking = () => {
         }
         updateAppointment()
     }
-
 
     // delete Booking 
     const _deleteBooking = async (id) => {

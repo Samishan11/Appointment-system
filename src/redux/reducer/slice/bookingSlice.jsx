@@ -1,17 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
+
+// declearing initial state here
 const initialState = {
     loading: false,
     booking: [],
     error: ""
 }
 
+// fetching boooking 
 export const fetchBooking = createAsyncThunk('booking/fetchBooking', async () => {
     var res = await axios.get(`${import.meta.env.VITE_PROXY_URI}/booking/get`)
     return res.data.data;
 })
 
+// booking slice 
 const bookingSlice = createSlice({
     name: 'booking',
     initialState,
