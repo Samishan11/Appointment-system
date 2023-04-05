@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { enGB } from 'date-fns/locale'
 import { DatePicker } from 'react-nice-dates'
 import 'react-nice-dates/build/style.css';
-import { TimePicker } from 'react-ios-time-picker';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../../admin/component/loading';
@@ -14,25 +13,34 @@ import { toast } from 'react-toastify';
 const Detail = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
-    
+
     // 
     useEffect(() => {
         dispatch(fetchSingleAppointment(id))
     }, [])
-    
+
+
     const appointmentData = useSelector(state => state.appointment.singleAppointment)
+    const appointment = useSelector(state => state.appointment)
+
+    const [value, onChange] = useState(appointmentData.time);
 
     // handel input  
     const [formData, setFormdata] = useState({
         username: '',
         email: '',
-        date: appointmentData?.date ? new Date( appointmentData?.date) : new Date(),
-        time: appointmentData?.time ? appointmentData?.time : "10:00 AM",
+        date: appointmentData?.date ? new Date(appointmentData?.date) : new Date(),
+        time: value,
         appointment: id
     })
 
     // 
-    const [value, onChange] = useState('10:00');
+    useEffect(() => {
+        setFormdata({
+            time: appointmentData.time ? appointmentData.time : "00:00",
+            date: appointmentData.date ? new Date(appointmentData?.date) : new Date()
+        })
+    }, [appointmentData])
 
     // handel form 
     const formChange = (e) => {
@@ -43,9 +51,9 @@ const Detail = () => {
     const booking = async () => {
         try {
             var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-            if(!formData.username || !formData.email){
+            if (!formData.username || !formData.email) {
                 toast.error("Fill All The Fields!!")
-            }else{
+            } else {
                 if (formData.email.match(validRegex)) {
                     var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/booking`, formData)
                     dispatch(addBooking(res.data.data))
@@ -63,7 +71,6 @@ const Detail = () => {
             <div className="container">
                 {
                     appointmentData ?
-
                         <div className="row mt-5">
                             <div className="col-md-7 m-0 p-0 mx-auto">
                                 <div className="top rounded border">
@@ -144,7 +151,7 @@ const Detail = () => {
                                             </div>
                                             <div className="form mt-4">
                                                 <div class="input-group date" data-provide="datepicker">
-                                                    <TimePicker disabled onChange={onChange} value={formData.time} />
+                                                    <input className='form-control' disabled type='time' value={formData.time} />
                                                     <i style={{ position: "absolute", right: '5%', top: "25%" }} className='fa-solid fa-clock'></i>
                                                 </div>
                                             </div>
