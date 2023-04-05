@@ -121,7 +121,7 @@ const Booking = () => {
                                                                             </select>
                                                                         </td>
                                                                         <td className='d-flex'>
-                                                                            <button onClick={() => zoom(data.email)} style={{ width: "" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-video'></i> </button>
+                                                                            <button onClick={() => zoom(data.email)} style={{ width: "" }} className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-video'></i> </button>
                                                                             <button onClick={() => _deleteBooking(data._id)} style={{ width: "" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
                                                                         </td>
                                                                     </tr>
