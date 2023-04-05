@@ -4,6 +4,7 @@ import Sidenav from '../../component/Sidenav';
 import axios from 'axios';
 import Loading from '../../component/loading';
 import { deleteBooking, fetchBooking, updateBooking } from '../../../../redux/reducer/slice/bookingSlice';
+import { toast } from 'react-toastify';
 const Booking = () => {
     
     const dispatch = useDispatch();
@@ -56,8 +57,11 @@ const Booking = () => {
             var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/create-zoomlink`,{
                 email
             })
-            console.log(res)
+            if(res.data.success){
+                toast.success("Link has been created")
+            }
         } catch (error) {
+            toast.error(error.response.data.message)
             console.log(error)
         }
     }
