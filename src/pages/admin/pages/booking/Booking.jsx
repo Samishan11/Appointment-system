@@ -50,6 +50,18 @@ const Booking = () => {
         }
     }
 
+
+    const zoom = async(email) => {
+        try {
+            var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/create-zoomlink`,{
+                email
+            })
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
             {/* Sidebar */}
@@ -104,8 +116,9 @@ const Booking = () => {
                                                                                 {data.state !== 'pospond' && <option value="pospond">POSPOND</option>}
                                                                             </select>
                                                                         </td>
-                                                                        <td className=''>
-                                                                            <button onClick={() => _deleteBooking(data._id)} style={{ width: "50px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
+                                                                        <td className='d-flex'>
+                                                                            <button onClick={() => zoom(data.email)} style={{ width: "" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-video'></i> </button>
+                                                                            <button onClick={() => _deleteBooking(data._id)} style={{ width: "" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
                                                                         </td>
                                                                     </tr>
                                                                 );
@@ -119,6 +132,7 @@ const Booking = () => {
                                 }
                             </div>
                         </div>
+                        <button onClick={zoom}>zoom</button>
                     </div>
                 </div>
             </div>

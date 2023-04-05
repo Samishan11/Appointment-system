@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 const Calender = ({ events, selectable, editable }) => {
-console.log(events)
     const [formData, setFormData] = React.useState({
         title: "",
         description: "",
@@ -77,6 +76,7 @@ console.log(events)
                 eventColor={"#" + Math.floor(Math.random() * 16777215).toString(16)}
                 // mapping the events and showing as popup omn hover 
                 eventDidMount={(info) => {
+                    console.log(info)
                     return new bootstrap.Popover(info.el, {
                         title: `<p id="titleLink">${info.event.title}</p>`,
                         // placement: "auto",
