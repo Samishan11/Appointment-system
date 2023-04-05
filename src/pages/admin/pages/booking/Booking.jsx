@@ -6,7 +6,7 @@ import Loading from '../../component/loading';
 import { deleteBooking, fetchBooking, updateBooking } from '../../../../redux/reducer/slice/bookingSlice';
 import { toast } from 'react-toastify';
 const Booking = () => {
-    
+
     const dispatch = useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
     const booking = useSelector((state) => state.booking.booking)
@@ -52,12 +52,12 @@ const Booking = () => {
     }
 
 
-    const zoom = async(email) => {
+    const zoom = async (email) => {
         try {
-            var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/create-zoomlink`,{
+            var res = await axios.post(`${import.meta.env.VITE_PROXY_URI}/create-zoomlink`, {
                 email
             })
-            if(res.data.success){
+            if (res.data.success) {
                 toast.success("Link has been created")
             }
         } catch (error) {
@@ -136,7 +136,6 @@ const Booking = () => {
                                 }
                             </div>
                         </div>
-                        <button onClick={zoom}>zoom</button>
                     </div>
                 </div>
             </div>
