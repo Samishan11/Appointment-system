@@ -75,14 +75,15 @@ const appointmentSlice = createSlice({
     reducers: {
         //    add appointment 
         add: (state, action) => {
-           
+           console.log(action.payload)
             const appointment = {
                 _id: action.payload._id,
                 title: action.payload.title,
                 date: action.payload.date,
                 time: action.payload.time,
+                time_end: action.payload.time_end,
                 description: action.payload.description,
-                image: action.payload.image.url,
+                image: action.payload.image,
                 interval: getInterval(action.payload)
             };
             toast.success("Appointment Add Sucessfully", { position: 'top-right' })

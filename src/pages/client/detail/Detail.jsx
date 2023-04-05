@@ -21,7 +21,6 @@ const Detail = () => {
 
 
     const appointmentData = useSelector(state => state.appointment.singleAppointment)
-    const appointment = useSelector(state => state.appointment)
 
     const [value, onChange] = useState(appointmentData.time);
 
@@ -80,8 +79,8 @@ const Detail = () => {
                                         </div>
                                         <div className="col-md-8 px-4 bg-light pt-3">
                                             <div className="info">
-                                                <h5 className='fw-bold' style={{ color: "#005963" }}>{appointmentData?.title}</h5>
-                                                <h6 className="fw-bold mt-3" style={{ color: "#005950" }}>DENTIST</h6>
+                                                <h5 className='fw-bold' style={{ color: "#005963" }}>{appointmentData?.doctor}</h5>
+                                                <h6 className="fw-bold mt-3" style={{ color: "#005950" }}>{appointmentData.title}</h6>
                                             </div>
                                             <div className="links mt-2">
                                                 <div className="link">

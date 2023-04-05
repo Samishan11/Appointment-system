@@ -9,6 +9,7 @@ const Appointment = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
     const appointmentd = useSelector((state) => state.appointment)
+    console.log(appointmentd.appointment)
     const singleAppointmentData = useSelector((state) => state.appointment.singleAppointment)
     const dispatch = useDispatch();
     function onclick() {
@@ -37,7 +38,12 @@ const Appointment = () => {
             description: "",
             date: "",
             time: "",
-            time_end: ""
+            time_end: "",
+            doctor: "",
+            contact: "",
+            location: "",
+            email: "",
+            subspecialities: "",
         }
     ])
 
@@ -72,6 +78,7 @@ const Appointment = () => {
             formdata.append("time", inputFields[0].time)
             formdata.append("time_end", inputFields[0].time_end)
             var response = await axios.post(`${import.meta.env.VITE_PROXY_URI}/appointment/add`, formdata)
+            console.log(response.data)
             if (response.data.success) {
                 setLoading(false)
             } else {
@@ -221,10 +228,17 @@ const Appointment = () => {
                                                         <>
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">Title</label>
+                                                                    <label htmlFor="exampleInputEmail1">Appointment Title</label>
                                                                     <input onChange={event => handleFormChange(ind, event)} name='title' value={input.title} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
                                                                 </div>
                                                             </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Doctor Name</label>
+                                                                    <input onChange={event => handleFormChange(ind, event)} name='doctor' value={input.doctor} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                </div>
+                                                            </div>
+
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="exampleInputEmail1">Image</label>
@@ -253,6 +267,12 @@ const Appointment = () => {
                                                                 <div className="form-group">
                                                                     <label htmlFor="exampleInputEmail1">Description</label>
                                                                     <textarea onChange={event => handleFormChange(ind, event)} name='description' type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description here" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Subspecialities</label>
+                                                                    <textarea onChange={event => handleFormChange(ind, event)} name='subspecialities' type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description here" />
                                                                 </div>
                                                             </div>
                                                         </>
