@@ -23,10 +23,10 @@ export const fetchSingleAppointment = createAsyncThunk('appointment/fetchSingleA
 
 // get the time interval
 export const getInterval = (data) => {
-    const date = new Date(a.date)
+    const date = new Date(data.date)
     const dateString = date.toISOString().slice(0, 10);
-    const startTimeStr = a.time;
-    const endTimeStr = a.time_end;
+    const startTimeStr = data.time;
+    const endTimeStr = data.time_end;
     const startDate = new Date(dateString + "T" + startTimeStr);
     const endDate = new Date(dateString + "T" + endTimeStr);
     const diffInMs = endDate.getTime() - startDate.getTime();
