@@ -118,17 +118,18 @@ const Appointment = () => {
             const formdata = new FormData();
             formdata.append("image", image)
             formdata.append("title", inputFieldsUpdate[0].title)
-            formdata.append("doctor", inputFieldsUpdate[0].description)
+            formdata.append("doctor", inputFieldsUpdate[0].doctor)
             formdata.append("description", inputFieldsUpdate[0].description)
             formdata.append("subspecialities", inputFieldsUpdate[0].subspecialities)
             formdata.append("date", inputFieldsUpdate[0].date)
             formdata.append("time", inputFieldsUpdate[0].time)
             formdata.append("time_end", inputFieldsUpdate[0].time_end)
-            dispatch(updateAppointment(inputFieldsUpdate, image))
             var res = await axios.put(`${import.meta.env.VITE_PROXY_URI}/appointment/update/${inputFieldsUpdate[0]._id}`, formdata)
+            dispatch(updateAppointment(res.data))
             toast.success(res.data.message)
         } catch (error) {
-            toast.error(error.response.data.message)
+            console.log(error)
+            // toast.error(error.response.data.message)
         }
     }
 
@@ -197,8 +198,9 @@ const Appointment = () => {
                                                                                         date: data.date,
                                                                                         time: data.time,
                                                                                         time_end: data.time_end,
-
+                                                                                        doctor: data.doctor,
                                                                                         description: data.description,
+                                                                                        subspecialities: data.subspecialities,
                                                                                     }
                                                                                 ])
                                                                             }} style={{ width: "30px" }} data-bs-toggle="modal" data-bs-target="#updatemodal" className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
@@ -327,8 +329,14 @@ const Appointment = () => {
                                                         <>
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
-                                                                    <label htmlFor="exampleInputEmail1">{input.title}</label>
+                                                                    <label htmlFor="exampleInputEmail1">Appointment Title</label>
                                                                     <input onChange={event => handleFormChangeUpdate(ind, event)} name='title' value={inputFieldsUpdate[0]?.title} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={singleAppointmentData.title} />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Doctor Name</label>
+                                                                    <input onChange={event => handleFormChangeUpdate(ind, event)} name='doctor' value={inputFieldsUpdate[0]?.doctor} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={singleAppointmentData.doctor} />
                                                                 </div>
                                                             </div>
                                                             <div className="col-12 col-md-12 my-2">
@@ -359,6 +367,12 @@ const Appointment = () => {
                                                                 <div className="form-group">
                                                                     <label htmlFor="exampleInputEmail1">Description</label>
                                                                     <textarea onChange={event => handleFormChangeUpdate(ind, event)} name='description' value={inputFieldsUpdate[0]?.description} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description here" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-12 col-md-12 my-2">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="exampleInputEmail1">Subspecialities</label>
+                                                                    <textarea onChange={event => handleFormChangeUpdate(ind, event)} name='subspecialities' value={inputFieldsUpdate[0]?.subspecialities} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter description here" />
                                                                 </div>
                                                             </div>
                                                         </>

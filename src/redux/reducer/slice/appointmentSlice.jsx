@@ -22,7 +22,7 @@ export const fetchSingleAppointment = createAsyncThunk('appointment/fetchSingleA
 })
 
 // get the time interval
-export const getInterval = (a) => {
+export const getInterval = (data) => {
     const date = new Date(a.date)
     const dateString = date.toISOString().slice(0, 10);
     const startTimeStr = a.time;
@@ -31,7 +31,7 @@ export const getInterval = (a) => {
     const endDate = new Date(dateString + "T" + endTimeStr);
     const diffInMs = endDate.getTime() - startDate.getTime();
     const diffInMin = Math.round(diffInMs / (1000 * 60));
-    const finalInterval =  diffInMin >= 60 ? parseInt(diffInMin/60) + " hour" : diffInMin+" minute"
+    const finalInterval = diffInMin >= 60 ? parseInt(diffInMin / 60) + " hour" : diffInMin + " minute"
     return finalInterval;
 }
 
@@ -75,7 +75,7 @@ const appointmentSlice = createSlice({
     reducers: {
         //    add appointment 
         add: (state, action) => {
-           console.log(action.payload)
+            console.log(action.payload)
             const appointment = {
                 _id: action.payload._id,
                 title: action.payload.title,
@@ -104,11 +104,11 @@ const appointmentSlice = createSlice({
         // update an appointment
         updateAppointment: (state, action) => {
             state.appointment.map((val) => {
-                if (val._id === action.payload[0]._id) {
-                    val.title = action.payload[0].title,
-                        val.date = action.payload[0].date,
-                        val.time = action.payload[0].time,
-                        val.description = action.payload[0].description,
+                if (val._id === action.payload._id) {
+                    val.title = action.payload.title,
+                        val.date = action.payload.date,
+                        val.time = action.payload.time,
+                        val.description = action.payload.description,
                         val.image = action.payload.image,
                         val.interval = getInterval(action.payload)
                 }
