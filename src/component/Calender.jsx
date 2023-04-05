@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 const Calender = ({ events, selectable, editable }) => {
-
+console.log(events)
     const [formData, setFormData] = React.useState({
         title: "",
         description: "",
@@ -22,16 +22,15 @@ const Calender = ({ events, selectable, editable }) => {
     // update the event 
     const updateEvent = async (id, date) => {
         try {
-
             // get the year month and date from the full date 
             const date_ = new Date(date);
             function padTo2Digits(num) {
                 return num.toString().padStart(2, '0');
             }
-            const year = date_.getFullYear();
-            const month = padTo2Digits(date_.getMonth() + 1);
-            const day = padTo2Digits(date_.getDate());
-            const newdate = [year, month, day].join('-');
+            const year = date_.getFullYear(); // get year
+            const month = padTo2Digits(date_.getMonth() + 1); //get month 
+            const day = padTo2Digits(date_.getDate()); // get day 
+            const newdate = [year, month, day].join('-'); // joining day month and year eg: 2023-04-5
             // fetching api here 
             var res = await axios.put(`${import.meta.env.VITE_PROXY_URI}/appointment/update/${id}`, { date: newdate })
             toast.success(res.data.message)
