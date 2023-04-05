@@ -99,11 +99,11 @@ const Detail = () => {
                                     </div>
                                 </div>
                                 <div className="overview mt-5 mx-auto px-2">
-                                    <p className='h4 fw-bold mb-4' style={{ color: '#005963' }}>Overview Of {appointmentData?.doctor}</p>
+                                    <p className='h4 fw-bold mb-2' style={{ color: '#005963' }}>Overview Of {appointmentData?.doctor}</p>
                                     <p className='text-dark' style={{ fontSize: '1rem' }}>{appointmentData?.description}</p>
                                 </div>
                                 <div className="overview mt-5 mx-auto px-2">
-                                    <p className='h4 fw-bold mb-4' style={{ color: '#005963' }}>Subspecialities</p>
+                                    <p className='h4 fw-bold mb-2' style={{ color: '#005963' }}>Subspecialities</p>
                                     <p className='text-dark' style={{ fontSize: '1rem' }}>{appointmentData?.subspecialities}</p>
                                 </div>
                             </div>
