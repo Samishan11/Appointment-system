@@ -26,7 +26,12 @@ const Appointment = () => {
             description: "",
             date: "",
             time: "",
-            time_end: ""
+            time_end: "",
+            doctor: "",
+            contact: "",
+            location: "",
+            email: "",
+            subspecialities: "",
         }
     ])
 
@@ -55,6 +60,8 @@ const Appointment = () => {
         let data = [...inputFields];
         data[index][event.target.name] = event.target.value;
         setInputFields(data);
+        console.log( data)
+
     }
 
     // handel form on change 
@@ -77,6 +84,8 @@ const Appointment = () => {
             formdata.append("date", inputFields[0].date)
             formdata.append("time", inputFields[0].time)
             formdata.append("time_end", inputFields[0].time_end)
+            formdata.append("doctor", inputFields[0].doctor)
+            formdata.append("subspecialities", inputFields[0].subspecialities)
             var response = await axios.post(`${import.meta.env.VITE_PROXY_URI}/appointment/add`, formdata)
             console.log(response.data)
             if (response.data.success) {
@@ -109,7 +118,9 @@ const Appointment = () => {
             const formdata = new FormData();
             formdata.append("image", image)
             formdata.append("title", inputFieldsUpdate[0].title)
+            formdata.append("doctor", inputFieldsUpdate[0].description)
             formdata.append("description", inputFieldsUpdate[0].description)
+            formdata.append("subspecialities", inputFieldsUpdate[0].subspecialities)
             formdata.append("date", inputFieldsUpdate[0].date)
             formdata.append("time", inputFieldsUpdate[0].time)
             formdata.append("time_end", inputFieldsUpdate[0].time_end)
@@ -229,13 +240,13 @@ const Appointment = () => {
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="exampleInputEmail1">Appointment Title</label>
-                                                                    <input onChange={event => handleFormChange(ind, event)} name='title' value={input.title} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                    <input onChange={event => handleFormChange(ind, event)} name='title' type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
                                                                 </div>
                                                             </div>
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="exampleInputEmail1">Doctor Name</label>
-                                                                    <input onChange={event => handleFormChange(ind, event)} name='doctor' value={input.doctor} type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                    <input onChange={event => handleFormChange(ind, event)} name='doctor'  type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
                                                                 </div>
                                                             </div>
 
