@@ -239,3 +239,8 @@
   #layoutAuthentication {
       background: #000;
   }
+
+  /* toast */
+.Toastify__toast-body{
+    width: 100% !important;
+}

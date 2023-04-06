@@ -81,6 +81,7 @@ const appointmentSlice = createSlice({
                 title: action.payload.title,
                 date: action.payload.date,
                 time: action.payload.time,
+                doctor: action.payload.doctor,
                 time_end: action.payload.time_end,
                 description: action.payload.description,
                 image: action.payload.image,
@@ -104,13 +105,15 @@ const appointmentSlice = createSlice({
         // update an appointment
         updateAppointment: (state, action) => {
             state.appointment.map((val) => {
-                if (val._id === action.payload._id) {
-                    val.title = action.payload.title,
-                        val.date = action.payload.date,
-                        val.time = action.payload.time,
-                        val.description = action.payload.description,
-                        val.image = action.payload.image,
-                        val.interval = getInterval(action.payload)
+                if (val._id === action.payload.data._id) {
+                    val.title = action.payload.data.title,
+                        val.date = action.payload.data.date,
+                        val.time = action.payload.data.time,
+                        val.doctor = action.payload.data.doctor,
+                        val.time_end = action.payload.data.time_end,
+                        val.description = action.payload.data.description,
+                        val.image = action.payload.data.image,
+                        val.interval = getInterval(action.payload.data)
                 }
             })
         },

@@ -5,18 +5,20 @@ import { add, deleteAppointment, fetchAppointment, getInterval, singleAppointmen
 import axios from 'axios';
 import Loading from '../../component/loading';
 import { toast } from 'react-toastify';
+import { fetchuser } from '../../../../redux/reducer/slice/userSlice';
 const Appointment = () => {
 
     const [navcollapse, setNavcollapse] = useState(false);
     const appointmentd = useSelector((state) => state.appointment)
-    console.log(appointmentd.appointment)
     const singleAppointmentData = useSelector((state) => state.appointment.singleAppointment)
+    const user = useSelector((state) => state.user.user)
     const dispatch = useDispatch();
     function onclick() {
         setNavcollapse(!navcollapse)
     }
     useEffect(() => {
         dispatch(fetchAppointment())
+        dispatch(fetchuser())
     }, [])
 
     // dynamic form control 
@@ -53,14 +55,15 @@ const Appointment = () => {
     ])
 
     // image hook 
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState([]);
 
     // input handel event on input change 
     const handleFormChange = (index, event) => {
         let data = [...inputFields];
         data[index][event.target.name] = event.target.value;
         setInputFields(data);
-        console.log( data)
+        searchDoctor(inputFields[0].doctor)
+        // console.log(inputFields[0].doctor)
 
     }
 
@@ -150,7 +153,7 @@ const Appointment = () => {
                 </nav>
                 {/* appointment table  */}
                 <div className=" mx-auto">
-                    <div className="container">
+                    <div className="container-fluid">
                         <div className="row">
                             <div className="col-6 col-md-4 col-lg-3"><button data-bs-toggle="modal" data-bs-target="#exampleModal" className='btn btn-outline-primary my-2'>Add Appointment</button></div>
                             <div className='mt-5'>
@@ -163,6 +166,7 @@ const Appointment = () => {
                                                 <thead className='text-secondary'>
                                                     <tr className=''>
                                                         <th scope="col">Title</th>
+                                                        <th scope="col">Doctor</th>
                                                         <th scope="col">Image</th>
                                                         <th scope="col">Date</th>
                                                         <th scope="col">Time Start</th>
@@ -178,6 +182,7 @@ const Appointment = () => {
                                                                 return (
                                                                     <tr key={ind + 1}>
                                                                         <td>{data.title}</td>
+                                                                        <td>{data.doctor}</td>
                                                                         {
                                                                             <td key={ind + 1}><img className='avatar_sm' src={data?.image?.url} alt="image" /></td>
                                                                         }
@@ -248,7 +253,8 @@ const Appointment = () => {
                                                             <div className="col-12 col-md-12 my-2">
                                                                 <div className="form-group">
                                                                     <label htmlFor="exampleInputEmail1">Doctor Name</label>
-                                                                    <input onChange={event => handleFormChange(ind, event)} name='doctor'  type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                    <input onChange={event => handleFormChange(ind, event)} name='doctor' type="text" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title here" />
+                                                                   
                                                                 </div>
                                                             </div>
 

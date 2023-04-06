@@ -11,16 +11,15 @@ const Home = () => {
             return data
         }
     })
+
     useEffect(() => {
         dispatch(fetchAppointment())
     }, [])
 
     return (
-        <div className='container-fluid'>
-            <div className="container">
-                <div className="event_calendar ">
-                    <Calender events={filterAppointment} />
-                </div>
+        <div className='container-fluid px-5'>
+            <div className="event_calendar ">
+                <Calender events={filterAppointment} />
             </div>
         </div>
     )

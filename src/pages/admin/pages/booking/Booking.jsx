@@ -82,7 +82,7 @@ const Booking = () => {
                 </nav>
                 {/* Booking table  */}
                 <div className=" mx-auto">
-                    <div className="container">
+                    <div className="container-fluid">
                         <div className="row">
                             <div className='mt-5'>
                                 <h6 className='fw-light'>RECENT BOOKING</h6>

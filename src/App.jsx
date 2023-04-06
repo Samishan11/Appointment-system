@@ -21,7 +21,7 @@ function App() {
         theme="light"
       />
       {/* Same as */}
-      <ToastContainer />
+      <ToastContainer style={{textAlign:"justify"}} />
     </Provider>
   )
 }

@@ -19,6 +19,9 @@ const Login = () => {
                     localStorage.setItem("token", res.data.token)
                     window.location = "/dashboard"
 
+                }else if(res.data.isDoctor){
+                    localStorage.setItem("token", res.data.token)
+                    window.location = "/doctor" 
                 }
                 toast.success("User LoggedIn")
             }

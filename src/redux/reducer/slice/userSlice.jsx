@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 // declaring initial state here 
 const initialState = {
@@ -39,13 +40,15 @@ const userSlice = createSlice({
     reducers: {
         // add user 
         adduser: (state, action) => {
-            console.log(action.payload)
             const user = {
                 _id: action.payload._id,
                 username: action.payload.username,
+                isDoctor: action.payload.isDoctor,
+                isAdmin: action.payload.isAdmin,
                 email: action.payload.email,
                 password: action.payload.password
             };
+            toast.success("User Created.")
             state.user.push(user);
         },
         // update user 
@@ -59,6 +62,7 @@ const userSlice = createSlice({
                         val.password = action.payload.password
                 }
             })
+            toast.success("user Updated")
         },
         // delete user 
         deleteuser: (state, action) => {
@@ -67,6 +71,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { user, updateUser, deleteuser } = userSlice.actions;
+export const { user, updateUser, deleteuser ,adduser } = userSlice.actions;
 
 export default userSlice.reducer;

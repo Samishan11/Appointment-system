@@ -64,7 +64,7 @@ const Manageevent = () => {
                 </nav>
                 {/* Manageevent table  */}
                 <div className=" mx-auto">
-                    <div className="container">
+                    <div className="container-fluid">
                         <div className="row">
                             <div className='mt-3 px-3'>
                                 <h6>MANAGE EVENTS</h6>
