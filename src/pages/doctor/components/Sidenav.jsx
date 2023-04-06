@@ -13,7 +13,7 @@ const Sidenav = ({ tab }) => {
                 <Link id='doctor' to="/doctor" className="list-group-item list-sroup-item-action bg-transparent tab_btn text-light py-3"><i className="fas fa-tachometer-alt me-2" />DOCTOR</Link>
                 <Link id='todayappointment' to="/today-appointment" className="list-group-item list-sroup-item-action bg-transparent tab_btn text-light py-3"><i className="fa-solid fa-calendar-check me-2" />TODAY APPOINTMENT</Link>
                 <Link id='upcomingappointment' to="/upcoming-appointment" className="list-group-item list-sroup-item-action bg-transparent tab_btn text-light py-3"><i className="fa-solid fa-calendar-check me-2" />NEXT APPOINTMENT</Link>
-                <Link id='doctorappointment' to="/myappointments" className="list-group-item list-sroup-item-action bg-transparent tab_btn text-light py-3"><i className="fa-solid fa-calendar-check me-2" />APPOINTMENT</Link>
+                <Link id='doctorappointment' to="/myappointments" className="list-group-item list-sroup-item-action bg-transparent tab_btn text-light py-3"><i className="fa-solid fa-calendar-check me-2" />ALL APPOINTMENT</Link>
                 <div className="logout mt-5  ">
                     <div className="col-8 mx-auto">
                         <button onClick={() => {
