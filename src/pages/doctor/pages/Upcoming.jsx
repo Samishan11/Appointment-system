@@ -44,9 +44,6 @@ const Upcoming = () => {
             return dateA.getTime() - dateB.getTime();
         });
 
-    console.log(sortedData);
-
-
     return (
         <div className={navcollapse ? "d-flex toggled bg-light" : "d-flex bg-light toggled_non"} id="wrapper">
             {/* Sidebar */}

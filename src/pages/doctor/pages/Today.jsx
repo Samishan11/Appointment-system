@@ -9,7 +9,7 @@ const Today = () => {
     const dispatch = useDispatch();
     const [navcollapse, setNavcollapse] = useState(false);
     const appointmentd = useSelector((state) => state.appointment)
-
+    const bookings = useSelector((state) => state.booking.booking)
     // decoding the the jwt token 
     const useData = localStorage?.getItem('token') && jwtDecode(localStorage?.getItem('token'));
 
@@ -17,6 +17,15 @@ const Today = () => {
     const filterAppointment = appointmentd.appointment.filter((data) => {
         if (data.doctor.toLowerCase() === useData.username.toLowerCase()) {
             return data;
+        }
+    })
+    // filter booking by  appointment 
+    const [boookingData, setBookingData] = useState([]);
+    const filterBookings = (appointmentId) => bookings.filter((data) => {
+        if (data.appointment === appointmentId) {
+            setBookingData(data)
+            return data;
+        } else {
         }
     })
 
@@ -28,6 +37,7 @@ const Today = () => {
     // 
     useEffect(() => {
         dispatch(fetchAppointment())
+        dispatch(fetchBooking())
         dispatch(fetchBooking())
     }, [])
 
@@ -73,6 +83,7 @@ const Today = () => {
                                                     <th scope="col">DATE</th>
                                                     <th scope="col">TIME</th>
                                                     <th scope="col">DURATION</th>
+                                                    <th scope="col">VIEW BOOKINGS</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -85,7 +96,7 @@ const Today = () => {
                                                                     <td>{new Date(data.date).toDateString()}</td>
                                                                     <td>{data.time}</td>
                                                                     <td>{getInterval(data)}</td>
-
+                                                                    <td><button onClick={() => filterBookings(data._id)} data-bs-toggle="modal" data-bs-target="#exampleModal" style={{ width: "100px" }} className='btn btn-sm btn-primary'>view</button></td>
                                                                 </tr>
                                                             );
                                                         })
@@ -95,6 +106,37 @@ const Today = () => {
                                             </tbody>
                                         </table>
                                     </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-xl">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-3" id="exampleModalLabel">BOOKINGS</h1>
+                            <button type="button" className="btn-close text-danger fas fa-times" data-bs-dismiss="modal" aria-label="Close" ></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className='container  pb-5'>
+                                <div className="container bg-white d-block mx-auto">
+                                    <div className="row">
+                                        {
+                                            boookingData.length === 0 ?
+                                                <p className='d-block text-center h5 mx-auto'>No Booking found for the appointment</p>
+                                                :
+                                                bookings ?
+                                                    <></> :
+                                                    <Loading />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            {
+                                <button style={{ width: "150px" }} type="button" className="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                             }
                         </div>
                     </div>
