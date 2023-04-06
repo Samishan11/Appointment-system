@@ -57,6 +57,8 @@ const Manageuser = () => {
         username: "",
         email: "",
         password: "",
+        isAdmin: "",
+        isDoctor: "",
         checkpassword: "",
     })
 
@@ -157,7 +159,9 @@ const Manageuser = () => {
                                                                                     _id: data._id,
                                                                                     username: data.username,
                                                                                     email: data.email,
-                                                                                    password: data.password
+                                                                                    isAdmin: data.isAdmin,
+                                                                                    isDoctor: data.isDoctor,
+                                                                                    password: data.password,
                                                                                 })
                                                                             }} style={{ width: "30px" }} data-bs-toggle="modal" data-bs-target="#updatemodal" className='btn btn-sm me-1 text-primary'> <i className='fa-solid fa-pen '></i> </button>
                                                                             <button onClick={() => deleteUserOnClick(data._id)} style={{ width: "30px" }} className='btn btn-sm me-1 text-danger'> <i className='fa-solid fa-trash'></i> </button>
@@ -199,10 +203,30 @@ const Manageuser = () => {
                                         </div>
                                         <div className="col-12 col-md-12 my-2">
                                             <div className="form-group">
-                                                <label htmlFor="exampleInputEmail1">Date</label>
+                                                <label htmlFor="exampleInputEmail1">Email</label>
                                                 <input onChange={event => onChange(event)} name='email' value={form?.email} type="email" className="form-control input100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={"Enter title here"} />
                                             </div>
                                         </div>
+                                        <div className="col-12 col-md-12 my-2">
+                                                <div className="form-group">
+                                                    <label htmlFor="exampleInputEmail1">Admin</label>
+                                                    <select onChange={e => onChange(e)} name='isAdmin' className="form-select" aria-label="Default select example">
+                                                    <option selected>{form?.isAdmin ? 'True' :'False'}</option>
+                                                        <option value={true}>True</option>
+                                                        <option value={false}>False</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className="col-12 col-md-12 my-2">
+                                                <div className="form-group">
+                                                    <label htmlFor="exampleInputEmail1">Doctor</label>
+                                                    <select onChange={e => onChange(e)} name="isDoctor" className="form-select" aria-label="Default select example">
+                                                        <option selected>{form?.isDoctor ? 'True' :'False'}</option>
+                                                        <option value={true}>True</option>
+                                                        <option value={false}>False</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         <div className="col-12 col-md-12 my-2">
                                             <div className="form-group">
                                                 <label htmlFor="exampleInputEmail1">Password</label>
@@ -264,7 +288,7 @@ const Manageuser = () => {
                                             </div>
                                             <div className="col-12 col-md-12 my-2">
                                                 <div className="form-group">
-                                                    <label htmlFor="exampleInputEmail1">Docotr</label>
+                                                    <label htmlFor="exampleInputEmail1">Doctor</label>
                                                     <select onChange={e => handleFormChange(e)} name="isDoctor" className="form-select" aria-label="Default select example">
                                                         <option selected>Open this select menu</option>
                                                         <option value={true}>True</option>
