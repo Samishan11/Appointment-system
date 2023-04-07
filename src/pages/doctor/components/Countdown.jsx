@@ -3,16 +3,16 @@ import Countdown from "react-countdown";
 
 const CountdownTimer = ({ time }) => {
   // Convert the time string into a Date object
-  const countdownDate = new Date(time);
-  console.log(time);
-
+  const [hours, minutes] = time.split(":");
+  const countdownDate = new Date();
+  countdownDate.setHours(hours);
+  countdownDate.setMinutes(minutes);
   // Define the renderer function for the countdown
   const renderer = ({ days, hours, minutes, seconds }) => (
-    <div className="">
-      {/* <div>{days} days</div> */}
-      <span>{hours} hour </span>
-      <span>{minutes} minute </span>
-      <span>{seconds} second </span>
+    <div className="text-center">
+      <span>0{hours}:</span>
+      <span>{minutes}:</span>
+      <span>{seconds}</span>
     </div>
   );
 

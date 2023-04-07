@@ -8,9 +8,8 @@ import Loading from "../../admin/component/loading";
 import Sidenav from "../components/Sidenav";
 import { fetchBooking } from "../../../redux/reducer/slice/bookingSlice";
 import jwtDecode from "jwt-decode";
-import Countdown from "react-countdown";
 import CountdownTimer from "../components/Countdown";
-
+import { Link } from "react-router-dom";
 const Today = () => {
   const dispatch = useDispatch();
   const [navcollapse, setNavcollapse] = useState(false);
@@ -38,6 +37,11 @@ const Today = () => {
     setBooking(filter);
   };
 
+  // sorting booking by approved
+  var sortedBookings = boookingData.sort((a, b) =>
+    a.status === "approve" ? -1 : b.status === "approved" ? 1 : 0
+  );
+
   // navbar collaps
   function onclick() {
     setNavcollapse(!navcollapse);
@@ -50,25 +54,10 @@ const Today = () => {
     dispatch(fetchBooking());
   }, []);
 
-  // time countdown
-  const [targetTime, setTime] = useState("");
-  // Create a new date object and set the hours and minutes to the target time
-  const targetDate = new Date();
-  const [hours, minutes] = targetTime.split(":");
-  targetDate.setHours(hours);
-  targetDate.setMinutes(minutes);
-  // Define a renderer function to format and display the countdown
-  const renderer = ({ hours, minutes, seconds }) => {
-    return (
-      <div>
-        <p>
-          {hours} hours, {minutes} minutes, {seconds} seconds
-        </p>
-      </div>
-    );
-  };
+  // set appointment time to show in the countdown timer
+  const [appointmentTime, setAppointmentTime] = useState("");
 
-  // filter appointment by date and time98
+  // filter appointment by date and time
   const today = new Date().toISOString().slice(0, 10); // Get today's date in the format "yyyy-mm-dd"
   const sortedData = filterAppointment
     .filter((obj) => obj.date === today) // Filter only objects with today's date
@@ -144,7 +133,7 @@ const Today = () => {
                                 <button
                                   onClick={() => {
                                     filterBookings(data._id);
-                                    setTime(data.time);
+                                    setAppointmentTime(data.time);
                                   }}
                                   data-bs-toggle="modal"
                                   data-bs-target="#exampleModal"
@@ -214,21 +203,19 @@ const Today = () => {
                                       <tr className="">
                                         <th scope="col">USERNAME</th>
                                         <th scope="col">EMAIL</th>
-                                        <th scope="col">APPOINTMENT_NO</th>
                                         <th scope="col">BOOKED_ON</th>
                                         <th scope="col">STATUS</th>
-                                        <th scope="col">MEETING START</th>
+                                        <th scope="col">MEETING START IN</th>
                                         <th scope="col">ACTION</th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                       {boookingData
-                                        ? boookingData.map((data, ind) => {
+                                        ? sortedBookings.map((data, ind) => {
                                             return (
                                               <tr key={ind + 1}>
                                                 <td>{data.username}</td>
                                                 <td>{`${data.email}`}</td>
-                                                <td>{`${data.appointment}`}</td>
                                                 <td>
                                                   {new Date(
                                                     data.booked_on
@@ -273,20 +260,34 @@ const Today = () => {
                                                   </select>
                                                 </td>
                                                 <td>
-                                                  <CountdownTimer
-                                                    key={ind}
-                                                    time={
-                                                      "Fri Apr 07 2023 08:58:23 GMT+0000 (Coordinated Universal Time)"
-                                                    }
-                                                  />
+                                                  {data.meetingLink ? (
+                                                    <CountdownTimer
+                                                      key={ind}
+                                                      time={appointmentTime}
+                                                    />
+                                                  ) : (
+                                                    <p className="text-center">
+                                                      00:00:00
+                                                    </p>
+                                                  )}
                                                 </td>
                                                 <td className="d-flex">
-                                                  <button
-                                                    style={{ width: "" }}
-                                                    className="btn btn-sm me-1 "
-                                                  >
-                                                    <i className="fa-solid text-primary mx-2 fa-video"></i>{" "}
-                                                  </button>
+                                                  {data.meetingLink ? (
+                                                    <Link
+                                                      to={data.meetingLink}
+                                                      style={{ width: "" }}
+                                                      className="btn btn-sm me-1 "
+                                                    >
+                                                      <i className="fa-solid text-primary py-2 mx-2 fa-video"></i>{" "}
+                                                    </Link>
+                                                  ) : (
+                                                    <button
+                                                      style={{ width: "" }}
+                                                      className="btn btn-sm me-1 "
+                                                    >
+                                                      <i className="fa-solid text-danger py-2 mx-2 fa-times"></i>{" "}
+                                                    </button>
+                                                  )}
                                                 </td>
                                               </tr>
                                             );
