@@ -106,26 +106,28 @@ const Detail = () => {
                     />
                   ) : (
                     <LoadingSkeleton
+                      className={"d-block my-auto"}
                       count={1}
                       height={"250px"}
-                      width={"300px"}
+                      width={"250px"}
                     />
                   )}
                 </div>
                 <div className="col-md-8 px-4 bg-light pt-3">
                   {!filteUser ? (
-                    <LoadingSkeleton count={5} height={"20px"} />
+                    <LoadingSkeleton count={5} height={"25px"} />
                   ) : (
                     <>
                       <div className="info">
                         <h5 className="fw-bold" style={{ color: "#005963" }}>
-                          {filteUser?.username}
+                          {appointmentData?.title}
                         </h5>
                         <h6
                           className="fw-bold mt-3"
                           style={{ color: "#005950" }}
                         >
-                          {filteUser?.specialities}
+                          {filteUser?.specialities}{" "}
+                          {filteUser?.username?.toUpperCase()}
                         </h6>
                       </div>
                       <div className="links mt-2">
