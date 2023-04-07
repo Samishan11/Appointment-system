@@ -1,20 +1,20 @@
-import React from 'react'
+import React from "react";
 
 const loading = () => {
   return (
-    <div class="wave_center">
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-  </div>
-  )
-}
+    <div className="wave_center">
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+      <div className="wave"></div>
+    </div>
+  );
+};
 
-export default loading
+export default loading;
