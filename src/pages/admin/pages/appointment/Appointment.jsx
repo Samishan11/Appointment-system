@@ -458,7 +458,7 @@ const Appointment = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-12 col-md-12 my-2">
+                            {/* <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">
                                   Description
@@ -493,7 +493,7 @@ const Appointment = () => {
                                   placeholder="Enter description here"
                                 />
                               </div>
-                            </div>
+                            </div> */}
                           </>
                         );
                       })}
@@ -673,7 +673,7 @@ const Appointment = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-12 col-md-12 my-2">
+                            {/* <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">
                                   Description
@@ -710,7 +710,7 @@ const Appointment = () => {
                                   placeholder="Enter description here"
                                 />
                               </div>
-                            </div>
+                            </div> */}
                           </>
                         );
                       })}

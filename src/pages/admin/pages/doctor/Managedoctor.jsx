@@ -9,6 +9,7 @@ import {
 import Loading from "../../component/loading";
 import Sidenav from "../../component/Sidenav";
 import { toast } from "react-toastify";
+import axios from "axios";
 const Managedoctor = () => {
   const [navcollapse, setNavcollapse] = useState(false);
   const user = useSelector((state) => state.user.user);
@@ -194,7 +195,7 @@ const Managedoctor = () => {
                         {user
                           ? user.map((data, ind) => {
                               return (
-                                <tr key={ind + 1}>
+                                <tr key={ind}>
                                   <input
                                     onChange={(e) => onImageChange(e, data._id)}
                                     id="img_file"
@@ -202,32 +203,23 @@ const Managedoctor = () => {
                                     type="file"
                                   ></input>
                                   <td className="position-relative">
-                                    {data?.image?.url ? (
-                                      <img
-                                        onClick={() => {
-                                          document
-                                            .getElementById("img_file")
-                                            .click();
-                                        }}
-                                        className="avatar_sm position-relative"
-                                        src={data?.image?.url}
-                                        alt="image"
-                                      />
-                                    ) : (
-                                      <img
-                                        onClick={() => {
-                                          document
-                                            .getElementById("img_file")
-                                            .click();
-                                        }}
-                                        className="avatar_sm position-relative"
-                                        src={
-                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbwte1tJ8o6AbmlhUPzJicUculax6L7TCHMG5i0Frw9SPevTpAfDuZLoC85zAiz27cpks&usqp=CAU"
-                                        }
-                                        alt="image"
-                                      />
-                                    )}
+                                    <img
+                                      className="avatar_sm position-relative"
+                                      src={
+                                        data?.image?.url
+                                          ? data?.image?.url
+                                          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbwte1tJ8o6AbmlhUPzJicUculax6L7TCHMG5i0Frw9SPevTpAfDuZLoC85zAiz27cpks&usqp=CAU"
+                                      }
+                                      alt="image"
+                                    />
+
                                     <i
+                                      onClick={() => {
+                                        console.log(data._id);
+                                        document
+                                          .getElementById("img_file")
+                                          .click();
+                                      }}
                                       style={{ right: "45%", top: "50%" }}
                                       className="fa-solid fa-camera text-primary position-absolute"
                                     ></i>
