@@ -19,15 +19,21 @@ const Doctor = () => {
     localStorage?.getItem("token") && jwtDecode(localStorage?.getItem("token"));
 
   // filter appointment
-  const filterAppointment = appointmentd.appointment.filter((data) => {
-    console.log(data.doctor.toLowerCase() === useData.username.toLowerCase());
-    if (data.doctor.toLowerCase() === useData.username.toLowerCase()) {
-      return data;
-    }
-  });
+  const [filterAppointment, setFilterAppointment] = useState([]);
+  useEffect(() => {
+    const filterAppointment = appointmentd.appointment.filter((data) => {
+      if (
+        data.doctor.toLowerCase().replace(/\s/g, "") ===
+        useData.username.toLowerCase().replace(/\s/g, "")
+      ) {
+        return data;
+      }
+    });
+    setFilterAppointment(filterAppointment);
+  }, [appointmentd]);
 
+  // sort appointment
   const today = new Date().toISOString().slice(0, 10); // Get today's date in the format "yyyy-mm-dd"
-
   const sortedData = filterAppointment
     .filter((obj) => obj.date === today) // Filter only objects with today's date
     .sort((a, b) => {

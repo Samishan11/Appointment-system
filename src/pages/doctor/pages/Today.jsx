@@ -21,7 +21,10 @@ const Today = () => {
 
   // filter appointment
   const filterAppointment = appointmentd.appointment.filter((data) => {
-    if (data.doctor.toLowerCase() === useData.username.toLowerCase()) {
+    if (
+      data.doctor.toLowerCase().replace(/\s/g, "") ===
+      useData.username.toLowerCase().replace(/\s/g, "")
+    ) {
       return data;
     }
   });
@@ -30,17 +33,12 @@ const Today = () => {
   const [boookingData, setBooking] = useState([]);
   const filterBookings = (appointmentId) => {
     var filter = bookings.filter((data) => {
-      if (data.appointment === appointmentId) {
+      if (data.appointment === appointmentId && data.status === "approve") {
         return data;
       }
     });
     setBooking(filter);
   };
-
-  // sorting booking by approved
-  var sortedBookings = boookingData.sort((a, b) =>
-    a.status === "approve" ? -1 : b.status === "approved" ? 1 : 0
-  );
 
   // navbar collaps
   function onclick() {
@@ -214,7 +212,7 @@ const Today = () => {
                                     </thead>
                                     <tbody>
                                       {boookingData
-                                        ? sortedBookings.map((data, ind) => {
+                                        ? boookingData.map((data, ind) => {
                                             return (
                                               <tr key={ind + 1}>
                                                 <td>{data.username}</td>

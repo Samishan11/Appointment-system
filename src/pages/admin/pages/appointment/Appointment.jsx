@@ -17,15 +17,22 @@ import short from "short-uuid";
 import { v4 as uuidv4 } from "uuid";
 const Appointment = () => {
   const [navcollapse, setNavcollapse] = useState(false);
+
   const appointmentd = useSelector((state) => state.appointment);
   const singleAppointmentData = useSelector(
     (state) => state.appointment.singleAppointment
   );
   const user = useSelector((state) => state.user.user);
+
+  // declering the usedispach function
   const dispatch = useDispatch();
+
+  // side nav open and close
   function onclick() {
     setNavcollapse(!navcollapse);
   }
+
+  // dispatching the data before the browser render
   useEffect(() => {
     dispatch(fetchAppointment());
     dispatch(fetchuser());
@@ -258,15 +265,23 @@ const Appointment = () => {
                                         dispatch(singleAppointment(data));
                                         setInputFieldsUpdate([
                                           {
-                                            _id: data._id,
-                                            title: data.title,
-                                            date: data.date,
-                                            time: data.time,
-                                            time_end: data.time_end,
-                                            doctor: data.doctor,
-                                            description: data.description,
+                                            _id: data._id ? data._id : "",
+                                            title: data.title ? data.title : "",
+                                            date: data.date ? data.date : "",
+                                            time: data.time ? data.time : "",
+                                            time_end: data.time_end
+                                              ? data.time_end
+                                              : "",
+                                            doctor: data.doctor
+                                              ? data.doctor
+                                              : "",
+                                            description: data.description
+                                              ? data.description
+                                              : "",
                                             subspecialities:
-                                              data.subspecialities,
+                                              data.subspecialities
+                                                ? data.subspecialities
+                                                : "",
                                           },
                                         ]);
                                       }}

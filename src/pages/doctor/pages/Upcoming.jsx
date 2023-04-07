@@ -19,7 +19,10 @@ const Upcoming = () => {
 
   // filter appointment
   const filterAppointment = appointmentd.appointment.filter((data) => {
-    if (data.doctor.toLowerCase() === useData.username.toLowerCase()) {
+    if (
+      data.doctor.toLowerCase().replace(/\s/g, "") ===
+      useData.username.toLowerCase().replace(/\s/g, "")
+    ) {
       return data;
     }
   });
@@ -29,16 +32,16 @@ const Upcoming = () => {
     setNavcollapse(!navcollapse);
   }
 
-  //
+  // lode once befor the brower render
   useEffect(() => {
     dispatch(fetchAppointment());
     dispatch(fetchBooking());
   }, []);
 
+  // sort appoint by upcoming days
   const tomorrow = new Date();
   tomorrow.setDate(new Date().getDate() + 1);
   const tomorrowISO = tomorrow.toISOString().slice(0, 10); // Get tomorrow's date in the format "yyyy-mm-dd"
-
   const sortedData = filterAppointment
     .filter((obj) => obj.date >= tomorrowISO) // Filter out objects with today's date or any previous date
     .sort((a, b) => {

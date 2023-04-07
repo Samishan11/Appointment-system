@@ -31,7 +31,7 @@ const Appointment = () => {
     setNavcollapse(!navcollapse);
   }
 
-  //
+  // load once before the browser load
   useEffect(() => {
     dispatch(fetchAppointment());
     dispatch(fetchBooking());
