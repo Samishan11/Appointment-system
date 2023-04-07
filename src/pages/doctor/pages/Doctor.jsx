@@ -123,7 +123,8 @@ const Doctor = () => {
                         <th scope="col">USERNAME</th>
                         <th scope="col">APPOINTMENT ID</th>
                         <th scope="col">DATE</th>
-                        <th scope="col">TIME</th>
+                        <th scope="col">TIME START</th>
+                        <th scope="col">TIME END</th>
                         <th scope="col">DURATION</th>
                       </tr>
                     </thead>
@@ -136,6 +137,7 @@ const Doctor = () => {
                               <td>{`${data._id}`}</td>
                               <td>{new Date(data.date).toDateString()}</td>
                               <td>{data.time}</td>
+                              <td>{data.time_end}</td>
                               <td>{getInterval(data)}</td>
                             </tr>
                           );
