@@ -8,8 +8,10 @@ import Loading from "../../admin/component/loading";
 import Sidenav from "../components/Sidenav";
 import { fetchBooking } from "../../../redux/reducer/slice/bookingSlice";
 import jwtDecode from "jwt-decode";
+
 const Appointment = () => {
   const dispatch = useDispatch();
+
   const [navcollapse, setNavcollapse] = useState(false);
   const appointmentd = useSelector((state) => state.appointment);
 

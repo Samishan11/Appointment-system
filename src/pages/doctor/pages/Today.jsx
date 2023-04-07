@@ -115,7 +115,8 @@ const Today = () => {
                       <tr className="">
                         <th scope="col">APPOINTMENT ID</th>
                         <th scope="col">DATE</th>
-                        <th scope="col">TIME</th>
+                        <th scope="col">START TIME</th>
+                        <th scope="col">END TIME</th>
                         <th scope="col">DURATION</th>
                         <th scope="col">VIEW BOOKINGS</th>
                       </tr>
@@ -128,6 +129,7 @@ const Today = () => {
                               <td>{`${data._id}`}</td>
                               <td>{new Date(data.date).toDateString()}</td>
                               <td>{data.time}</td>
+                              <td>{data.time_end}</td>
                               <td>{getInterval(data)}</td>
                               <td>
                                 <button
@@ -137,7 +139,7 @@ const Today = () => {
                                   }}
                                   data-bs-toggle="modal"
                                   data-bs-target="#exampleModal"
-                                  style={{ width: "100px" }}
+                                  style={{ width: "150px" }}
                                   className="btn btn-sm btn-primary"
                                 >
                                   view
@@ -157,6 +159,7 @@ const Today = () => {
           </div>
         </div>
       </div>
+      {/* modal */}
       <div
         className="modal fade"
         id="exampleModal"

@@ -13,6 +13,8 @@ import axios from "axios";
 import Loading from "../../component/loading";
 import { toast } from "react-toastify";
 import { fetchuser } from "../../../../redux/reducer/slice/userSlice";
+import short from "short-uuid";
+import { v4 as uuidv4 } from "uuid";
 const Appointment = () => {
   const [navcollapse, setNavcollapse] = useState(false);
   const appointmentd = useSelector((state) => state.appointment);
@@ -80,8 +82,12 @@ const Appointment = () => {
     data[index][event.target.name] = event.target.value;
     setInputFieldsUpdate(data);
   };
-
+  // loading until get response on submit form
   const [loading, setLoading] = useState(false);
+  // genrate a unique short id
+  const shortUUID = short();
+  const uuid = uuidv4();
+  const encodedUUID = shortUUID.fromUUID(uuid).slice(0, 6);
   // submit form
   const submitForm = async (e) => {
     try {
@@ -95,6 +101,7 @@ const Appointment = () => {
       formdata.append("time_end", inputFields[0].time_end);
       formdata.append("doctor", inputFields[0].doctor);
       formdata.append("subspecialities", inputFields[0].subspecialities);
+      formdata.append("uuid", encodedUUID);
       var response = await axios.post(
         `${import.meta.env.VITE_PROXY_URI}/appointment/add`,
         formdata
