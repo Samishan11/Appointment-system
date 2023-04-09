@@ -219,10 +219,14 @@
   }
 }
 
+.modal-content {
+  background-color: white !important;
+}
+
 .avatar_sm {
   border-radius: 50%;
-  height: 50px;
-  width: 50px;
+  height: 70px;
+  width: 70px;
 }
 
 /* skeleton */

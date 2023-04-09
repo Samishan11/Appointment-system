@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { TableBody } from "../pages/appointment/Appointment";
 import { TableBooking } from "../pages/booking/Booking";
-
+import { Tableuser } from "../pages/user/Tableuser";
 const Pagination = ({ itemsPerPage, items, pathname }) => {
-  //
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
@@ -33,6 +32,8 @@ const Pagination = ({ itemsPerPage, items, pathname }) => {
         <TableBody items={currentItems} />
       ) : path === "admin/booking" ? (
         <TableBooking items={currentItems} />
+      ) : path === "admin/user" ? (
+        <Tableuser items={currentItems} />
       ) : null}
       <div className="pagintaion">
         <ReactPaginate

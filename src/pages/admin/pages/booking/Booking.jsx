@@ -73,7 +73,7 @@ export const TableBooking = ({ items }) => {
             <td>{`${data.email}`}</td>
             <td>{`${data.appointment}`}</td>
             <td>{new Date(data.booked_on).toDateString()}</td>
-            <td className="">
+            <td className="py-2">
               <select
                 onChange={(e) => onInputChange(e, data._id)}
                 className="form-select"
@@ -172,8 +172,8 @@ const Booking = () => {
                   <Loading />
                 ) : (
                   <div
-                    className="border rounded shadow bg-light text-secondary mt-4 px-4"
-                    style={{ width: "100%", overflowX: "hidden" }}
+                    className="border table-responsive rounded shadow bg-light text-secondary mt-4 px-4"
+                    style={{ width: "100%", overflowX: "scroll" }}
                   >
                     <table class="table table-border">
                       <thead className="text-secondary">
