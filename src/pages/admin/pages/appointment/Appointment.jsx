@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Sidenav from "../../component/Sidenav";
 import {
@@ -15,6 +15,8 @@ import { toast } from "react-toastify";
 import { fetchuser } from "../../../../redux/reducer/slice/userSlice";
 import short from "short-uuid";
 import { v4 as uuidv4 } from "uuid";
+import Select from "react-select";
+
 const Appointment = () => {
   const [navcollapse, setNavcollapse] = useState(false);
 
@@ -23,6 +25,12 @@ const Appointment = () => {
     (state) => state.appointment.singleAppointment
   );
   const user = useSelector((state) => state.user.user);
+
+  const transformedOptions = user.map((option) => ({
+    value: option.username,
+    label: option.username,
+  }));
+  const [selectedOption, setSelectedOption] = useState(null);
 
   // declering the usedispach function
   const dispatch = useDispatch();
@@ -71,6 +79,9 @@ const Appointment = () => {
     },
   ]);
 
+  function handleChange(selectedOption) {
+    setSelectedOption(selectedOption);
+  }
   // image hook
   const [image, setImage] = useState([]);
 
@@ -79,7 +90,7 @@ const Appointment = () => {
     let data = [...inputFields];
     data[index][event.target.name] = event.target.value;
     setInputFields(data);
-    searchDoctor(inputFields[0].doctor);
+    // searchDoctor(inputFields[0].doctor);
     // console.log(inputFields[0].doctor)
   };
 
@@ -106,7 +117,7 @@ const Appointment = () => {
       formdata.append("date", inputFields[0].date);
       formdata.append("time", inputFields[0].time);
       formdata.append("time_end", inputFields[0].time_end);
-      formdata.append("doctor", inputFields[0].doctor);
+      formdata.append("doctor", selectedOption.value);
       formdata.append("subspecialities", inputFields[0].subspecialities);
       formdata.append("uuid", encodedUUID);
       var response = await axios.post(
@@ -165,6 +176,21 @@ const Appointment = () => {
       // toast.error(error.response.data.message)
     }
   };
+
+  // search user
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [filteredUsers, setFilteredUsers] = useState(user);
+
+  // useEffect(() => {
+  //   const filtered = user.filter((user) =>
+  //     user.username.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  //   setFilteredUsers(filtered);
+  // }, [searchQuery, user]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState();
+  const selectRef = useRef(null);
 
   return (
     <div
@@ -374,16 +400,10 @@ const Appointment = () => {
                                 <label htmlFor="exampleInputEmail1">
                                   Doctor Name
                                 </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChange(ind, event)
-                                  }
-                                  name="doctor"
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
+                                <Select
+                                  value={selectedOption}
+                                  onChange={handleChange}
+                                  options={transformedOptions}
                                 />
                               </div>
                             </div>

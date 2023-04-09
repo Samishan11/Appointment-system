@@ -14,6 +14,7 @@ import { LoadingSkeleton } from "../../../component/Skeleton/Skeleton";
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const user = useSelector((state) => state.user.user);
   //
   useEffect(() => {
     dispatch(fetchSingleAppointment(id));
@@ -23,7 +24,6 @@ const Detail = () => {
   const appointmentData = useSelector(
     (state) => state.appointment.singleAppointment
   );
-  const user = useSelector((state) => state.user.user);
 
   //   filter user and show data
   const [filteUser, setFilteruser] = useState({});
@@ -38,6 +38,7 @@ const Detail = () => {
     });
     setFilteruser(fiterDoctorByUsername);
   }, [user]);
+
   const [value, onChange] = useState(appointmentData.time);
 
   // handel input
