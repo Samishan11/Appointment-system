@@ -229,6 +229,12 @@
   width: 70px;
 }
 
+.img_sm {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+
 /* skeleton */
 .loading-skeleton {
   width: 100%;
