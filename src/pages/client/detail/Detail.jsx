@@ -38,7 +38,6 @@ const Detail = () => {
     });
     setFilteruser(fiterDoctorByUsername);
   }, [user]);
-
   const [value, onChange] = useState(appointmentData.time);
 
   // handel input

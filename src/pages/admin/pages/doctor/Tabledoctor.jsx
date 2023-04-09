@@ -39,6 +39,7 @@ export const Tabledoctor = ({ items }) => {
       );
       dispatch(updateUser(res.data.data));
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data.message);
     }
   };
@@ -114,13 +115,21 @@ export const Tabledoctor = ({ items }) => {
             <td className="">
               <button
                 onClick={() => {
+                  console.log(data);
                   setForm({
                     _id: data._id,
-                    username: data.username,
-                    email: data.email,
-                    isAdmin: data.isAdmin,
-                    isDoctor: data.isDoctor,
-                    password: data.password,
+                    username: data?.username ? data?.username : "",
+                    email: data.email ? data.email : "",
+                    isAdmin: data?.isAdmin ? data?.isAdmin : "",
+                    isDoctor: data?.isDoctor ? data?.isDoctor : "",
+                    password: data?.password ? data?.password : "",
+                    about: data?.about ? data?.about : "",
+                    subspecialities: data?.subspecialities
+                      ? data?.subspecialities
+                      : "",
+                    specialities: data?.specialities ? data?.specialities : "",
+                    contact: data?.contact ? data?.contact : "",
+                    address: data?.address ? data?.address : "",
                   });
                 }}
                 style={{ width: "30px" }}
@@ -153,7 +162,7 @@ export const Tabledoctor = ({ items }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-3" id="updatemodalLabel">
-                Update Appointment
+                Update Doctor Profile
               </h1>
               <button
                 type="button"
@@ -196,6 +205,32 @@ export const Tabledoctor = ({ items }) => {
                     </div>
                     <div className="col-12 col-md-12 my-2">
                       <div className="form-group">
+                        <label htmlFor="">Contact</label>
+                        <input
+                          onChange={(event) => onChange(event)}
+                          name="phone"
+                          type="number"
+                          value={form?.phone}
+                          className="form-control input100"
+                          placeholder="Enter contact here"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-12 col-md-12 my-2">
+                      <div className="form-group">
+                        <label htmlFor="">Address</label>
+                        <input
+                          onChange={(event) => onChange(event)}
+                          name="address"
+                          type="text"
+                          value={form?.address}
+                          className="form-control input100"
+                          placeholder="Enter address here"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-12 col-md-12 my-2">
+                      <div className="form-group">
                         <label htmlFor="">Admin</label>
                         <select
                           onChange={(e) => onChange(e)}
@@ -226,6 +261,39 @@ export const Tabledoctor = ({ items }) => {
                           <option value={true}>True</option>
                           <option value={false}>False</option>
                         </select>
+                      </div>
+                    </div>
+                    <div className="col-12 col-md-12 my-2">
+                      <div className="form-group">
+                        <label htmlFor="">About</label>
+                        <textarea
+                          onChange={(e) => onChange(e)}
+                          name="about"
+                          className="form-control"
+                          value={form?.about}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-12 col-md-12 my-2">
+                      <div className="form-group">
+                        <label htmlFor="">Specialities</label>
+                        <input
+                          onChange={(e) => onChange(e)}
+                          name="specialities"
+                          className="form-control"
+                          value={form?.specialities}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-12 col-md-12 my-2">
+                      <div className="form-group">
+                        <label htmlFor="">Subspecialities</label>
+                        <textarea
+                          onChange={(e) => onChange(e)}
+                          name="subspecialities"
+                          className="form-control"
+                          value={form?.subspecialities}
+                        />
                       </div>
                     </div>
                     <div className="col-12 col-md-12 my-2">

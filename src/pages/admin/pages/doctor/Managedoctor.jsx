@@ -30,7 +30,7 @@ const Managedoctor = () => {
       }
     });
     setuser(filterDoctor);
-  }, [user]);
+  }, []);
 
   // add user  from
   const [formData, setFormData] = useState({
@@ -63,7 +63,6 @@ const Managedoctor = () => {
   // onchange event
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
   };
 
   return (
