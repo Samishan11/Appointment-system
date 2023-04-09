@@ -377,15 +377,16 @@
 
 /* pagination */
 .pagintaion {
-  width: 100%;
   display: flex;
-  justify-content: end;
+  width: 100%;
+  justify-content: start;
   align-items: center;
+  margin-top: 20px;
 }
 
 .pagintaion ul {
   display: flex;
-  justify-content: end;
+  justify-content: start;
   flex: 1
 }
 
@@ -396,7 +397,7 @@
 
 .pagintaion a {
   text-decoration: none;
-  padding: 7px 12px;
+  padding: 7px 11px;
 }
 
 .previous a {
@@ -412,8 +413,8 @@
 }
 
 .selected a {
-  background-color: rgb(22, 163, 74);
-  border-radius: 5px;
+  background-color: rgb(43, 125, 247);
+  border-radius: 50%;
   color: white;
 }
 

@@ -9,21 +9,9 @@ import {
   updateBooking,
 } from "../../../../redux/reducer/slice/bookingSlice";
 import { toast } from "react-toastify";
-const Booking = () => {
-  const dispatch = useDispatch();
-  const [navcollapse, setNavcollapse] = useState(false);
-  const booking = useSelector((state) => state.booking.booking);
+import Pagination from "../../component/pagination";
 
-  //
-  function onclick() {
-    setNavcollapse(!navcollapse);
-  }
-
-  //
-  useEffect(() => {
-    dispatch(fetchBooking());
-  }, []);
-
+export const TableBooking = ({ items }) => {
   // status input field
   const [status, setStatus] = useState("");
 
@@ -76,6 +64,77 @@ const Booking = () => {
       console.log(error);
     }
   };
+  return (
+    <>
+      {items.map((data, ind) => {
+        return (
+          <tr key={ind + 1}>
+            <td>{data.username}</td>
+            <td>{`${data.email}`}</td>
+            <td>{`${data.appointment}`}</td>
+            <td>{new Date(data.booked_on).toDateString()}</td>
+            <td className="">
+              <select
+                onChange={(e) => onInputChange(e, data._id)}
+                className="form-select"
+                aria-label="Default select example"
+              >
+                <option selected>{data?.status?.toUpperCase()}</option>
+                {data.status !== "pending" && (
+                  <option value="pending">PENDING</option>
+                )}
+                {data.status !== "approve" && (
+                  <option value="approve">APPROVE</option>
+                )}
+                {data.status !== "reject" && (
+                  <option value="reject">REJECT</option>
+                )}
+                {data.state !== "pospond" && (
+                  <option value="pospond">POSPOND</option>
+                )}
+              </select>
+            </td>
+            <td className="d-flex px-2">
+              {data.status === "approve" && (
+                <button
+                  onClick={() => zoom(data.email, data._id)}
+                  style={{ width: "" }}
+                  className="btn btn-sm me-1 text-primary"
+                >
+                  {" "}
+                  <i className="fa-solid fa-video"></i>{" "}
+                </button>
+              )}
+              <button
+                onClick={() => _deleteBooking(data._id)}
+                style={{ width: "" }}
+                className="btn btn-sm me-1 text-danger"
+              >
+                {" "}
+                <i className="fa-solid fa-trash"></i>{" "}
+              </button>
+            </td>
+          </tr>
+        );
+      })}
+    </>
+  );
+};
+
+const Booking = () => {
+  const dispatch = useDispatch();
+  const [navcollapse, setNavcollapse] = useState(false);
+  const booking = useSelector((state) => state.booking.booking);
+
+  //
+  function onclick() {
+    setNavcollapse(!navcollapse);
+  }
+
+  //
+  useEffect(() => {
+    dispatch(fetchBooking());
+  }, []);
 
   return (
     <div
@@ -127,69 +186,11 @@ const Booking = () => {
                           <th scope="col">ACTION</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        {booking
-                          ? booking.map((data, ind) => {
-                              return (
-                                <tr key={ind + 1}>
-                                  <td>{data.username}</td>
-                                  <td>{`${data.email}`}</td>
-                                  <td>{`${data.appointment}`}</td>
-                                  <td>
-                                    {new Date(data.booked_on).toDateString()}
-                                  </td>
-                                  <td>
-                                    <select
-                                      onChange={(e) =>
-                                        onInputChange(e, data._id)
-                                      }
-                                      className="form-select"
-                                      aria-label="Default select example"
-                                    >
-                                      <option selected>
-                                        {data.status.toUpperCase()}
-                                      </option>
-                                      {data.status !== "pending" && (
-                                        <option value="pending">PENDING</option>
-                                      )}
-                                      {data.status !== "approve" && (
-                                        <option value="approve">APPROVE</option>
-                                      )}
-                                      {data.status !== "reject" && (
-                                        <option value="reject">REJECT</option>
-                                      )}
-                                      {data.state !== "pospond" && (
-                                        <option value="pospond">POSPOND</option>
-                                      )}
-                                    </select>
-                                  </td>
-                                  <td className="d-flex">
-                                    {data.status === "approve" && (
-                                      <button
-                                        onClick={() =>
-                                          zoom(data.email, data._id)
-                                        }
-                                        style={{ width: "" }}
-                                        className="btn btn-sm me-1 text-primary"
-                                      >
-                                        {" "}
-                                        <i className="fa-solid fa-video"></i>{" "}
-                                      </button>
-                                    )}
-                                    <button
-                                      onClick={() => _deleteBooking(data._id)}
-                                      style={{ width: "" }}
-                                      className="btn btn-sm me-1 text-danger"
-                                    >
-                                      {" "}
-                                      <i className="fa-solid fa-trash"></i>{" "}
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })
-                          : ""}
-                      </tbody>
+                      <Pagination
+                        items={booking}
+                        itemsPerPage={10}
+                        pathname={"admin/booking"}
+                      />
                     </table>
                   </div>
                 )}

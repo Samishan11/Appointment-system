@@ -103,53 +103,49 @@ export const TableBody = ({ items }) => {
   };
   return (
     <>
-      <table className="table">
-        <tbody>
-          {items.map((data, ind) => (
-            <tr key={ind + 1}>
-              <td>{data.title}</td>
-              <td>{data.doctor}</td>
-              <td key={ind + 1}>
-                <img className="avatar_sm" src={data?.image?.url} alt="image" />
-              </td>
-              <td>{new Date(data.date).toDateString()}</td>
-              <td>{`${data.time} ${data.time >= "12:00" ? "PM" : "AM"}`}</td>
-              <td>{`${data.time_end} ${
-                data.time_end >= "12:00" ? "PM" : "AM"
-              }`}</td>
-              {!data.interval ? (
-                <td>{getInterval(data)}</td>
-              ) : (
-                <td>
-                  {data.interval >= 60
-                    ? parseInt(data.interval / 60)
-                    : data.interval}
-                </td>
-              )}
-              <td className="">
-                <button
-                  onClick={() => {
-                    dispatch(singleAppointment(data));
-                  }}
-                  style={{ width: "30px" }}
-                  data-bs-toggle="modal"
-                  data-bs-target="#updatemodal"
-                  className="btn btn-sm me-1 text-primary"
-                >
-                  <i className="fa-solid fa-pen "></i>
-                </button>
-                <button
-                  onClick={() => _deleteAppointment(data._id)}
-                  style={{ width: "30px" }}
-                  className="btn btn-sm me-1 text-danger"
-                >
-                  <i className="fa-solid fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {items.map((data, ind) => (
+        <tr key={ind + 1}>
+          <td>{data.title}</td>
+          <td>{data.doctor}</td>
+          <td key={ind + 1}>
+            <img className="avatar_sm" src={data?.image?.url} alt="image" />
+          </td>
+          <td>{new Date(data.date).toDateString()}</td>
+          <td>{`${data.time} ${data.time >= "12:00" ? "PM" : "AM"}`}</td>
+          <td>{`${data.time_end} ${
+            data.time_end >= "12:00" ? "PM" : "AM"
+          }`}</td>
+          {!data.interval ? (
+            <td>{getInterval(data)}</td>
+          ) : (
+            <td>
+              {data.interval >= 60
+                ? parseInt(data.interval / 60)
+                : data.interval}
+            </td>
+          )}
+          <td className="">
+            <button
+              onClick={() => {
+                dispatch(singleAppointment(data));
+              }}
+              style={{ width: "30px" }}
+              data-bs-toggle="modal"
+              data-bs-target="#updatemodal"
+              className="btn btn-sm me-1 text-primary"
+            >
+              <i className="fa-solid fa-pen "></i>
+            </button>
+            <button
+              onClick={() => _deleteAppointment(data._id)}
+              style={{ width: "30px" }}
+              className="btn btn-sm me-1 text-danger"
+            >
+              <i className="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      ))}
       {/* update modal */}
       <div
         className="modal fade"
@@ -517,11 +513,12 @@ const Appointment = () => {
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
+                      <Pagination
+                        items={appointmentd.appointment}
+                        itemsPerPage={10}
+                        pathname={"admin/appointment"}
+                      />
                     </table>
-                    <Pagination
-                      items={appointmentd.appointment}
-                      itemsPerPage={10}
-                    />
                   </div>
                 )}
               </div>
