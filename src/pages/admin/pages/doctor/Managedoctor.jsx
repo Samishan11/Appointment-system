@@ -149,7 +149,7 @@ const Managedoctor = () => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-3" id="exampleModalLabel">
+              <h1 className="modal-title fs-3" id="">
                 Add User
               </h1>
               <button
@@ -166,35 +166,32 @@ const Managedoctor = () => {
                     <>
                       <div className="col-12 col-md-12 my-2">
                         <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Username</label>
+                          <label htmlFor="">Username</label>
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="username"
                             type="text"
                             className="form-control input100"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
                             placeholder="Enter title here"
                           />
                         </div>
                       </div>
                       <div className="col-12 col-md-12 my-2">
                         <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Email</label>
+                          <label htmlFor="">Email</label>
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="email"
                             type="email"
                             className="form-control input100"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
+                            aria-describedby=""
                             placeholder="Enter email here"
                           />
                         </div>
                       </div>
                       <div className="col-12 col-md-12 my-2">
                         <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Contact</label>
+                          <label htmlFor="">Contact</label>
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="phone"
@@ -218,7 +215,7 @@ const Managedoctor = () => {
                       </div>
                       <div className="col-12 col-md-12 my-2">
                         <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Admin</label>
+                          <label htmlFor="">Admin</label>
                           <select
                             onChange={(e) => handleFormChange(e)}
                             name="isAdmin"
@@ -233,7 +230,7 @@ const Managedoctor = () => {
                       </div>
                       <div className="col-12 col-md-12 my-2">
                         <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Doctor</label>
+                          <label htmlFor="">Doctor</label>
                           <select
                             onChange={(e) => handleFormChange(e)}
                             name="isDoctor"
@@ -282,30 +279,26 @@ const Managedoctor = () => {
 
                       <div className="col-12 col-md-12 my-2">
                         <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Password</label>
+                          <label htmlFor="">Password</label>
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="password"
                             type="password"
                             className="form-control input100"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
+                            aria-describedby=""
                             placeholder="Enter title here"
                           />
                         </div>
                       </div>
                       <div className="col-12 col-md-12 my-2">
                         <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">
-                            Confirm Password
-                          </label>
+                          <label htmlFor="">Confirm Password</label>
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="checkpassword"
                             type="password"
                             className="form-control input100"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
+                            aria-describedby=""
                             placeholder="Enter title here"
                           />
                         </div>

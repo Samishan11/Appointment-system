@@ -56,23 +56,6 @@ export const Tabledoctor = ({ items }) => {
     );
     dispatch(updateUser(res.data.data));
   };
-  //   set data on click
-  const setDataOnClick = (data) => {
-    setForm({
-      _id: data._id,
-      username: data.username ? data.username : "",
-      email: data.email ? data.email : "",
-      isAdmin: data.isAdmin ? data.isAdmin : "",
-      isDoctor: data.isDoctor ? data.isDoctor : "",
-      password: data.password ? data.password : "",
-      phone: data.phone ? data.phone : "",
-      address: data.address ? data.address : "",
-      about: data.about ? data.about : "",
-      specialities: data.specialities ? data.specialities : "",
-      subspecialities: data.subspecialities ? data.subspecialities : "",
-    });
-  };
-
   // onchange event
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -199,15 +182,14 @@ export const Tabledoctor = ({ items }) => {
                     </div>
                     <div className="col-12 col-md-12 my-2">
                       <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Email</label>
+                        <label htmlFor="">Email</label>
                         <input
                           onChange={(event) => onChange(event)}
                           name="email"
                           value={form?.email}
                           type="email"
                           className="form-control input100"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
+                          aria-describedby=""
                           placeholder={"Enter title here"}
                         />
                       </div>
