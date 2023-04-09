@@ -128,7 +128,7 @@ export const Tabledoctor = ({ items }) => {
                       ? data?.subspecialities
                       : "",
                     specialities: data?.specialities ? data?.specialities : "",
-                    contact: data?.contact ? data?.contact : "",
+                    phone: data?.phone ? data?.phone : "",
                     address: data?.address ? data?.address : "",
                   });
                 }}
