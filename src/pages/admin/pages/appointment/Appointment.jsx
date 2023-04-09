@@ -16,53 +16,27 @@ import { fetchuser } from "../../../../redux/reducer/slice/userSlice";
 import short from "short-uuid";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
+import Pagination from "../../component/pagination";
 
-const Appointment = () => {
-  const [navcollapse, setNavcollapse] = useState(false);
-
-  const appointmentd = useSelector((state) => state.appointment);
-  const singleAppointmentData = useSelector(
+export const TableBody = ({ items }) => {
+  const dispatch = useDispatch();
+  // dynamic form control
+  const appointmentSingle = useSelector(
     (state) => state.appointment.singleAppointment
   );
-  const user = useSelector((state) => state.user.user);
-
-  const transformedOptions = user.map((option) => ({
-    value: option.username,
-    label: option.username,
-  }));
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  // declering the usedispach function
-  const dispatch = useDispatch();
-
-  // side nav open and close
-  function onclick() {
-    setNavcollapse(!navcollapse);
-  }
-
-  // dispatching the data before the browser render
   useEffect(() => {
-    dispatch(fetchAppointment());
-    dispatch(fetchuser());
-  }, []);
-
-  // dynamic form control
-  const [inputFields, setInputFields] = useState([
-    {
-      title: "",
-      description: "",
-      date: "",
-      time: "",
-      time_end: "",
-      doctor: "",
-      contact: "",
-      location: "",
-      email: "",
-      subspecialities: "",
-    },
-  ]);
-
-  // dynamic form control
+    setInputFieldsUpdate([
+      {
+        _id: appointmentSingle?._id,
+        title: appointmentSingle?.title,
+        description: appointmentSingle?.description,
+        date: appointmentSingle?.date,
+        time: appointmentSingle?.time,
+        time_end: appointmentSingle?.time_end,
+        doctor: appointmentSingle?.doctor,
+      },
+    ]);
+  }, [appointmentSingle]);
   const [inputFieldsUpdate, setInputFieldsUpdate] = useState([
     {
       _id: "",
@@ -78,21 +52,8 @@ const Appointment = () => {
       subspecialities: "",
     },
   ]);
-
-  function handleChange(selectedOption) {
-    setSelectedOption(selectedOption);
-  }
   // image hook
   const [image, setImage] = useState([]);
-
-  // input handel event on input change
-  const handleFormChange = (index, event) => {
-    let data = [...inputFields];
-    data[index][event.target.name] = event.target.value;
-    setInputFields(data);
-    // searchDoctor(inputFields[0].doctor);
-    // console.log(inputFields[0].doctor)
-  };
 
   // handel form on change
   const handleFormChangeUpdate = (index, event) => {
@@ -100,42 +61,6 @@ const Appointment = () => {
     data[index][event.target.name] = event.target.value;
     setInputFieldsUpdate(data);
   };
-  // loading until get response on submit form
-  const [loading, setLoading] = useState(false);
-  // genrate a unique short id
-  const shortUUID = short();
-  const uuid = uuidv4();
-  const encodedUUID = shortUUID.fromUUID(uuid).slice(0, 6);
-  // submit form
-  const submitForm = async (e) => {
-    try {
-      e.preventDefault();
-      const formdata = new FormData();
-      formdata.append("image", image);
-      formdata.append("title", inputFields[0].title);
-      formdata.append("description", inputFields[0].description);
-      formdata.append("date", inputFields[0].date);
-      formdata.append("time", inputFields[0].time);
-      formdata.append("time_end", inputFields[0].time_end);
-      formdata.append("doctor", selectedOption.value);
-      formdata.append("subspecialities", inputFields[0].subspecialities);
-      formdata.append("uuid", encodedUUID);
-      var response = await axios.post(
-        `${import.meta.env.VITE_PROXY_URI}/appointment/add`,
-        formdata
-      );
-      console.log(response.data);
-      if (response.data.success) {
-        setLoading(false);
-      } else {
-        setLoading(true);
-      }
-      dispatch(add(response.data.data));
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-
   // delete appointment
   const _deleteAppointment = async (id) => {
     try {
@@ -176,21 +101,360 @@ const Appointment = () => {
       // toast.error(error.response.data.message)
     }
   };
+  return (
+    <>
+      <table className="table">
+        <tbody>
+          {items.map((data, ind) => (
+            <tr key={ind + 1}>
+              <td>{data.title}</td>
+              <td>{data.doctor}</td>
+              <td key={ind + 1}>
+                <img className="avatar_sm" src={data?.image?.url} alt="image" />
+              </td>
+              <td>{new Date(data.date).toDateString()}</td>
+              <td>{`${data.time} ${data.time >= "12:00" ? "PM" : "AM"}`}</td>
+              <td>{`${data.time_end} ${
+                data.time_end >= "12:00" ? "PM" : "AM"
+              }`}</td>
+              {!data.interval ? (
+                <td>{getInterval(data)}</td>
+              ) : (
+                <td>
+                  {data.interval >= 60
+                    ? parseInt(data.interval / 60)
+                    : data.interval}
+                </td>
+              )}
+              <td className="">
+                <button
+                  onClick={() => {
+                    dispatch(singleAppointment(data));
+                  }}
+                  style={{ width: "30px" }}
+                  data-bs-toggle="modal"
+                  data-bs-target="#updatemodal"
+                  className="btn btn-sm me-1 text-primary"
+                >
+                  <i className="fa-solid fa-pen "></i>
+                </button>
+                <button
+                  onClick={() => _deleteAppointment(data._id)}
+                  style={{ width: "30px" }}
+                  className="btn btn-sm me-1 text-danger"
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {/* update modal */}
+      <div
+        className="modal fade"
+        id="updatemodal"
+        tabIndex={-1}
+        aria-labelledby="updatemodalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-3" id="updatemodalLabel">
+                Update Appointment
+              </h1>
+              <button
+                type="button"
+                className="btn-close text-danger fas fa-times"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form
+              onSubmit={updateAppoint}
+              id="contact-form"
+              style={{ fontSize: "1rem" }}
+              className="container validate-form"
+            >
+              <div className="modal-body">
+                <div className="container  pb-5">
+                  <div className="container bg-white d-block mx-auto">
+                    <div className="row">
+                      {inputFieldsUpdate.map((input, ind) => {
+                        return (
+                          <>
+                            <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">
+                                  Appointment Title
+                                </label>
+                                <input
+                                  onChange={(event) =>
+                                    handleFormChangeUpdate(ind, event)
+                                  }
+                                  name="title"
+                                  value={inputFieldsUpdate[0]?.title}
+                                  type="text"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  // placeholder={
+                                  //   appointment.singleAppointment.title
+                                  // }
+                                />
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">
+                                  Doctor Name
+                                </label>
+                                <input
+                                  onChange={(event) =>
+                                    handleFormChangeUpdate(ind, event)
+                                  }
+                                  name="doctor"
+                                  value={inputFieldsUpdate[0]?.doctor}
+                                  type="text"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  // placeholder={singleAppointmentData.doctor}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">
+                                  Image
+                                </label>
+                                <input
+                                  onChange={(event) =>
+                                    setImage(event.target.files[0])
+                                  }
+                                  name="image"
+                                  type="file"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  placeholder="Enter title here"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Date</label>
+                                <input
+                                  onChange={(event) =>
+                                    handleFormChangeUpdate(ind, event)
+                                  }
+                                  name="date"
+                                  value={inputFieldsUpdate[0]?.date}
+                                  type="date"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  placeholder={"Enter title here"}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">
+                                  Time Start
+                                </label>
+                                <input
+                                  onChange={(event) =>
+                                    handleFormChangeUpdate(ind, event)
+                                  }
+                                  name="time"
+                                  value={inputFieldsUpdate[0]?.time}
+                                  type="time"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  placeholder="Enter title here"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">
+                                  Time End
+                                </label>
+                                <input
+                                  onChange={(event) =>
+                                    handleFormChangeUpdate(ind, event)
+                                  }
+                                  name="time_end"
+                                  value={inputFieldsUpdate[0]?.time_end}
+                                  type="time"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  placeholder="Enter title here"
+                                />
+                              </div>
+                            </div>
+                            {/* <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">
+                                  Description
+                                </label>
+                                <textarea
+                                  onChange={(event) =>
+                                    handleFormChangeUpdate(ind, event)
+                                  }
+                                  name="description"
+                                  value={inputFieldsUpdate[0]?.description}
+                                  type="text"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  placeholder="Enter description here"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-12 my-2">
+                              <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">
+                                  Subspecialities
+                                </label>
+                                <textarea
+                                  onChange={(event) =>
+                                    handleFormChangeUpdate(ind, event)
+                                  }
+                                  name="subspecialities"
+                                  value={inputFieldsUpdate[0]?.subspecialities}
+                                  type="text"
+                                  className="form-control input100"
+                                  id="exampleInputEmail1"
+                                  aria-describedby="emailHelp"
+                                  placeholder="Enter description here"
+                                />
+                              </div>
+                            </div> */}
+                          </>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="sumbit" className="btn btn-outline-primary">
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
-  // search user
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [filteredUsers, setFilteredUsers] = useState(user);
+const Appointment = () => {
+  const [navcollapse, setNavcollapse] = useState(false);
 
-  // useEffect(() => {
-  //   const filtered = user.filter((user) =>
-  //     user.username.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
-  //   setFilteredUsers(filtered);
-  // }, [searchQuery, user]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState();
-  const selectRef = useRef(null);
+  const appointmentd = useSelector((state) => state.appointment);
+
+  const user = useSelector((state) => state.user.user);
+
+  const transformedOptions = user.map((option) => ({
+    value: option.username,
+    label: option.username,
+  }));
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  // declering the usedispach function
+  const dispatch = useDispatch();
+
+  // side nav open and close
+  function onclick() {
+    setNavcollapse(!navcollapse);
+  }
+
+  // dispatching the data before the browser render
+  useEffect(() => {
+    dispatch(fetchAppointment());
+    dispatch(fetchuser());
+  }, []);
+
+  // dynamic form control
+  const [inputFields, setInputFields] = useState([
+    {
+      title: "",
+      description: "",
+      date: "",
+      time: "",
+      time_end: "",
+      doctor: "",
+      contact: "",
+      location: "",
+      email: "",
+      subspecialities: "",
+    },
+  ]);
+
+  function handleChange(selectedOption) {
+    setSelectedOption(selectedOption);
+  }
+  // image hook
+  const [image, setImage] = useState([]);
+
+  // input handel event on input change
+  const handleFormChange = (index, event) => {
+    let data = [...inputFields];
+    data[index][event.target.name] = event.target.value;
+    setInputFields(data);
+    // searchDoctor(inputFields[0].doctor);
+    // console.log(inputFields[0].doctor)
+  };
+
+  // loading until get response on submit form
+  const [loading, setLoading] = useState(false);
+  // genrate a unique short id
+  const shortUUID = short();
+  const uuid = uuidv4();
+  const encodedUUID = shortUUID.fromUUID(uuid).slice(0, 6);
+  // submit form
+  const submitForm = async (e) => {
+    try {
+      e.preventDefault();
+      const formdata = new FormData();
+      formdata.append("image", image);
+      formdata.append("title", inputFields[0].title);
+      formdata.append("description", inputFields[0].description);
+      formdata.append("date", inputFields[0].date);
+      formdata.append("time", inputFields[0].time);
+      formdata.append("time_end", inputFields[0].time_end);
+      formdata.append("doctor", selectedOption.value);
+      formdata.append("subspecialities", inputFields[0].subspecialities);
+      formdata.append("uuid", encodedUUID);
+      var response = await axios.post(
+        `${import.meta.env.VITE_PROXY_URI}/appointment/add`,
+        formdata
+      );
+      console.log(response.data);
+      if (response.data.success) {
+        setLoading(false);
+      } else {
+        setLoading(true);
+      }
+      dispatch(add(response.data.data));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <div
@@ -253,89 +517,11 @@ const Appointment = () => {
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        {appointmentd.appointment
-                          ? appointmentd.appointment.map((data, ind) => {
-                              return (
-                                <tr key={ind + 1}>
-                                  <td>{data.title}</td>
-                                  <td>{data.doctor}</td>
-                                  {
-                                    <td key={ind + 1}>
-                                      <img
-                                        className="avatar_sm"
-                                        src={data?.image?.url}
-                                        alt="image"
-                                      />
-                                    </td>
-                                  }
-                                  <td>{new Date(data.date).toDateString()}</td>
-                                  <td>{`${data.time} ${
-                                    data.time >= "12:00" ? "PM" : "AM"
-                                  }`}</td>
-                                  <td>{`${data.time_end} ${
-                                    data.time_end >= "12:00" ? "PM" : "AM"
-                                  }`}</td>
-                                  {!data.interval ? (
-                                    <td>{getInterval(data)}</td>
-                                  ) : (
-                                    <td>
-                                      {data.interval >= 60
-                                        ? parseInt(data.interval / 60)
-                                        : data.interval}
-                                    </td>
-                                  )}
-                                  <td className="">
-                                    <button
-                                      onClick={() => {
-                                        dispatch(singleAppointment(data));
-                                        setInputFieldsUpdate([
-                                          {
-                                            _id: data._id ? data._id : "",
-                                            title: data.title ? data.title : "",
-                                            date: data.date ? data.date : "",
-                                            time: data.time ? data.time : "",
-                                            time_end: data.time_end
-                                              ? data.time_end
-                                              : "",
-                                            doctor: data.doctor
-                                              ? data.doctor
-                                              : "",
-                                            description: data.description
-                                              ? data.description
-                                              : "",
-                                            subspecialities:
-                                              data.subspecialities
-                                                ? data.subspecialities
-                                                : "",
-                                          },
-                                        ]);
-                                      }}
-                                      style={{ width: "30px" }}
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#updatemodal"
-                                      className="btn btn-sm me-1 text-primary"
-                                    >
-                                      {" "}
-                                      <i className="fa-solid fa-pen "></i>{" "}
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        _deleteAppointment(data._id)
-                                      }
-                                      style={{ width: "30px" }}
-                                      className="btn btn-sm me-1 text-danger"
-                                    >
-                                      {" "}
-                                      <i className="fa-solid fa-trash"></i>{" "}
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })
-                          : ""}
-                      </tbody>
                     </table>
+                    <Pagination
+                      items={appointmentd.appointment}
+                      itemsPerPage={10}
+                    />
                   </div>
                 )}
               </div>
@@ -542,213 +728,6 @@ const Appointment = () => {
                     </button>
                   </>
                 )}
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* update modal */}
-      <div
-        className="modal fade"
-        id="updatemodal"
-        tabIndex={-1}
-        aria-labelledby="updatemodalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-3" id="updatemodalLabel">
-                Update Appointment
-              </h1>
-              <button
-                type="button"
-                className="btn-close text-danger fas fa-times"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <form
-              onSubmit={updateAppoint}
-              id="contact-form"
-              style={{ fontSize: "1rem" }}
-              className="container validate-form"
-            >
-              <div className="modal-body">
-                <div className="container  pb-5">
-                  <div className="container bg-white d-block mx-auto">
-                    <div className="row">
-                      {inputFieldsUpdate.map((input, ind) => {
-                        return (
-                          <>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Appointment Title
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="title"
-                                  value={inputFieldsUpdate[0]?.title}
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder={singleAppointmentData.title}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Doctor Name
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="doctor"
-                                  value={inputFieldsUpdate[0]?.doctor}
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder={singleAppointmentData.doctor}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Image
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    setImage(event.target.files[0])
-                                  }
-                                  name="image"
-                                  type="file"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Date</label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="date"
-                                  value={inputFieldsUpdate[0]?.date}
-                                  type="date"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder={"Enter title here"}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Time Start
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="time"
-                                  value={inputFieldsUpdate[0]?.time}
-                                  type="time"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Time End
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="time_end"
-                                  value={inputFieldsUpdate[0]?.time_end}
-                                  type="time"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            {/* <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Description
-                                </label>
-                                <textarea
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="description"
-                                  value={inputFieldsUpdate[0]?.description}
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter description here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Subspecialities
-                                </label>
-                                <textarea
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="subspecialities"
-                                  value={inputFieldsUpdate[0]?.subspecialities}
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter description here"
-                                />
-                              </div>
-                            </div> */}
-                          </>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button type="sumbit" className="btn btn-outline-primary">
-                  Save
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-danger"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
               </div>
             </form>
           </div>
