@@ -444,8 +444,8 @@
 
 .banner_content_book {
   position: absolute;
-  top: 60%;
-  transform: translateY(-60%);
+  top: 50%;
+  transform: translateY(-50%);
   left: 2%;
 }
 
