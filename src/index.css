@@ -214,10 +214,10 @@
       position: absolute;
       background: rgb(0, 172, 177);
       content: "";
-      height: 25px;
+      height: 30px;
       width: 3px;
       left: -10px;
-      top: 16px;
+      top: 12px;
   }
 
   .contact {
@@ -241,6 +241,13 @@
   }
 
   /* toast */
-.Toastify__toast-body{
-    width: 100% !important;
-}
+  .Toastify__toast-body {
+      width: 100% !important;
+  }
+
+  /* custom form */
+  .my-form {
+      height: 4rem !important;
+      outline: #0d6efd;
+      border-radius: 0 !important;
+  }

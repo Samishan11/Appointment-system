@@ -431,3 +431,33 @@
 .selected {
   color: white;
 }
+
+/* detail */
+.banner_book {
+  height: 50vh;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.9;
+}
+
+.banner_content_book {
+  position: absolute;
+  top: 60%;
+  transform: translateY(-60%);
+  left: 2%;
+}
+
+.profile img {
+  width: 35px;
+  height: 35px;
+}
+
+.docotor_info i {
+  color: #005963;
+}
+
+.profile span {
+  color: #005963;
+}

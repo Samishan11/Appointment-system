@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { enGB } from "date-fns/locale";
 import { DatePicker } from "react-nice-dates";
 import "react-nice-dates/build/style.css";
@@ -11,6 +11,8 @@ import { fetchSingleAppointment } from "../../../redux/reducer/slice/appointment
 import { toast } from "react-toastify";
 import { fetchuser } from "../../../redux/reducer/slice/userSlice";
 import { LoadingSkeleton } from "../../../component/Skeleton/Skeleton";
+import Skeleton from "react-loading-skeleton";
+import { useForm } from "react-hook-form";
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -38,48 +40,33 @@ const Detail = () => {
     });
     setFilteruser(fiterDoctorByUsername);
   }, [user]);
-  const [value, onChange] = useState(appointmentData.time);
+  const [value, onChange] = useState(appointmentData?.time);
 
-  // handel input
-  const [formData, setFormdata] = useState({
-    username: "",
-    email: "",
-    date: appointmentData?.date ? new Date(appointmentData?.date) : new Date(),
-    time: value,
-    appointment: "",
-  });
-  //
-  useEffect(() => {
-    setFormdata({
-      time: appointmentData.time ? appointmentData.time : "00:00",
-      date: appointmentData.date ? new Date(appointmentData?.date) : new Date(),
-      appointment: id,
-    });
-  }, [appointmentData]);
+  // book now
+  const inputRef = useRef(null);
 
-  // handel form
-  const formChange = (e) => {
-    setFormdata({ ...formData, [e.target.name]: e.target.value });
+  const handleClick = () => {
+    inputRef.current.click();
   };
-
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   // booking
-  const booking = async () => {
+  const onSubmit = async (data) => {
+    console.log(data);
     try {
-      var validRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      if (!formData.username || !formData.email) {
-        toast.error("Fill All The Fields!!");
-      } else {
-        if (formData.email.match(validRegex)) {
-          var res = await axios.post(
-            `${import.meta.env.VITE_PROXY_URI}/booking`,
-            formData
-          );
-          dispatch(addBooking(res.data.data));
-        } else {
-          toast.error("Invalid Email!!");
-        }
-      }
+      var res = await axios.post(
+        `${import.meta.env.VITE_PROXY_URI}/booking`,
+        data
+      );
+      reset({
+        username: "",
+        email: "",
+      });
+      dispatch(addBooking(res.data.data));
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -88,196 +75,233 @@ const Detail = () => {
   return (
     <div className="container-fluid">
       {appointmentData ? (
-        <div className="row mt-5">
+        <div className="row mt-2">
           <div className="col-md-7 m-0 p-0 mx-auto">
-            <div className="top rounded border">
-              <div className="row mx-auto">
-                <div className="col-md-4 col-lg-4 col-sm-12 m-0 p-0 d-flex justify-content-center align-items-center">
-                  {filteUser?.image?.url ? (
-                    <img
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      className="img-fluid"
-                      src={filteUser?.image?.url}
-                      alt=""
-                    />
-                  ) : (
-                    <LoadingSkeleton
-                      className={"d-block my-auto"}
-                      count={1}
-                      height={"250px"}
-                      width={"250px"}
-                    />
-                  )}
-                </div>
-                <div className="col-md-8 px-4 bg-light pt-3">
-                  {!filteUser ? (
-                    <LoadingSkeleton count={5} height={"25px"} />
-                  ) : (
-                    <>
-                      <div className="info">
-                        <h5 className="fw-bold" style={{ color: "#005963" }}>
-                          {appointmentData?.title}
-                        </h5>
-                        <h6
-                          className="fw-bold mt-3"
-                          style={{ color: "#005950" }}
-                        >
-                          {filteUser?.specialities}{" "}
-                          {filteUser?.username?.toUpperCase()}
-                        </h6>
-                      </div>
-                      <div className="links mt-2">
-                        <div className="link">
-                          <i
-                            style={{ color: "#00acb1" }}
-                            className="mt-3 fa-solid fa-phone"
-                          ></i>
-                          <span className="mx-2">{filteUser?.phone}</span>
-                        </div>
-                        <div className="link">
-                          <i
-                            style={{ color: "#00acb1" }}
-                            className="mt-3 fa-solid fa-envelope"
-                          ></i>
-                          <span className="mx-2">{filteUser?.email}</span>
-                        </div>
-                        <div className="link">
-                          <i
-                            style={{ color: "#00acb1" }}
-                            className="mt-3 fa-solid fa-location-dot"
-                          ></i>
-                          <span className="mx-2">{filteUser?.address}</span>
-                        </div>
-                      </div>
-                    </>
-                  )}
+            {appointmentData?.title || appointmentData?.description ? (
+              <div className="top rounded border">
+                <div className="row mx-auto">
+                  <div
+                    style={{
+                      backgroundImage: `  linear-gradient(
+                  rgba(0, 0, 0, 0.6), 
+                  rgba(0, 0, 0, 0.6)
+                ),url(${appointmentData?.image?.url})`,
+                    }}
+                    className="col-md-12 banner_book position-relative m-0 p-0 "
+                  >
+                    <div className="banner_content_book">
+                      <p className="h3 text-light">BOOK AN APPOINTMENT</p>
+                      <p
+                        style={{ fontSize: "1rem" }}
+                        className=" b-3 text-light w-50"
+                      >
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Assumenda, in? Sit incidunt vero voluptates ut amet,
+                        dolor pariatur voluptatibus. Laudantium! Lorem ipsum
+                        dolor sit amet consectetur adipisicing elit. Assumenda,
+                        in? Sit incidunt vero voluptates ut amet, dolor pariatur
+                        voluptatibus. Laudantium!
+                      </p>
+                      <button
+                        className="btn btn-primary"
+                        style={{ width: "150px" }}
+                        onClick={handleClick}
+                      >
+                        Book Now <i className="fa-solid fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
+            ) : (
+              <LoadingSkeleton height={"25rem"} />
+            )}
+            <div className="docotor_info d-flex justify-content-around align-items-center">
+              <div className="profile mt-2 d-flex align-items-center">
+                {filteUser?.image?.url ? (
+                  <img
+                    className="rounded-circle me-2"
+                    src={filteUser?.image?.url}
+                    alt=""
+                  />
+                ) : (
+                  <LoadingSkeleton
+                    width={"40px"}
+                    height={"40px"}
+                    className={"rounded-circle me-2"}
+                    count={1}
+                  />
+                )}
+                {fetchuser?.specialities || filteUser?.username ? (
+                  <span className="fw-bold">
+                    {filteUser?.specialities} <></>
+                    {filteUser?.username}
+                  </span>
+                ) : (
+                  <LoadingSkeleton width={"8rem"} count={1} />
+                )}
+              </div>
+              {filteUser?.email ? (
+                <div className="mx-2 mt-2">
+                  <i className="fa-solid fa-envelope me-2"></i>
+                  <span>{filteUser?.email}</span>
+                </div>
+              ) : (
+                <LoadingSkeleton width={"8rem"} count={1} />
+              )}
+              {filteUser?.address ? (
+                <div className="mx-2 mt-2">
+                  <i className="fa-solid fa-location-dot me-2"></i>
+                  <span>{filteUser?.address}</span>
+                </div>
+              ) : (
+                <LoadingSkeleton width={"8rem"} count={1} />
+              )}
+              {filteUser?.phone ? (
+                <div className="mx-2 mt-2">
+                  <i className="fa-solid fa-phone me-2"></i>
+                  <span>+977-{filteUser?.phone}</span>
+                </div>
+              ) : (
+                <LoadingSkeleton width={"8rem"} count={1} />
+              )}
             </div>
-            <div className="overview mt-5 mx-auto px-2">
-              {appointmentData?.doctor ? (
+            <div className="overview mt-4 mx-auto px-2">
+              {filteUser?.about ? (
                 <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
-                  Overview Of {appointmentData?.doctor}
+                  About {appointmentData?.doctor}
                 </p>
               ) : (
-                <LoadingSkeleton count={1} />
+                <LoadingSkeleton width={"20rem"} height={"40px"} count={1} />
               )}
               {filteUser?.about ? (
                 <p className="text-dark" style={{ fontSize: "1rem" }}>
                   {filteUser?.about}
                 </p>
               ) : (
-                <LoadingSkeleton count={5} />
+                <LoadingSkeleton height={"20px"} count={5} />
               )}
             </div>
             <div className="overview mt-5 mx-auto px-2">
-              <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
-                Subspecialities
-              </p>
+              {filteUser?.subspecialities ? (
+                <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
+                  Subspecialities
+                </p>
+              ) : (
+                <LoadingSkeleton width={"20rem"} height={"40px"} count={1} />
+              )}
               {filteUser?.subspecialities ? (
                 <p className="text-dark" style={{ fontSize: "1rem" }}>
                   {filteUser?.subspecialities}
                 </p>
               ) : (
-                <LoadingSkeleton count={5} />
+                <LoadingSkeleton height={"20px"} count={5} />
               )}
             </div>
           </div>
           <div className="col-md-4 mx-auto">
-            <div className="booking pt-3">
-              <p className="h4 fw-bolder" style={{ color: "#005963" }}>
-                Booking Summery
-              </p>
-              <div className="booking_form position-relative">
-                <div className="contact_form mt-3">
-                  <div className="form-group">
-                    <div className="font-control">
-                      <input
-                        placeholder="Name"
-                        name="username"
-                        onChange={(e) => formChange(e)}
-                        type="text"
-                        className="form-control py-2 mt-2"
-                      />
+            {filteUser ? (
+              <div className="booking pt-3">
+                <p className="h4 fw-bolder" style={{ color: "#005963" }}>
+                  Booking Summery
+                </p>
+                <div className="booking_form mt-4 position-relative">
+                  <div className="contact_form mt-3">
+                    <div className="form-group">
+                      <div className="font-control">
+                        <input
+                          id="username"
+                          placeholder="Username"
+                          ref={inputRef}
+                          name="username"
+                          {...register("username", {
+                            required: true,
+                            maxLength: 100,
+                          })}
+                          type="text"
+                          className="form-control my-form py-2 mt-2"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group mt-4">
+                      <div className="font-control">
+                        <input
+                          placeholder="example@gmail.com"
+                          type="email"
+                          name="email"
+                          {...register("email", {
+                            required: true,
+                            pattern: /^\S+@\S+$/i,
+                          })}
+                          className="form-control my-form py-2 mt-2"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="form-group mt-4">
-                    <div className="font-control">
-                      <input
-                        placeholder="Email"
-                        type="email"
-                        name="email"
-                        onChange={(e) => formChange(e)}
-                        className="form-control py-2 mt-2"
-                      />
+                  <div className="forms">
+                    <div className="form mt-4">
+                      <div class="input-group date" data-provide="datepicker">
+                        <input
+                          disabled
+                          type="date"
+                          style={{ position: "relative" }}
+                          className={
+                            "form-control my-form rounded text-sm text-secondary"
+                          }
+                          value={appointmentData?.date}
+                          placeholder=" Expiry date"
+                        />
+                        <i
+                          style={{
+                            position: "absolute",
+                            right: "5%",
+                            top: "25%",
+                          }}
+                          className="fa-solid fa-calendar"
+                        ></i>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="forms">
-                  <div className="form mt-4">
-                    <div class="input-group date" data-provide="datepicker">
-                      <DatePicker date={formData?.date} locale={enGB}>
-                        {({ inputProps, focused }) => (
-                          <>
-                            <input
-                              disabled
-                              type="date"
-                              style={{ position: "relative" }}
-                              className={
-                                "form-control rounded text-sm text-secondary" +
-                                (focused ? " -focused" : "")
-                              }
-                              {...inputProps}
-                              placeholder=" Expiry date"
-                            />
-                            <i
-                              style={{
-                                position: "absolute",
-                                right: "5%",
-                                top: "25%",
-                              }}
-                              className="fa-solid fa-calendar"
-                            ></i>
-                          </>
-                        )}
-                      </DatePicker>
+                    <div className="form mt-4">
+                      <div class="input-group date" data-provide="datepicker">
+                        <input
+                          className="form-control my-form"
+                          disabled
+                          type="time"
+                          value={appointmentData?.time}
+                        />
+                        <i
+                          style={{
+                            position: "absolute",
+                            right: "5%",
+                            top: "25%",
+                          }}
+                          className="fa-solid fa-clock"
+                        ></i>
+                      </div>
                     </div>
-                  </div>
-                  <div className="form mt-4">
-                    <div class="input-group date" data-provide="datepicker">
-                      <input
-                        className="form-control"
-                        disabled
-                        type="time"
-                        value={formData.time}
-                      />
-                      <i
-                        style={{
-                          position: "absolute",
-                          right: "5%",
-                          top: "25%",
-                        }}
-                        className="fa-solid fa-clock"
-                      ></i>
-                    </div>
-                  </div>
 
-                  <div className="button_book mt-4">
-                    <button
-                      onClick={booking}
-                      className="btn btn-outline-primary mx-auto d-block"
-                    >
-                      Book Appointment{" "}
-                      <i className="fa-solid fa-arrow-right"></i>{" "}
-                    </button>
+                    <div className="button_book mt-4">
+                      <button
+                        onClick={handleSubmit((data) =>
+                          onSubmit({
+                            ...data,
+                            date: appointmentData.date,
+                            time: appointmentData.time,
+                            appointment: appointmentData._id,
+                          })
+                        )}
+                        className="btn btn-outline-primary py-2 mx-auto d-block"
+                      >
+                        Book Appointment{" "}
+                        <i className="fa-solid fa-arrow-right"></i>{" "}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <LoadingSkeleton className={"mt-2"} height={"50px"} count={6} />
+            )}
           </div>
         </div>
       ) : (
