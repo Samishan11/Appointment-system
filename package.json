@@ -14,6 +14,7 @@
     "@fullcalendar/interaction": "^6.1.5",
     "@fullcalendar/react": "^6.1.5",
     "@fullcalendar/timegrid": "^6.1.5",
+    "@hookform/error-message": "^2.0.1",
     "@reduxjs/toolkit": "^1.9.3",
     "@syncfusion/ej2-base": "^21.1.35",
     "@syncfusion/ej2-data": "^21.1.35",

@@ -461,3 +461,14 @@
 .profile span {
   color: #005963;
 }
+
+.banner_content_book {
+  font-size: .9rem;
+}
+
+@media screen and (max-width:600px) {
+  .banner_content_book p {
+    width: 80% !important;
+    text-align: start;
+  }
+}

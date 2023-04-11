@@ -11,7 +11,7 @@ import { fetchSingleAppointment } from "../../../redux/reducer/slice/appointment
 import { toast } from "react-toastify";
 import { fetchuser } from "../../../redux/reducer/slice/userSlice";
 import { LoadingSkeleton } from "../../../component/Skeleton/Skeleton";
-import Skeleton from "react-loading-skeleton";
+import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
 const Detail = () => {
   const dispatch = useDispatch();
@@ -55,6 +55,7 @@ const Detail = () => {
     formState: { errors },
   } = useForm();
   // booking
+  console.log(errors);
   const onSubmit = async (data) => {
     console.log(data);
     try {
@@ -91,10 +92,7 @@ const Detail = () => {
                   >
                     <div className="banner_content_book">
                       <p className="h3 text-light">BOOK AN APPOINTMENT</p>
-                      <p
-                        style={{ fontSize: "1rem" }}
-                        className=" b-3 text-light w-50"
-                      >
+                      <p className=" b-3 text-light w-50">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Assumenda, in? Sit incidunt vero voluptates ut amet,
                         dolor pariatur voluptatibus. Laudantium! Lorem ipsum
@@ -116,8 +114,8 @@ const Detail = () => {
             ) : (
               <LoadingSkeleton height={"25rem"} />
             )}
-            <div className="docotor_info d-flex justify-content-around align-items-center">
-              <div className="profile mt-2 d-flex align-items-center">
+            <div className="docotor_info ">
+              <div className="profile mt-2">
                 {filteUser?.image?.url ? (
                   <img
                     className="rounded-circle me-2"
@@ -159,7 +157,7 @@ const Detail = () => {
               )}
               {filteUser?.phone ? (
                 <div className="mx-2 mt-2">
-                  <i className="fa-solid fa-phone me-2"></i>
+                  <i className="fa-solid fa-phone me-1"></i>
                   <span>+977-{filteUser?.phone}</span>
                 </div>
               ) : (
@@ -230,7 +228,7 @@ const Detail = () => {
                           type="email"
                           name="email"
                           {...register("email", {
-                            required: true,
+                            message: "This is required.",
                             pattern: /^\S+@\S+$/i,
                           })}
                           className="form-control my-form py-2 mt-2"
