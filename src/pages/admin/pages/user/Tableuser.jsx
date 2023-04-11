@@ -8,7 +8,6 @@ import {
 import { toast } from "react-toastify";
 import axios from "axios";
 export const Tableuser = ({ items }) => {
-  console.log(items);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   useEffect(() => {
@@ -31,9 +30,7 @@ export const Tableuser = ({ items }) => {
   });
 
   // update user
-
   const updateUserFetch = async (e) => {
-    // e.preventDefault();
     try {
       var res = await axios.put(
         `${import.meta.env.VITE_PROXY_URI}/update-user/${form._id}`,
@@ -41,8 +38,7 @@ export const Tableuser = ({ items }) => {
       );
       dispatch(updateUser(res.data.data));
     } catch (error) {
-      console.log(error);
-      //   toast.error(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 

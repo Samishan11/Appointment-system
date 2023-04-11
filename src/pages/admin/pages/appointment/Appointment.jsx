@@ -29,7 +29,7 @@ export const TableBody = ({ items }) => {
       {
         _id: appointmentSingle?._id,
         title: appointmentSingle?.title,
-        description: appointmentSingle?.description,
+        detail: appointmentSingle?.detail,
         date: appointmentSingle?.date,
         time: appointmentSingle?.time,
         time_end: appointmentSingle?.time_end,
@@ -41,15 +41,11 @@ export const TableBody = ({ items }) => {
     {
       _id: "",
       title: "",
-      description: "",
+      detail: "",
       date: "",
       time: "",
       time_end: "",
       doctor: "",
-      contact: "",
-      location: "",
-      email: "",
-      subspecialities: "",
     },
   ]);
   // image hook
@@ -87,6 +83,7 @@ export const TableBody = ({ items }) => {
       formdata.append("date", inputFieldsUpdate[0].date);
       formdata.append("time", inputFieldsUpdate[0].time);
       formdata.append("time_end", inputFieldsUpdate[0].time_end);
+      formdata.append("detail", inputFieldsUpdate[0].detail);
       var res = await axios.put(
         `${import.meta.env.VITE_PROXY_URI}/appointment/update/${
           inputFieldsUpdate[0]._id
@@ -182,9 +179,7 @@ export const TableBody = ({ items }) => {
                           <>
                             <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Appointment Title
-                                </label>
+                                <label>Appointment Title</label>
                                 <input
                                   onChange={(event) =>
                                     handleFormChangeUpdate(ind, event)
@@ -193,19 +188,12 @@ export const TableBody = ({ items }) => {
                                   value={inputFieldsUpdate[0]?.title}
                                   type="text"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  // placeholder={
-                                  //   appointment.singleAppointment.title
-                                  // }
                                 />
                               </div>
                             </div>
                             <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Doctor Name
-                                </label>
+                                <label>Doctor Name</label>
                                 <input
                                   onChange={(event) =>
                                     handleFormChangeUpdate(ind, event)
@@ -214,17 +202,13 @@ export const TableBody = ({ items }) => {
                                   value={inputFieldsUpdate[0]?.doctor}
                                   type="text"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
                                   // placeholder={singleAppointmentData.doctor}
                                 />
                               </div>
                             </div>
                             <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Image
-                                </label>
+                                <label htmlFor="">Image</label>
                                 <input
                                   onChange={(event) =>
                                     setImage(event.target.files[0])
@@ -232,15 +216,13 @@ export const TableBody = ({ items }) => {
                                   name="image"
                                   type="file"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
                                   placeholder="Enter title here"
                                 />
                               </div>
                             </div>
                             <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Date</label>
+                                <label htmlFor="">Date</label>
                                 <input
                                   onChange={(event) =>
                                     handleFormChangeUpdate(ind, event)
@@ -249,17 +231,13 @@ export const TableBody = ({ items }) => {
                                   value={inputFieldsUpdate[0]?.date}
                                   type="date"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
                                   placeholder={"Enter title here"}
                                 />
                               </div>
                             </div>
                             <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Time Start
-                                </label>
+                                <label htmlFor="">Time Start</label>
                                 <input
                                   onChange={(event) =>
                                     handleFormChangeUpdate(ind, event)
@@ -268,17 +246,15 @@ export const TableBody = ({ items }) => {
                                   value={inputFieldsUpdate[0]?.time}
                                   type="time"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
+                                  id=""
+                                  aria-describedby=""
                                   placeholder="Enter title here"
                                 />
                               </div>
                             </div>
                             <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Time End
-                                </label>
+                                <label htmlFor="">Time End</label>
                                 <input
                                   onChange={(event) =>
                                     handleFormChangeUpdate(ind, event)
@@ -287,13 +263,11 @@ export const TableBody = ({ items }) => {
                                   value={inputFieldsUpdate[0]?.time_end}
                                   type="time"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
                                   placeholder="Enter title here"
                                 />
                               </div>
                             </div>
-                            {/* <div className="col-12 col-md-12 my-2">
+                            <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">
                                   Description
@@ -302,35 +276,14 @@ export const TableBody = ({ items }) => {
                                   onChange={(event) =>
                                     handleFormChangeUpdate(ind, event)
                                   }
-                                  name="description"
+                                  name="detail"
                                   value={inputFieldsUpdate[0]?.description}
                                   type="text"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
                                   placeholder="Enter description here"
                                 />
                               </div>
                             </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Subspecialities
-                                </label>
-                                <textarea
-                                  onChange={(event) =>
-                                    handleFormChangeUpdate(ind, event)
-                                  }
-                                  name="subspecialities"
-                                  value={inputFieldsUpdate[0]?.subspecialities}
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter description here"
-                                />
-                              </div>
-                            </div> */}
                           </>
                         );
                       })}
@@ -389,15 +342,11 @@ const Appointment = () => {
   const [inputFields, setInputFields] = useState([
     {
       title: "",
-      description: "",
+      detail: "",
       date: "",
       time: "",
       time_end: "",
       doctor: "",
-      contact: "",
-      location: "",
-      email: "",
-      subspecialities: "",
     },
   ]);
 
@@ -661,42 +610,21 @@ const Appointment = () => {
                                 />
                               </div>
                             </div>
-                            {/* <div className="col-12 col-md-12 my-2">
+                            <div className="col-12 col-md-12 my-2">
                               <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Description
-                                </label>
+                                <label>Description</label>
                                 <textarea
+                                  rows={3}
                                   onChange={(event) =>
                                     handleFormChange(ind, event)
                                   }
-                                  name="description"
+                                  name="detail"
                                   type="text"
                                   className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
                                   placeholder="Enter description here"
                                 />
                               </div>
                             </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Subspecialities
-                                </label>
-                                <textarea
-                                  onChange={(event) =>
-                                    handleFormChange(ind, event)
-                                  }
-                                  name="subspecialities"
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter description here"
-                                />
-                              </div>
-                            </div> */}
                           </>
                         );
                       })}

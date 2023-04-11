@@ -14,7 +14,7 @@ import Pagination from "../../component/pagination";
 export const TableBooking = ({ items }) => {
   // status input field
   const [status, setStatus] = useState("");
-
+  const dispatch = useDispatch();
   // handel input change
   const onInputChange = (e, id) => {
     setStatus(e.target.value);
@@ -43,6 +43,7 @@ export const TableBooking = ({ items }) => {
       toast.success(res.data.message);
       dispatch(deleteBooking(id));
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data.message);
     }
   };

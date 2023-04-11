@@ -91,7 +91,9 @@ const Detail = () => {
                     className="col-md-12 banner_book position-relative m-0 p-0 "
                   >
                     <div className="banner_content_book">
-                      <p className="h3 text-light">BOOK AN APPOINTMENT</p>
+                      <p className="h4 text-light fw-bold">
+                        BOOK AN APPOINTMENT
+                      </p>
                       <p className=" b-3 text-light w-50">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Assumenda, in? Sit incidunt vero voluptates ut amet,

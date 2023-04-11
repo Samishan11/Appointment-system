@@ -68,6 +68,7 @@ export const Tabledoctor = ({ items }) => {
       axios.delete(`${import.meta.env.VITE_PROXY_URI}/delete-user/${id}`);
       dispatch(deleteuser(id));
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data.message);
     }
   };
