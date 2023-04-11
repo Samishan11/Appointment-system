@@ -242,7 +242,8 @@
 
   /* toast */
   .Toastify__toast-body {
-      width: 100% !important;
+      min-width: 85% !important;
+      text-align: start !important;
   }
 
   /* custom form */
