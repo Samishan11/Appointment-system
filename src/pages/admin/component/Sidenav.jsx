@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidenav = ({ tab }) => {
+  const navigate = useNavigate();
   useEffect(() => {
     document.querySelector(`.tab_btn`).classList.remove("nav_active");
     document.querySelector(`#${tab}`).classList.add("nav_active");
@@ -76,7 +77,7 @@ const Sidenav = ({ tab }) => {
             <button
               onClick={() => {
                 localStorage.removeItem("token");
-                window.location = "/";
+                navigate("/");
               }}
               className="btn btn-sm py-1 position-absolute btn-outline-light"
               style={{ bottom: "-80%", left: "40px", width: "150px" }}

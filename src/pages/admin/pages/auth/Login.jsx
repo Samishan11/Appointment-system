@@ -15,7 +15,6 @@ const Login = () => {
         `${import.meta.env.VITE_PROXY_URI}/login-user`,
         { email, password }
       );
-      console.log(res.data);
       if (res.data.message) {
         if (res.data.isAdmin) {
           localStorage.setItem("token", res.data.token);

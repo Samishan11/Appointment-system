@@ -14,7 +14,6 @@ import Pagination from "../../component/pagination";
 const Managedoctor = () => {
   const [navcollapse, setNavcollapse] = useState(false);
   const user = useSelector((state) => state.user.user);
-
   const dispatch = useDispatch();
 
   //
