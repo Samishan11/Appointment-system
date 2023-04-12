@@ -10,9 +10,10 @@ import { addBooking } from "../../../redux/reducer/slice/bookingSlice";
 import { fetchSingleAppointment } from "../../../redux/reducer/slice/appointmentSlice";
 import { toast } from "react-toastify";
 import { fetchuser } from "../../../redux/reducer/slice/userSlice";
-import { LoadingSkeleton } from "../../../component/Skeleton/Skeleton";
-import { ErrorMessage } from "@hookform/error-message";
+import Typography from "@mui/material/Typography";
 import { useForm } from "react-hook-form";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -28,6 +29,7 @@ const Detail = () => {
   );
 
   //   filter user and show data
+  const [loading, setLoading] = useState(true);
   const [filteUser, setFilteruser] = useState({});
   useEffect(() => {
     const fiterDoctorByUsername = user.find((data) => {
@@ -35,12 +37,12 @@ const Detail = () => {
         data?.username?.toLowerCase()?.replace(/\s/g, "") ===
         appointmentData?.doctor?.toLowerCase()?.replace(/\s/g, "")
       ) {
+        setLoading(false);
         return data;
       }
     });
     setFilteruser(fiterDoctorByUsername);
   }, [user]);
-  const [value, onChange] = useState(appointmentData?.time);
 
   // book now
   const inputRef = useRef(null);
@@ -63,11 +65,11 @@ const Detail = () => {
         `${import.meta.env.VITE_PROXY_URI}/booking`,
         data
       );
+      dispatch(addBooking(res.data.data));
       reset({
         username: "",
         email: "",
       });
-      dispatch(addBooking(res.data.data));
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -78,7 +80,7 @@ const Detail = () => {
       {appointmentData ? (
         <div className="row mt-2">
           <div className="col-md-7 m-0 p-0 mx-auto">
-            {appointmentData?.title || appointmentData?.description ? (
+            {!loading ? (
               <div className="top rounded border">
                 <div className="row mx-auto">
                   <div
@@ -114,93 +116,163 @@ const Detail = () => {
                 </div>
               </div>
             ) : (
-              <LoadingSkeleton height={"25rem"} />
+              <Skeleton className="mb-3" variant="rounded" height={"27rem"} />
             )}
             <div className="docotor_info ">
-              <div className="profile mt-2">
-                {filteUser?.image?.url ? (
+              <div className="profile mt-2 d-flex align-items-center">
+                {!loading ? (
                   <img
                     className="rounded-circle me-2"
                     src={filteUser?.image?.url}
                     alt=""
                   />
                 ) : (
-                  <LoadingSkeleton
-                    width={"40px"}
-                    height={"40px"}
-                    className={"rounded-circle me-2"}
-                    count={1}
+                  <Skeleton
+                    className="mb-2 me-2"
+                    variant="circular"
+                    width={40}
+                    height={40}
                   />
                 )}
-                {fetchuser?.specialities || filteUser?.username ? (
+                {!loading ? (
                   <span className="fw-bold">
                     {filteUser?.specialities} <></>
                     {filteUser?.username}
                   </span>
                 ) : (
-                  <LoadingSkeleton width={"8rem"} count={1} />
+                  <Skeleton variant="rounded" width={200} height={20} />
                 )}
               </div>
-              {filteUser?.email ? (
+              {!loading ? (
                 <div className="mx-2 mt-2">
                   <i className="fa-solid fa-envelope me-2"></i>
                   <span>{filteUser?.email}</span>
                 </div>
               ) : (
-                <LoadingSkeleton width={"8rem"} count={1} />
+                <Skeleton className="mb-2" variant="rounded" width={"10rem"} />
               )}
-              {filteUser?.address ? (
+              {!loading ? (
                 <div className="mx-2 mt-2">
                   <i className="fa-solid fa-location-dot me-2"></i>
                   <span>{filteUser?.address}</span>
                 </div>
               ) : (
-                <LoadingSkeleton width={"8rem"} count={1} />
+                <Skeleton className="mb-2" variant="rounded" width={"10rem"} />
               )}
-              {filteUser?.phone ? (
+              {!loading ? (
                 <div className="mx-2 mt-2">
                   <i className="fa-solid fa-phone me-1"></i>
                   <span>+977-{filteUser?.phone}</span>
                 </div>
               ) : (
-                <LoadingSkeleton width={"8rem"} count={1} />
+                <Skeleton variant="rounded" width={"10rem"} />
               )}
             </div>
             <div className="overview mt-4 mx-auto px-2">
-              {filteUser?.about ? (
+              {!loading ? (
                 <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
                   About {appointmentData?.doctor}
                 </p>
               ) : (
-                <LoadingSkeleton width={"20rem"} height={"40px"} count={1} />
+                <Skeleton
+                  variant="rounded"
+                  width={"20rem"}
+                  height={"40px"}
+                  className="mb-2"
+                />
               )}
-              {filteUser?.about ? (
-                <p className="text-dark" style={{ fontSize: "1rem" }}>
+              {!loading ? (
+                <Typography
+                  style={{ width: "100%", textAlign: "justify" }}
+                  variant="body1"
+                  gutterBottom
+                >
                   {filteUser?.about}
-                </p>
+                </Typography>
               ) : (
-                <LoadingSkeleton height={"20px"} count={5} />
+                <Stack>
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                </Stack>
               )}
             </div>
             <div className="overview mt-5 mx-auto px-2">
-              {filteUser?.subspecialities ? (
+              {!loading ? (
                 <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
                   Subspecialities
                 </p>
               ) : (
-                <LoadingSkeleton width={"20rem"} height={"40px"} count={1} />
+                <Skeleton
+                  variant="rounded"
+                  width={"20rem"}
+                  height={"40px"}
+                  className="mb-2"
+                />
               )}
-              {filteUser?.subspecialities ? (
-                <p className="text-dark" style={{ fontSize: "1rem" }}>
+              {!loading ? (
+                <Typography
+                  style={{ width: "100%", textAlign: "justify" }}
+                  variant="body1"
+                  gutterBottom
+                >
                   {filteUser?.subspecialities}
-                </p>
+                </Typography>
               ) : (
-                <LoadingSkeleton height={"20px"} count={5} />
+                <Stack>
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                  <Skeleton
+                    className="mb-2"
+                    variant="rounded"
+                    height={"20px"}
+                  />
+                </Stack>
               )}
             </div>
           </div>
-          <div className="col-md-4 mx-auto">
-            {filteUser ? (
+          <div className="col-md-4 mx-auto pb-2">
+            {!loading ? (
               <div className="booking pt-3">
                 <p className="h4 fw-bolder" style={{ color: "#005963" }}>
                   Booking Summery
@@ -300,7 +372,38 @@ const Detail = () => {
                 </div>
               </div>
             ) : (
-              <LoadingSkeleton className={"mt-2"} height={"50px"} count={6} />
+              <Stack>
+                <Skeleton
+                  variant="rounded"
+                  className={"mt-2"}
+                  height={"70px"}
+                />
+                <Skeleton
+                  variant="rounded"
+                  className={"mt-2"}
+                  height={"70px"}
+                />
+                <Skeleton
+                  variant="rounded"
+                  className={"mt-2"}
+                  height={"70px"}
+                />
+                <Skeleton
+                  variant="rounded"
+                  className={"mt-2"}
+                  height={"70px"}
+                />
+                <Skeleton
+                  variant="rounded"
+                  className={"mt-2"}
+                  height={"70px"}
+                />
+                <Skeleton
+                  variant="rounded"
+                  className={"mt-2"}
+                  height={"70px"}
+                />
+              </Stack>
             )}
           </div>
         </div>

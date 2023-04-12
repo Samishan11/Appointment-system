@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import img from "../../../../assets/hr.jpg";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+
 const Register = () => {
   const navigate = useNavigate();
   // forms

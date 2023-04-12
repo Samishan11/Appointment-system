@@ -10,11 +10,14 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@fullcalendar/daygrid": "^6.1.5",
     "@fullcalendar/interaction": "^6.1.5",
     "@fullcalendar/react": "^6.1.5",
     "@fullcalendar/timegrid": "^6.1.5",
     "@hookform/error-message": "^2.0.1",
+    "@mui/material": "^5.12.0",
     "@reduxjs/toolkit": "^1.9.3",
     "@syncfusion/ej2-base": "^21.1.35",
     "@syncfusion/ej2-data": "^21.1.35",
