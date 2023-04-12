@@ -65,7 +65,6 @@ const Detail = () => {
     formState: { errors },
   } = useForm();
   // booking
-  console.log(errors);
   const onSubmit = async (data) => {
     console.log(data);
     try {
@@ -83,7 +82,16 @@ const Detail = () => {
     }
   };
 
-  const bookingOther = [{}];
+  const _appointment = useSelector((state) => state.appointment.appointment);
+  const [nextAppointment, setNextAppointment] = useState(null);
+  useEffect(() => {
+    const filter = _appointment.filter((data) => {
+      if (data._id !== appointmentData._id) {
+        return data;
+      }
+    });
+    setNextAppointment(filter);
+  }, []);
 
   return (
     <div className="container-fluid pb-4">
@@ -434,64 +442,76 @@ const Detail = () => {
                 ) : (
                   <Skeleton width={250} height={50} />
                 )}
-                <div className="booking_form mt-3 position-relative">
-                  <List
-                    sx={{
-                      width: "100%",
-                      maxWidth: 360,
-                      bgcolor: "background.paper",
-                    }}
-                  >
-                    {[1, 2, 3, 4, 5, 6].map((data) => {
-                      return !loading ? (
-                        <>
-                          <ListItem className="bg-light">
-                            <ListItemAvatar>
-                              <Avatar src={appointmentData?.image?.url}>
-                                <ImageIcon />
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary={appointmentData.title}
-                              secondary={new Date(
-                                appointmentData.date
-                              )?.toDateString()}
-                            />
-                            <ListItemAvatar>
-                              <Link to={`/detail/6434eaf1136581c8616ce5399`}>
-                                <Avatar
-                                  style={{ background: "rgb(84, 202, 206)" }}
-                                  className="bg-primary-cus"
-                                >
-                                  <KeyboardArrowRightOutlinedIcon />
+                {nextAppointment?.length >= 1 ? (
+                  <div className="booking_form mt-3 position-relative">
+                    <List
+                      sx={{
+                        width: "100%",
+                        maxWidth: 360,
+                        bgcolor: "background.paper",
+                      }}
+                    >
+                      {nextAppointment.map((data, ind) => {
+                        return !loading ? (
+                          <>
+                            <ListItem key={ind} className="bg-light">
+                              <ListItemAvatar>
+                                <Avatar src={appointmentData?.image?.url}>
+                                  <ImageIcon />
                                 </Avatar>
-                              </Link>
-                            </ListItemAvatar>
-                          </ListItem>
-                          <Divider variant="inset" component="li" />
-                        </>
-                      ) : (
-                        <div className="col-md-10 col-lg-10 pt-3 d-flex justify-content-between align-items-center">
-                          <Skeleton variant="circular" height={50} width={50} />
-                          <Stack>
+                              </ListItemAvatar>
+                              <ListItemText
+                                primary={appointmentData.title}
+                                secondary={new Date(
+                                  appointmentData.date
+                                )?.toDateString()}
+                              />
+                              <ListItemAvatar>
+                                <Link to={`/detail/${data._id}`}>
+                                  <Avatar
+                                    style={{ background: "rgb(84, 202, 206)" }}
+                                    className="bg-primary-cus"
+                                  >
+                                    <KeyboardArrowRightOutlinedIcon />
+                                  </Avatar>
+                                </Link>
+                              </ListItemAvatar>
+                            </ListItem>
+                            <Divider variant="inset" component="li" />
+                          </>
+                        ) : (
+                          <div className="col-md-10 col-lg-10 pt-3 d-flex justify-content-between align-items-center">
                             <Skeleton
-                              className="mb-1"
-                              variant="rounded"
-                              height={10}
-                              width={150}
+                              variant="circular"
+                              height={50}
+                              width={50}
                             />
+                            <Stack>
+                              <Skeleton
+                                className="mb-1"
+                                variant="rounded"
+                                height={10}
+                                width={150}
+                              />
+                              <Skeleton
+                                variant="rounded"
+                                height={10}
+                                width={100}
+                              />
+                            </Stack>
                             <Skeleton
-                              variant="rounded"
-                              height={10}
-                              width={100}
+                              variant="circular"
+                              height={50}
+                              width={50}
                             />
-                          </Stack>
-                          <Skeleton variant="circular" height={50} width={50} />
-                        </div>
-                      );
-                    })}
-                  </List>
-                </div>
+                          </div>
+                        );
+                      })}
+                    </List>
+                  </div>
+                ) : (
+                  <Loading />
+                )}
               </div>
             </div>
           </div>
