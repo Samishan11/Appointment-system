@@ -210,14 +210,18 @@
 
   }
 
-  .booking p::after {
+  .booking .title::after {
       position: absolute;
       background: rgb(0, 172, 177);
       content: "";
       height: 30px;
       width: 3px;
       left: -10px;
-      top: 12px;
+      top: 14px;
+  }
+
+  .bg-primary-cus {
+      background-color: rgb(84, 202, 206);
   }
 
   .contact {

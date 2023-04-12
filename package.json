@@ -17,6 +17,7 @@
     "@fullcalendar/react": "^6.1.5",
     "@fullcalendar/timegrid": "^6.1.5",
     "@hookform/error-message": "^2.0.1",
+    "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.0",
     "@reduxjs/toolkit": "^1.9.3",
     "@syncfusion/ej2-base": "^21.1.35",

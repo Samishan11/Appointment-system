@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { enGB } from "date-fns/locale";
 import { DatePicker } from "react-nice-dates";
 import "react-nice-dates/build/style.css";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loading from "../../admin/component/loading";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,14 @@ import Typography from "@mui/material/Typography";
 import { useForm } from "react-hook-form";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import ImageIcon from "@mui/icons-material/Image";
+import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
+import Divider from "@mui/material/Divider";
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -75,10 +83,12 @@ const Detail = () => {
     }
   };
 
+  const bookingOther = [{}];
+
   return (
-    <div className="container-fluid">
+    <div className="container-fluid pb-4">
       {appointmentData ? (
-        <div className="row mt-2">
+        <div className="row">
           <div className="col-md-7 m-0 p-0 mx-auto">
             {!loading ? (
               <div className="top rounded border">
@@ -272,139 +282,218 @@ const Detail = () => {
             </div>
           </div>
           <div className="col-md-4 mx-auto pb-2">
-            {!loading ? (
-              <div className="booking pt-3">
-                <p className="h4 fw-bolder" style={{ color: "#005963" }}>
-                  Booking Summery
-                </p>
-                <div className="booking_form mt-4 position-relative">
-                  <div className="contact_form mt-3">
-                    <div className="form-group">
-                      <div className="font-control">
-                        <input
-                          id="username"
-                          placeholder="Username"
-                          ref={inputRef}
-                          name="username"
-                          {...register("username", {
-                            required: true,
-                            maxLength: 100,
-                          })}
-                          type="text"
-                          className="form-control my-form py-2 mt-2"
-                        />
+            <div>
+              {!loading ? (
+                <div className="booking pt-3 mb-5">
+                  {!loading ? (
+                    <p
+                      className="h4 fw-bolder title"
+                      style={{ color: "#005963" }}
+                    >
+                      Booking Summery
+                    </p>
+                  ) : (
+                    <Skeleton width={250} height={50} />
+                  )}
+                  <div className="booking_form mt-4 position-relative">
+                    <div className="contact_form mt-3">
+                      <div className="form-group">
+                        <div className="font-control">
+                          <input
+                            id="username"
+                            placeholder="Username"
+                            ref={inputRef}
+                            name="username"
+                            {...register("username", {
+                              required: true,
+                              maxLength: 100,
+                            })}
+                            type="text"
+                            className="form-control my-form py-2 mt-2"
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group mt-4">
+                        <div className="font-control">
+                          <input
+                            placeholder="example@gmail.com"
+                            type="email"
+                            name="email"
+                            {...register("email", {
+                              message: "This is required.",
+                              pattern: /^\S+@\S+$/i,
+                            })}
+                            className="form-control my-form py-2 mt-2"
+                          />
+                        </div>
                       </div>
                     </div>
-                    <div className="form-group mt-4">
-                      <div className="font-control">
-                        <input
-                          placeholder="example@gmail.com"
-                          type="email"
-                          name="email"
-                          {...register("email", {
-                            message: "This is required.",
-                            pattern: /^\S+@\S+$/i,
-                          })}
-                          className="form-control my-form py-2 mt-2"
-                        />
+                    <div className="forms">
+                      <div className="form mt-4">
+                        <div class="input-group date" data-provide="datepicker">
+                          <input
+                            disabled
+                            type="date"
+                            style={{ position: "relative" }}
+                            className={
+                              "form-control my-form rounded text-sm text-secondary"
+                            }
+                            value={appointmentData?.date}
+                            placeholder=" Expiry date"
+                          />
+                          <i
+                            style={{
+                              position: "absolute",
+                              right: "5%",
+                              top: "25%",
+                            }}
+                            className="fa-solid fa-calendar"
+                          ></i>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="forms">
-                    <div className="form mt-4">
-                      <div class="input-group date" data-provide="datepicker">
-                        <input
-                          disabled
-                          type="date"
-                          style={{ position: "relative" }}
-                          className={
-                            "form-control my-form rounded text-sm text-secondary"
-                          }
-                          value={appointmentData?.date}
-                          placeholder=" Expiry date"
-                        />
-                        <i
-                          style={{
-                            position: "absolute",
-                            right: "5%",
-                            top: "25%",
-                          }}
-                          className="fa-solid fa-calendar"
-                        ></i>
+                      <div className="form mt-4">
+                        <div class="input-group date" data-provide="datepicker">
+                          <input
+                            className="form-control my-form"
+                            disabled
+                            type="time"
+                            value={appointmentData?.time}
+                          />
+                          <i
+                            style={{
+                              position: "absolute",
+                              right: "5%",
+                              top: "25%",
+                            }}
+                            className="fa-solid fa-clock"
+                          ></i>
+                        </div>
                       </div>
-                    </div>
-                    <div className="form mt-4">
-                      <div class="input-group date" data-provide="datepicker">
-                        <input
-                          className="form-control my-form"
-                          disabled
-                          type="time"
-                          value={appointmentData?.time}
-                        />
-                        <i
-                          style={{
-                            position: "absolute",
-                            right: "5%",
-                            top: "25%",
-                          }}
-                          className="fa-solid fa-clock"
-                        ></i>
-                      </div>
-                    </div>
 
-                    <div className="button_book mt-4">
-                      <button
-                        onClick={handleSubmit((data) =>
-                          onSubmit({
-                            ...data,
-                            date: appointmentData.date,
-                            time: appointmentData.time,
-                            appointment: appointmentData._id,
-                          })
-                        )}
-                        className="btn btn-outline-primary py-2 mx-auto d-block"
-                      >
-                        Book Appointment{" "}
-                        <i className="fa-solid fa-arrow-right"></i>{" "}
-                      </button>
+                      <div className="button_book mt-4">
+                        <button
+                          onClick={handleSubmit((data) =>
+                            onSubmit({
+                              ...data,
+                              date: appointmentData.date,
+                              time: appointmentData.time,
+                              appointment: appointmentData._id,
+                            })
+                          )}
+                          className="btn btn-outline-primary py-2 mx-auto d-block"
+                        >
+                          Book Appointment
+                          <i className="fa-solid fa-arrow-right"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+              ) : (
+                <Stack>
+                  <Skeleton
+                    variant="rounded"
+                    className={"mt-2"}
+                    height={"70px"}
+                  />
+                  <Skeleton
+                    variant="rounded"
+                    className={"mt-2"}
+                    height={"70px"}
+                  />
+                  <Skeleton
+                    variant="rounded"
+                    className={"mt-2"}
+                    height={"70px"}
+                  />
+                  <Skeleton
+                    variant="rounded"
+                    className={"mt-2"}
+                    height={"70px"}
+                  />
+                  <Skeleton
+                    variant="rounded"
+                    className={"mt-2"}
+                    height={"70px"}
+                  />
+                  <Skeleton
+                    variant="rounded"
+                    className={"mt-2"}
+                    height={"70px"}
+                  />
+                </Stack>
+              )}
+              <div className="booking related pt-3">
+                {!loading ? (
+                  <p
+                    className="h4 fw-bolder title"
+                    style={{ color: "#005963" }}
+                  >
+                    Appointments
+                  </p>
+                ) : (
+                  <Skeleton width={250} height={50} />
+                )}
+                <div className="booking_form mt-3 position-relative">
+                  <List
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    {[1, 2, 3, 4, 5, 6].map((data) => {
+                      return !loading ? (
+                        <>
+                          <ListItem className="bg-light">
+                            <ListItemAvatar>
+                              <Avatar src={appointmentData?.image?.url}>
+                                <ImageIcon />
+                              </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary={appointmentData.title}
+                              secondary={new Date(
+                                appointmentData.date
+                              )?.toDateString()}
+                            />
+                            <ListItemAvatar>
+                              <Link to={`/detail/6434eaf1136581c8616ce5399`}>
+                                <Avatar
+                                  style={{ background: "rgb(84, 202, 206)" }}
+                                  className="bg-primary-cus"
+                                >
+                                  <KeyboardArrowRightOutlinedIcon />
+                                </Avatar>
+                              </Link>
+                            </ListItemAvatar>
+                          </ListItem>
+                          <Divider variant="inset" component="li" />
+                        </>
+                      ) : (
+                        <div className="col-md-10 col-lg-10 pt-3 d-flex justify-content-between align-items-center">
+                          <Skeleton variant="circular" height={50} width={50} />
+                          <Stack>
+                            <Skeleton
+                              className="mb-1"
+                              variant="rounded"
+                              height={10}
+                              width={150}
+                            />
+                            <Skeleton
+                              variant="rounded"
+                              height={10}
+                              width={100}
+                            />
+                          </Stack>
+                          <Skeleton variant="circular" height={50} width={50} />
+                        </div>
+                      );
+                    })}
+                  </List>
+                </div>
               </div>
-            ) : (
-              <Stack>
-                <Skeleton
-                  variant="rounded"
-                  className={"mt-2"}
-                  height={"70px"}
-                />
-                <Skeleton
-                  variant="rounded"
-                  className={"mt-2"}
-                  height={"70px"}
-                />
-                <Skeleton
-                  variant="rounded"
-                  className={"mt-2"}
-                  height={"70px"}
-                />
-                <Skeleton
-                  variant="rounded"
-                  className={"mt-2"}
-                  height={"70px"}
-                />
-                <Skeleton
-                  variant="rounded"
-                  className={"mt-2"}
-                  height={"70px"}
-                />
-                <Skeleton
-                  variant="rounded"
-                  className={"mt-2"}
-                  height={"70px"}
-                />
-              </Stack>
-            )}
+            </div>
           </div>
         </div>
       ) : (
