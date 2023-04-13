@@ -17,6 +17,11 @@ import short from "short-uuid";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
 import Pagination from "../../component/pagination";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import { Box } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 
 export const TableBody = ({ items }) => {
   const dispatch = useDispatch();
@@ -122,24 +127,26 @@ export const TableBody = ({ items }) => {
             </td>
           )}
           <td className="">
-            <button
-              onClick={() => {
-                dispatch(singleAppointment(data));
-              }}
-              style={{ width: "30px" }}
-              data-bs-toggle="modal"
-              data-bs-target="#updatemodal"
-              className="btn btn-sm me-1 text-primary"
-            >
-              <i className="fa-solid fa-pen "></i>
-            </button>
-            <button
-              onClick={() => _deleteAppointment(data._id)}
-              style={{ width: "30px" }}
-              className="btn btn-sm me-1 text-danger"
-            >
-              <i className="fa-solid fa-trash"></i>
-            </button>
+            <Box>
+              <Fab
+                onClick={() => {
+                  dispatch(singleAppointment(data));
+                }}
+                data-bs-toggle="modal"
+                data-bs-target="#updatemodal"
+                className="cus_fab me-3"
+                color="warning"
+              >
+                <Edit />
+              </Fab>
+              <Fab
+                onClick={() => _deleteAppointment(data._id)}
+                className="cus_fab"
+                color="error"
+              >
+                <Delete />
+              </Fab>
+            </Box>
           </td>
         </tr>
       ))}
@@ -431,14 +438,17 @@ const Appointment = () => {
         <div className=" mx-auto">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-6 col-md-4 col-lg-3">
-                <button
+              <div className="col-sm-6 mt-2 col-md-5 col-lg-3">
+                <Fab
+                  size="medium"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
-                  className="btn btn-outline-primary my-2"
+                  className=" my-2 mx-2"
+                  color="primary"
+                  aria-label="add"
                 >
-                  Add Appointment
-                </button>
+                  <AddIcon />
+                </Fab>
               </div>
               <div className="mt-5">
                 <h6>RECENT APPOINTMENT</h6>

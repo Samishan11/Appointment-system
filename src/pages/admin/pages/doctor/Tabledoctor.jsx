@@ -7,6 +7,8 @@ import {
 } from "../../../../redux/reducer/slice/userSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Box, Fab } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 export const Tabledoctor = ({ items }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -45,14 +47,16 @@ export const Tabledoctor = ({ items }) => {
   };
 
   const [img, setImg] = useState("");
+  const [userid, setid] = useState("");
 
   // on image change
   const onImageChange = async (e, id) => {
+    console.log(userid);
     setImg(e.target.files[0]);
     const fd = new FormData();
     fd.append("image", e.target.files[0]);
     var res = await axios.put(
-      `${import.meta.env.VITE_PROXY_URI}/update-profile/${id}`,
+      `${import.meta.env.VITE_PROXY_URI}/update-profile/${userid}`,
       fd
     );
     dispatch(updateUser(res.data.data));
@@ -76,77 +80,75 @@ export const Tabledoctor = ({ items }) => {
     <>
       {items?.map((data, ind) => {
         return (
-          <tr key={ind + 1}>
+          <tr key={ind}>
             <input
-              onChange={(e) => onImageChange(e, data._id)}
+              onChange={(e) => {
+                onImageChange(e, ind);
+              }}
               id="img_file"
               className="d-none"
               type="file"
             ></input>
-            <td className="position-relative">
-              {data?.image?.url ? (
-                <img
-                  onClick={() => {
-                    document.getElementById("img_file").click();
-                  }}
-                  className="avatar_sm position-relative"
-                  src={data?.image?.url}
-                  alt="image"
-                />
-              ) : (
-                <img
-                  onClick={() => {
-                    document.getElementById("img_file").click();
-                  }}
-                  className="avatar_sm position-relative"
-                  src={
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbwte1tJ8o6AbmlhUPzJicUculax6L7TCHMG5i0Frw9SPevTpAfDuZLoC85zAiz27cpks&usqp=CAU"
-                  }
-                  alt="image"
-                />
-              )}
-              <i
-                style={{ left: "12%", top: "50%" }}
-                className="fa-solid fa-camera text-primary position-absolute"
-              ></i>
+            <td className="position-relative img_td">
+              <img
+                onClick={() => {
+                  document.getElementById("img_file").click();
+                  setid(data._id);
+                  console.log(data._id);
+                }}
+                className="avatar_sm"
+                src={
+                  data?.image?.url
+                    ? data?.image?.url
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbwte1tJ8o6AbmlhUPzJicUculax6L7TCHMG5i0Frw9SPevTpAfDuZLoC85zAiz27cpks&usqp=CAU"
+                }
+                alt="image"
+              />
             </td>
             <td>{data.username.toUpperCase()}</td>
             <td>{`${data.email}`}</td>
             <td>{new Date(data.createdOn).toDateString()}</td>
-            <td className="">
-              <button
-                onClick={() => {
-                  console.log(data);
-                  setForm({
-                    _id: data._id,
-                    username: data?.username ? data?.username : "",
-                    email: data.email ? data.email : "",
-                    isAdmin: data?.isAdmin ? data?.isAdmin : "",
-                    isDoctor: data?.isDoctor ? data?.isDoctor : "",
-                    password: data?.password ? data?.password : "",
-                    about: data?.about ? data?.about : "",
-                    subspecialities: data?.subspecialities
-                      ? data?.subspecialities
-                      : "",
-                    specialities: data?.specialities ? data?.specialities : "",
-                    phone: data?.phone ? data?.phone : "",
-                    address: data?.address ? data?.address : "",
-                  });
-                }}
-                style={{ width: "30px" }}
-                data-bs-toggle="modal"
-                data-bs-target="#updatemodal"
-                className="btn btn-sm me-1 text-primary"
-              >
-                <i className="fa-solid fa-pen "></i>{" "}
-              </button>
-              <button
-                onClick={() => deleteUserOnClick(data._id)}
-                style={{ width: "30px" }}
-                className="btn btn-sm me-1 text-danger"
-              >
-                <i className="fa-solid fa-trash"></i>{" "}
-              </button>
+            <td style={{ borderBottomColor: "none" }} className="table_td">
+              <Box className="d-flex" sx={{ "& > :not(style)": { m: 1 } }}>
+                <Fab
+                  className="cus_fab"
+                  onClick={() => {
+                    setForm({
+                      _id: data._id,
+                      username: data?.username ? data?.username : "",
+                      email: data.email ? data.email : "",
+                      isAdmin: data?.isAdmin ? data?.isAdmin : "",
+                      isDoctor: data?.isDoctor ? data?.isDoctor : "",
+                      password: data?.password ? data?.password : "",
+                      about: data?.about ? data?.about : "",
+                      subspecialities: data?.subspecialities
+                        ? data?.subspecialities
+                        : "",
+                      specialities: data?.specialities
+                        ? data?.specialities
+                        : "",
+                      phone: data?.phone ? data?.phone : "",
+                      address: data?.address ? data?.address : "",
+                    });
+                  }}
+                  data-bs-toggle="modal"
+                  data-bs-target="#updatemodal"
+                  color="warning"
+                  size="small"
+                  aria-label="edit"
+                >
+                  <Edit />
+                </Fab>
+                <Fab
+                  className="cus_fab"
+                  onClick={() => deleteUserOnClick(data._id)}
+                  color="error"
+                  size="small"
+                  aria-label="edit"
+                >
+                  <Delete />
+                </Fab>
+              </Box>
             </td>
           </tr>
         );

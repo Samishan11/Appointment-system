@@ -6,7 +6,8 @@ import { fetchuser, adduser } from "../../../../redux/reducer/slice/userSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Pagination from "../../component/pagination";
-
+import AddIcon from "@mui/icons-material/Add";
+import { Button, Fab } from "@mui/material";
 const Manageuser = () => {
   const [navcollapse, setNavcollapse] = useState(false);
   const user = useSelector((state) => state.user.user);
@@ -81,14 +82,17 @@ const Manageuser = () => {
         {/* Manageuser table  */}
         <div className=" mx-auto">
           <div className="container-fluid">
-            <div className="col-6 col-md-4 col-lg-3">
-              <button
+            <div className="col-sm-6 mt-2 col-md-5 col-lg-3">
+              <Fab
+                size="medium"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-                className="btn btn-outline-primary my-2"
+                className=" my-2 mx-2"
+                color="primary"
+                aria-label="add"
               >
-                Add User
-              </button>
+                <AddIcon />
+              </Fab>
             </div>
             <div className="row">
               <div className="mt-5">

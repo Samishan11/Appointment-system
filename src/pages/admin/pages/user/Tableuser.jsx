@@ -7,6 +7,8 @@ import {
 } from "../../../../redux/reducer/slice/userSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { Box, Fab } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 export const Tableuser = ({ items }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
@@ -29,11 +31,12 @@ export const Tableuser = ({ items }) => {
     checkpassword: "",
   });
 
+  const [userid, setId] = useState("");
   // update user
   const updateUserFetch = async (e) => {
     try {
       var res = await axios.put(
-        `${import.meta.env.VITE_PROXY_URI}/update-user/${form._id}`,
+        `${import.meta.env.VITE_PROXY_URI}/update-user/${userid}`,
         form
       );
       dispatch(updateUser(res.data.data));
@@ -81,6 +84,7 @@ export const Tableuser = ({ items }) => {
                 <img
                   onClick={() => {
                     document.getElementById("img_file").click();
+                    setId(data._id);
                   }}
                   className="avatar_sm position-relative"
                   src={data?.image?.url}
@@ -90,6 +94,7 @@ export const Tableuser = ({ items }) => {
                 <img
                   onClick={() => {
                     document.getElementById("img_file").click();
+                    setId(data._id);
                   }}
                   className="avatar_sm position-relative"
                   src={
@@ -98,40 +103,50 @@ export const Tableuser = ({ items }) => {
                   alt="image"
                 />
               )}
-              <i
-                style={{ left: "12%", top: "50%" }}
-                className="fa-solid fa-camera text-primary position-absolute"
-              ></i>
             </td>
             <td>{data.username.toUpperCase()}</td>
             <td>{`${data.email}`}</td>
             <td>{new Date(data.createdOn).toDateString()}</td>
             <td className="">
-              <button
-                onClick={() => {
-                  setForm({
-                    _id: data._id,
-                    username: data.username,
-                    email: data.email,
-                    isAdmin: data.isAdmin,
-                    isDoctor: data.isDoctor,
-                    password: data.password,
-                  });
+              <td
+                style={{
+                  borderBottomColor: "white !important",
+                  textDecoration: "none",
                 }}
-                style={{ width: "30px" }}
-                data-bs-toggle="modal"
-                data-bs-target="#updatemodal"
-                className="btn btn-sm me-1 text-primary"
+                className="table_td"
               >
-                <i className="fa-solid fa-pen "></i>{" "}
-              </button>
-              <button
-                onClick={() => deleteUserOnClick(data._id)}
-                style={{ width: "30px" }}
-                className="btn btn-sm me-1 text-danger"
-              >
-                <i className="fa-solid fa-trash"></i>{" "}
-              </button>
+                <Box className="d-flex" sx={{ "& > :not(style)": { m: 1 } }}>
+                  <Fab
+                    className="cus_fab"
+                    onClick={() => {
+                      setForm({
+                        _id: data._id,
+                        username: data?.username ? data?.username : "",
+                        email: data.email ? data.email : "",
+                        isAdmin: data?.isAdmin ? data?.isAdmin : "",
+                        isDoctor: data?.isDoctor ? data?.isDoctor : "",
+                        password: data?.password ? data?.password : "",
+                      });
+                    }}
+                    data-bs-toggle="modal"
+                    data-bs-target="#updatemodal"
+                    color="warning"
+                    size="small"
+                    aria-label="edit"
+                  >
+                    <Edit />
+                  </Fab>
+                  <Fab
+                    className="cus_fab"
+                    onClick={() => deleteUserOnClick(data._id)}
+                    color="error"
+                    size="small"
+                    aria-label="edit"
+                  >
+                    <Delete />
+                  </Fab>
+                </Box>
+              </td>
             </td>
           </tr>
         );

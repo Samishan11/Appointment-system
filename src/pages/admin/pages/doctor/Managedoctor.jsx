@@ -11,6 +11,8 @@ import Sidenav from "../../component/Sidenav";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Pagination from "../../component/pagination";
+import { Fab } from "@mui/material";
+import { Add } from "@mui/icons-material";
 const Managedoctor = () => {
   const [navcollapse, setNavcollapse] = useState(false);
   const user = useSelector((state) => state.user.user);
@@ -20,16 +22,12 @@ const Managedoctor = () => {
   function onclick() {
     setNavcollapse(!navcollapse);
   }
-  const [filteruser, setuser] = useState(null);
-  useEffect(() => {
-    dispatch(fetchuser());
-    const filterDoctor = user.filter((data) => {
-      if (data.isDoctor) {
-        return data;
-      }
-    });
-    setuser(filterDoctor);
-  }, []);
+
+  const filterDoctor = user.filter((data) => {
+    if (data.isDoctor) {
+      return data;
+    }
+  });
 
   // add user  from
   const [formData, setFormData] = useState({
@@ -94,13 +92,16 @@ const Managedoctor = () => {
         <div className=" mx-auto">
           <div className="container-fluid">
             <div className="col-6 col-md-4 col-lg-3">
-              <button
+              <Fab
+                size="medium"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-                className="btn btn-outline-primary my-2"
+                className=" my-2 mx-2"
+                color="primary"
+                aria-label="add"
               >
-                Add DOCTOR
-              </button>
+                <Add />
+              </Fab>
             </div>
             <div className="row">
               <div className="mt-5">
@@ -126,7 +127,7 @@ const Managedoctor = () => {
                       <Pagination
                         itemsPerPage={10}
                         pathname={"admin/doctor"}
-                        items={filteruser}
+                        items={filterDoctor}
                       />
                     </table>
                   </div>

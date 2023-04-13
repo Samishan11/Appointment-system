@@ -472,3 +472,16 @@
     text-align: start;
   }
 }
+
+.table_td {
+  border-bottom-color: white !important;
+}
+
+.cus_fab {
+  height: 25px !important;
+  width: 35px !important;
+}
+
+.cus_fab svg {
+  font-size: 20px;
+}
