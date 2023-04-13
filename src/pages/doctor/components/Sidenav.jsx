@@ -21,7 +21,9 @@ const Sidenav = ({ tab }) => {
       <div className="sidebar-heading py-4 primary-text fs-6 fw-bold text-uppercase border-bottom">
         <Link style={{ textDecoration: "none" }} to={"/"}>
           {" "}
-          <h3 className="text-light">DOCOTR-DASH</h3>{" "}
+          <h3 style={{ fontSize: "1.6rem" }} className="text-light">
+            DOCTOR-DASH
+          </h3>{" "}
         </Link>
       </div>
       <div
@@ -34,7 +36,7 @@ const Sidenav = ({ tab }) => {
           className="list-group-item list-sroup-item-action bg-transparent tab_btn text-light py-3"
         >
           <i className="fas fa-tachometer-alt me-2" />
-          DOCTOR
+          DASHBOARD
         </Link>
         <Link
           id="todayappointment"

@@ -10,6 +10,7 @@ import { fetchBooking } from "../../../redux/reducer/slice/bookingSlice";
 import jwtDecode from "jwt-decode";
 import CountdownTimer from "../components/Countdown";
 import { Link } from "react-router-dom";
+import { Box, Fab } from "@mui/material";
 const Today = () => {
   const dispatch = useDispatch();
   const [navcollapse, setNavcollapse] = useState(false);
@@ -89,7 +90,7 @@ const Today = () => {
               id="menu-toggle"
             />
             <h3 className="fs-3 m-0">
-              Welcome User {useData.username.toUpperCase()}
+              Welcome {useData.username.toUpperCase()}
             </h3>
           </div>
         </nav>
@@ -130,18 +131,19 @@ const Today = () => {
                               <td>{data.time_end}</td>
                               <td>{getInterval(data)}</td>
                               <td>
-                                <button
-                                  onClick={() => {
-                                    filterBookings(data._id);
-                                    setAppointmentTime(data.time);
-                                  }}
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                  style={{ width: "150px" }}
-                                  className="btn btn-sm btn-primary"
-                                >
-                                  view
-                                </button>
+                                <Box>
+                                  <Fab
+                                    onClick={() => {
+                                      filterBookings(data._id);
+                                      setAppointmentTime(data.time);
+                                    }}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    className="cus_fab"
+                                  >
+                                    View
+                                  </Fab>
+                                </Box>
                               </td>
                             </tr>
                           );

@@ -10,7 +10,8 @@ import {
 } from "../../../../redux/reducer/slice/bookingSlice";
 import { toast } from "react-toastify";
 import Pagination from "../../component/pagination";
-
+import { Box, Fab } from "@mui/material";
+import { Delete, VideoCall } from "@mui/icons-material";
 export const TableBooking = ({ items }) => {
   // status input field
   const [status, setStatus] = useState("");
@@ -49,7 +50,6 @@ export const TableBooking = ({ items }) => {
   };
 
   const zoom = async (email, id) => {
-    console.log(email, id);
     try {
       var res = await axios.post(
         `${import.meta.env.VITE_PROXY_URI}/create-zoomlink/${id}`,
@@ -97,23 +97,25 @@ export const TableBooking = ({ items }) => {
             </td>
             <td className="d-flex px-2">
               {data.status === "approve" && (
-                <button
-                  onClick={() => zoom(data.email, data._id)}
-                  style={{ width: "" }}
-                  className="btn btn-sm me-1 text-primary"
-                >
-                  {" "}
-                  <i className="fa-solid fa-video"></i>{" "}
-                </button>
+                <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                  <Fab
+                    color="primary"
+                    onClick={() => zoom(data.email, data._id)}
+                    className="cus_fab"
+                  >
+                    <VideoCall />
+                  </Fab>
+                </Box>
               )}
-              <button
-                onClick={() => _deleteBooking(data._id)}
-                style={{ width: "" }}
-                className="btn btn-sm me-1 text-danger"
-              >
-                {" "}
-                <i className="fa-solid fa-trash"></i>{" "}
-              </button>
+              <Box sx={{ "& > :not(style)": { m: 1 } }}>
+                <Fab
+                  color="error"
+                  onClick={() => _deleteBooking(data._id)}
+                  className="cus_fab"
+                >
+                  <Delete />
+                </Fab>
+              </Box>
             </td>
           </tr>
         );

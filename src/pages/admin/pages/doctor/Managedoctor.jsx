@@ -23,6 +23,10 @@ const Managedoctor = () => {
     setNavcollapse(!navcollapse);
   }
 
+  useEffect(() => {
+    dispatch(fetchuser());
+  }, []);
+
   const filterDoctor = user.filter((data) => {
     if (data.isDoctor) {
       return data;

@@ -78,7 +78,7 @@ const Doctor = () => {
               id="menu-toggle"
             />
             <h3 className="fs-3 m-0">
-              Welcome User {useData.username.toUpperCase()}
+              Welcome {useData.username.toUpperCase()}
             </h3>
           </div>
         </nav>
