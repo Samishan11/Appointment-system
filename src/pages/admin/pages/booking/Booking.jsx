@@ -13,6 +13,8 @@ import Pagination from "../../component/pagination";
 import { Box, Fab } from "@mui/material";
 import { Delete, VideoCall } from "@mui/icons-material";
 export const TableBooking = ({ items }) => {
+  const booking = useSelector((state) => state.booking.booking);
+
   // status input field
   const [status, setStatus] = useState("");
   const dispatch = useDispatch();
@@ -27,7 +29,10 @@ export const TableBooking = ({ items }) => {
             status: e.target.value,
           }
         );
-        dispatch(updateBooking(id, e.target.value));
+        dispatch(updateBooking(res.data.data));
+        if (res.data.success) {
+          toast.success(res.data.message);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -62,7 +67,6 @@ export const TableBooking = ({ items }) => {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-      console.log(error);
     }
   };
   return (
@@ -76,7 +80,9 @@ export const TableBooking = ({ items }) => {
             <td>{new Date(data.booked_on).toDateString()}</td>
             <td className="py-2">
               <select
-                onChange={(e) => onInputChange(e, data._id)}
+                onChange={(e) => {
+                  onInputChange(e, data._id);
+                }}
                 className="form-select"
                 aria-label="Default select example"
               >
@@ -128,7 +134,6 @@ const Booking = () => {
   const dispatch = useDispatch();
   const [navcollapse, setNavcollapse] = useState(false);
   const booking = useSelector((state) => state.booking.booking);
-
   //
   function onclick() {
     setNavcollapse(!navcollapse);

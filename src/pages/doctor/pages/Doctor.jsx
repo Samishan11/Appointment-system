@@ -121,7 +121,7 @@ const Doctor = () => {
               ) : (
                 <div
                   className="border rounded shadow bg-light text-secondary px-4"
-                  style={{ width: "100%", overflowX: "hidden" }}
+                  style={{ width: "100%", overflowX: "scroll" }}
                 >
                   <table class="table table-border">
                     <thead className="text-secondary">

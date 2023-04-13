@@ -10,7 +10,7 @@ import { fetchBooking } from "../../../redux/reducer/slice/bookingSlice";
 import jwtDecode from "jwt-decode";
 import CountdownTimer from "../components/Countdown";
 import { Link } from "react-router-dom";
-import { Box, Fab } from "@mui/material";
+import { Box, Button, Fab } from "@mui/material";
 const Today = () => {
   const dispatch = useDispatch();
   const [navcollapse, setNavcollapse] = useState(false);
@@ -107,7 +107,7 @@ const Today = () => {
               ) : (
                 <div
                   className="border rounded shadow bg-light text-secondary px-4"
-                  style={{ width: "100%", overflowX: "hidden" }}
+                  style={{ width: "100%", overflowX: "scroll" }}
                 >
                   <table class="table table-border">
                     <thead className="text-secondary">
@@ -131,19 +131,19 @@ const Today = () => {
                               <td>{data.time_end}</td>
                               <td>{getInterval(data)}</td>
                               <td>
-                                <Box>
-                                  <Fab
+                                <div className="col-4">
+                                  <Button
+                                    variant="contained"
                                     onClick={() => {
                                       filterBookings(data._id);
                                       setAppointmentTime(data.time);
                                     }}
                                     data-bs-toggle="modal"
                                     data-bs-target="#exampleModal"
-                                    className="cus_fab"
                                   >
                                     View
-                                  </Fab>
-                                </Box>
+                                  </Button>
+                                </div>
                               </td>
                             </tr>
                           );
