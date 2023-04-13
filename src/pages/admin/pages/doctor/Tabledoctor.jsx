@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { Box, Fab } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
+
 export const Tabledoctor = ({ items }) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -42,7 +43,7 @@ export const Tabledoctor = ({ items }) => {
       dispatch(updateUser(res.data.data));
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.messgae);
     }
   };
 
@@ -72,8 +73,7 @@ export const Tabledoctor = ({ items }) => {
       axios.delete(`${import.meta.env.VITE_PROXY_URI}/delete-user/${id}`);
       dispatch(deleteuser(id));
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.messgae);
     }
   };
   return (
@@ -236,6 +236,7 @@ export const Tabledoctor = ({ items }) => {
                       <div className="form-group">
                         <label htmlFor="">Admin</label>
                         <select
+                          value={form?.isAdmin}
                           onChange={(e) => onChange(e)}
                           name="isAdmin"
                           className="form-select"
@@ -244,8 +245,11 @@ export const Tabledoctor = ({ items }) => {
                           <option selected>
                             {form?.isAdmin ? "True" : "False"}
                           </option>
-                          <option value={true}>True</option>
-                          <option value={false}>False</option>
+                          {!form?.isAdmin ? (
+                            <option value={true}>True</option>
+                          ) : (
+                            <option value={false}>False</option>
+                          )}
                         </select>
                       </div>
                     </div>
@@ -253,6 +257,7 @@ export const Tabledoctor = ({ items }) => {
                       <div className="form-group">
                         <label htmlFor="">Doctor</label>
                         <select
+                          value={form?.isDoctor}
                           onChange={(e) => onChange(e)}
                           name="isDoctor"
                           className="form-select"
@@ -261,8 +266,11 @@ export const Tabledoctor = ({ items }) => {
                           <option selected>
                             {form?.isDoctor ? "True" : "False"}
                           </option>
-                          <option value={true}>True</option>
-                          <option value={false}>False</option>
+                          {!form?.isDoctor ? (
+                            <option value={true}>True</option>
+                          ) : (
+                            <option value={false}>False</option>
+                          )}
                         </select>
                       </div>
                     </div>

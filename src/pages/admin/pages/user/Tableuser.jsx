@@ -36,12 +36,12 @@ export const Tableuser = ({ items }) => {
   const updateUserFetch = async (e) => {
     try {
       var res = await axios.put(
-        `${import.meta.env.VITE_PROXY_URI}/update-user/${userid}`,
+        `${import.meta.env.VITE_PROXY_URI}/update-user/${form._id}`,
         form
       );
       dispatch(updateUser(res.data.data));
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.messgae);
     }
   };
 
@@ -63,7 +63,7 @@ export const Tableuser = ({ items }) => {
     const fd = new FormData();
     fd.append("image", e.target.files[0]);
     var res = await axios.put(
-      `${import.meta.env.VITE_PROXY_URI}/update-profile/${id}`,
+      `${import.meta.env.VITE_PROXY_URI}/update-profile/${userid}`,
       fd
     );
     dispatch(updateUser(res.data.data));
