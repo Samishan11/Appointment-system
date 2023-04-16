@@ -83,11 +83,9 @@ export const TableBody = ({ items }) => {
       formdata.append("title", inputFieldsUpdate[0].title);
       formdata.append("doctor", inputFieldsUpdate[0].doctor);
       formdata.append("detail", inputFieldsUpdate[0].detail);
-      formdata.append("subspecialities", inputFieldsUpdate[0].subspecialities);
       formdata.append("date", inputFieldsUpdate[0].date);
       formdata.append("time", inputFieldsUpdate[0].time);
       formdata.append("time_end", inputFieldsUpdate[0].time_end);
-      formdata.append("detail", inputFieldsUpdate[0].detail);
       var res = await axios.put(
         `${import.meta.env.VITE_PROXY_URI}/appointment/update/${
           inputFieldsUpdate[0]._id
@@ -96,7 +94,14 @@ export const TableBody = ({ items }) => {
       );
       dispatch(updateAppointment(res.data));
       toast.success(res.data.message);
-      console.log(res.data);
+      if (res.data.success) {
+        document
+          .getElementById("updatemodal")
+          .classList.remove("show", "d-block");
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((el) => el.classList.remove("modal-backdrop"));
+      }
     } catch (error) {
       console.log(error);
       // toast.error(error.response.data.message)
@@ -383,28 +388,58 @@ const Appointment = () => {
   const submitForm = async (e) => {
     try {
       e.preventDefault();
-      const formdata = new FormData();
-      formdata.append("image", image);
-      formdata.append("title", inputFields[0].title);
-      formdata.append("detail", inputFields[0].detail);
-      formdata.append("date", inputFields[0].date);
-      formdata.append("time", inputFields[0].time);
-      formdata.append("time_end", inputFields[0].time_end);
-      formdata.append("doctor", selectedOption.value);
-      formdata.append("subspecialities", inputFields[0].subspecialities);
-      formdata.append("uuid", encodedUUID);
-      var response = await axios.post(
-        `${import.meta.env.VITE_PROXY_URI}/appointment/add`,
-        formdata
-      );
-      console.log(response.data);
-      if (response.data.success) {
-        setLoading(false);
+      if (
+        !inputFields[0].title ||
+        !selectedOption.value ||
+        !inputFields[0].date ||
+        !inputFields[0].time ||
+        !inputFields[0].detail ||
+        !inputFields[0].time_end
+      ) {
+        toast.warn("Fill All The Detail");
       } else {
-        setLoading(true);
+        const formdata = new FormData();
+        formdata.append("image", image);
+        formdata.append("title", inputFields[0].title);
+        formdata.append("detail", inputFields[0].detail);
+        formdata.append("date", inputFields[0].date);
+        formdata.append("time", inputFields[0].time);
+        formdata.append("time_end", inputFields[0].time_end);
+        formdata.append("doctor", selectedOption.value);
+        formdata.append("subspecialities", inputFields[0].subspecialities);
+        formdata.append("uuid", encodedUUID);
+        var response = await axios.post(
+          `${import.meta.env.VITE_PROXY_URI}/appointment/add`,
+          formdata
+        );
+        console.log(response.data);
+        if (response.data.success) {
+          document
+            .getElementById("exampleModal")
+            .classList.remove("show", "d-block");
+          document
+            .querySelectorAll(".modal-backdrop")
+            .forEach((el) => el.classList.remove("modal-backdrop"));
+          setInputFields([
+            {
+              title: "",
+              date: "",
+              time: "",
+              time_end: "",
+              detail: "",
+              doctor: "",
+            },
+          ]);
+          setSelectedOption(null);
+          setImage(null);
+          setLoading(false);
+        } else {
+          setLoading(true);
+        }
+        dispatch(add(response.data.data));
       }
-      dispatch(add(response.data.data));
     } catch (error) {
+      console.log(error);
       toast.error(error.response.data.message);
     }
   };
@@ -529,6 +564,7 @@ const Appointment = () => {
                                   onChange={(event) =>
                                     handleFormChange(ind, event)
                                   }
+                                  value={inputFields[0].title}
                                   name="title"
                                   type="text"
                                   className="form-control input100"
@@ -578,6 +614,7 @@ const Appointment = () => {
                                   }
                                   name="date"
                                   type="date"
+                                  value={inputFields[0].date}
                                   className="form-control input100"
                                   id="exampleInputEmail1"
                                   aria-describedby="emailHelp"
@@ -596,6 +633,7 @@ const Appointment = () => {
                                   }
                                   name="time"
                                   type="time"
+                                  value={inputFields[0].time}
                                   className="form-control input100"
                                   id="exampleInputEmail1"
                                   aria-describedby="emailHelp"
@@ -614,6 +652,7 @@ const Appointment = () => {
                                   }
                                   name="time_end"
                                   type="time"
+                                  value={inputFields[0].time_end}
                                   className="form-control input100"
                                   id="exampleInputEmail1"
                                   aria-describedby="emailHelp"
@@ -630,6 +669,7 @@ const Appointment = () => {
                                     handleFormChange(ind, event)
                                   }
                                   name="detail"
+                                  value={inputFields[0].detail}
                                   type="text"
                                   className="form-control input100"
                                   placeholder="Enter description here"

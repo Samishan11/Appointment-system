@@ -9,20 +9,6 @@ function App() {
     <div id="body_main">
       <Provider store={store}>
         <Routing />
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        {/* Same as */}
-        <ToastContainer style={{ textAlign: "justify" }} />
       </Provider>
     </div>
   );
