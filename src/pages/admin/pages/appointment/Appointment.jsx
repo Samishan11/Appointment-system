@@ -283,8 +283,9 @@ export const TableBody = ({ items }) => {
                                   onChange={(event) =>
                                     handleFormChangeUpdate(ind, event)
                                   }
+                                  rows={6}
                                   name="detail"
-                                  value={inputFieldsUpdate[0]?.description}
+                                  value={inputFieldsUpdate[0]?.detail}
                                   type="text"
                                   className="form-control input100"
                                   placeholder="Enter description here"
@@ -624,7 +625,7 @@ const Appointment = () => {
                               <div className="form-group">
                                 <label>Description</label>
                                 <textarea
-                                  rows={3}
+                                  rows={6}
                                   onChange={(event) =>
                                     handleFormChange(ind, event)
                                   }

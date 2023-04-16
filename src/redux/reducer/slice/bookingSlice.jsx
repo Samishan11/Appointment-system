@@ -53,6 +53,7 @@ const bookingSlice = createSlice({
       };
       toast.success("Appointment has been booked.");
       state.booking.push(booking);
+      state.loading = true;
     },
     updateBooking: (state, action) => {
       state.booking.map((val) => {

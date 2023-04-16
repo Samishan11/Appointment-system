@@ -114,9 +114,7 @@ const appointmentSlice = createSlice({
         time_end: action.payload.time_end ? action.payload.time_end : "",
         date: action.payload.date ? action.payload.date : "",
         time: action.payload.time ? action.payload.time : "",
-        description: action.payload.description
-          ? action.payload.description
-          : "",
+        detail: action.payload.detail ? action.payload.detail : "",
         image: action.payload.image ? action.payload.image : "",
       };
       state.singleAppointment = appointment;
