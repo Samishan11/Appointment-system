@@ -29,17 +29,10 @@ const Detail = () => {
     (state) => state.appointment.singleAppointment
   );
   //
-  const [loading, setLoading] = useState(true);
   useEffect(() => {
     dispatch(fetchSingleAppointment(id));
     dispatch(fetchuser());
-    if (appointmentData !== {}) {
-      setLoading(!loading);
-    } else {
-      setLoading(loading);
-    }
   }, []);
-  console.log(loading);
 
   // book now
   const inputRef = useRef(null);
@@ -238,7 +231,7 @@ const Detail = () => {
           <div>
             {appointmentData.doctor ? (
               <div className="booking pt-3 mb-5">
-                {!loading ? (
+                {appointmentData.doctor ? (
                   <p
                     className="h4 fw-bolder title"
                     style={{ color: "#005963" }}
@@ -377,7 +370,7 @@ const Detail = () => {
               </Stack>
             )}
             <div className="booking related pt-3">
-              {nextAppointment ? (
+              {appointmentData.doctor ? (
                 <p className="h4 fw-bolder title" style={{ color: "#005963" }}>
                   Appointments
                 </p>
@@ -443,15 +436,31 @@ const Detail = () => {
                     })}
                   </List>
                 </div>
-              ) : nextAppointment?.length === 0 ? (
+              ) : appointmentData.doctor ? (
                 <Loading />
               ) : (
-                <Skeleton
-                  className="mx-auto mt-3"
-                  width={300}
-                  height={60}
-                  variant="rounded"
-                />
+                <>
+                  <Skeleton
+                    className="mx-auto mt-3"
+                    height={60}
+                    variant="rounded"
+                  />
+                  <Skeleton
+                    className="mx-auto mt-3"
+                    height={60}
+                    variant="rounded"
+                  />
+                  <Skeleton
+                    className="mx-auto mt-3"
+                    height={60}
+                    variant="rounded"
+                  />
+                  <Skeleton
+                    className="mx-auto mt-3"
+                    height={60}
+                    variant="rounded"
+                  />
+                </>
               )}
             </div>
           </div>
