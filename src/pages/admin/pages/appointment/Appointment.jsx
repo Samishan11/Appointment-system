@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Sidenav from "../../component/Sidenav";
 import {
-  add,
   deleteAppointment,
   fetchAppointment,
   getInterval,
@@ -13,15 +12,14 @@ import axios from "axios";
 import Loading from "../../component/loading";
 import { toast } from "react-toastify";
 import { fetchuser } from "../../../../redux/reducer/slice/userSlice";
-import short from "short-uuid";
-import { v4 as uuidv4 } from "uuid";
-import Select from "react-select";
+
 import Pagination from "../../component/pagination";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import { Box } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-
+import { Appointmentmodal } from "./Appointmentmodal";
+import useAddAppointment from "./Addappointment";
 export const TableBody = ({ items }) => {
   const dispatch = useDispatch();
   // dynamic form control
@@ -325,14 +323,6 @@ const Appointment = () => {
   const [navcollapse, setNavcollapse] = useState(false);
 
   const appointmentd = useSelector((state) => state.appointment);
-  console.log(appointmentd.appointment);
-  const user = useSelector((state) => state.user.user);
-
-  const transformedOptions = user.map((option) => ({
-    value: option._id,
-    label: option.username,
-  }));
-  const [selectedOption, setSelectedOption] = useState(null);
 
   // declering the usedispach function
   const dispatch = useDispatch();
@@ -348,99 +338,17 @@ const Appointment = () => {
     dispatch(fetchuser());
   }, []);
 
-  // dynamic form control
-  const [inputFields, setInputFields] = useState([
-    {
-      title: "",
-      date: "",
-      time: "",
-      time_end: "",
-      detail: "",
-      doctor: "",
-    },
-  ]);
-
-  function handleChange(selectedOption) {
-    setSelectedOption(selectedOption);
-  }
-  // image hook
-  const [image, setImage] = useState([]);
-
-  // input handel event on input change
-  const handleFormChange = (index, event) => {
-    let data = [...inputFields];
-    data[index][event.target.name] = event.target.value;
-    setInputFields(data);
-    console.log(event.target.value);
-    // searchDoctor(inputFields[0].doctor);
-    // console.log(inputFields[0].doctor)
-  };
-
-  // loading until get response on submit form
-  const [loading, setLoading] = useState(false);
-  // genrate a unique short id
-  const shortUUID = short();
-  const uuid = uuidv4();
-  const encodedUUID = shortUUID.fromUUID(uuid).slice(0, 6);
-  // submit form
-  const submitForm = async (e) => {
-    try {
-      e.preventDefault();
-      if (
-        !inputFields[0].title ||
-        !selectedOption.value ||
-        !inputFields[0].date ||
-        !inputFields[0].time ||
-        !inputFields[0].detail ||
-        !inputFields[0].time_end
-      ) {
-        toast.warn("Fill All The Detail");
-      } else {
-        const formdata = new FormData();
-        formdata.append("image", image);
-        formdata.append("title", inputFields[0].title);
-        formdata.append("detail", inputFields[0].detail);
-        formdata.append("date", inputFields[0].date);
-        formdata.append("time", inputFields[0].time);
-        formdata.append("time_end", inputFields[0].time_end);
-        formdata.append("doctor", selectedOption.value);
-        formdata.append("subspecialities", inputFields[0].subspecialities);
-        formdata.append("uuid", encodedUUID);
-        var response = await axios.post(
-          `${import.meta.env.VITE_PROXY_URI}/appointment/add`,
-          formdata
-        );
-        console.log(response.data);
-        if (response.data.success) {
-          document
-            .getElementById("exampleModal")
-            .classList.remove("show", "d-block");
-          document
-            .querySelectorAll(".modal-backdrop")
-            .forEach((el) => el.classList.remove("modal-backdrop"));
-          setInputFields([
-            {
-              title: "",
-              date: "",
-              time: "",
-              time_end: "",
-              detail: "",
-              doctor: "",
-            },
-          ]);
-          setSelectedOption(null);
-          setImage(null);
-          setLoading(false);
-        } else {
-          setLoading(true);
-        }
-        dispatch(add(response.data.data));
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
-    }
-  };
+  // use add appointments
+  const {
+    inputFields,
+    handleChange,
+    handleFormChangeAppointment,
+    loading,
+    submitForm,
+    transformedOptions,
+    selectedOption,
+    setImage,
+  } = useAddAppointment();
 
   return (
     <div
@@ -476,7 +384,7 @@ const Appointment = () => {
                 <Fab
                   size="medium"
                   data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
+                  data-bs-target="#apointmentModal"
                   className=" my-2 mx-2"
                   color="primary"
                   aria-label="add"
@@ -520,193 +428,17 @@ const Appointment = () => {
         </div>
       </div>
       {/* modal pop up  */}
+      <Appointmentmodal
+        inputFields={inputFields}
+        handleChange={handleChange}
+        handleFormChangeAppointment={handleFormChangeAppointment}
+        loading={loading}
+        submitForm={submitForm}
+        transformedOptions={transformedOptions}
+        selectedOption={selectedOption}
+        setImage={setImage}
+      />
       {/* Modal */}
-      <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex={-1}
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-3" id="exampleModalLabel">
-                Add Appointment
-              </h1>
-              <button
-                type="button"
-                className="btn-close text-danger fas fa-times"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <form
-              id="contact-form"
-              style={{ fontSize: "1rem" }}
-              className="container validate-form"
-            >
-              <div className="modal-body">
-                <div className="container  pb-5">
-                  <div className="container bg-white d-block mx-auto">
-                    <div className="row">
-                      {inputFields.map((input, ind) => {
-                        return (
-                          <>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Appointment Title
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChange(ind, event)
-                                  }
-                                  value={inputFields[0].title}
-                                  name="title"
-                                  type="text"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Doctor Name
-                                </label>
-                                <Select
-                                  value={selectedOption}
-                                  onChange={handleChange}
-                                  options={transformedOptions}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Image
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    setImage(event.target.files[0])
-                                  }
-                                  name="image"
-                                  type="file"
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Date</label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChange(ind, event)
-                                  }
-                                  name="date"
-                                  type="date"
-                                  value={inputFields[0].date}
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Time Start
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChange(ind, event)
-                                  }
-                                  name="time"
-                                  type="time"
-                                  value={inputFields[0].time}
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">
-                                  Time End
-                                </label>
-                                <input
-                                  onChange={(event) =>
-                                    handleFormChange(ind, event)
-                                  }
-                                  name="time_end"
-                                  type="time"
-                                  value={inputFields[0].time_end}
-                                  className="form-control input100"
-                                  id="exampleInputEmail1"
-                                  aria-describedby="emailHelp"
-                                  placeholder="Enter title here"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-12 my-2">
-                              <div className="form-group">
-                                <label>Description</label>
-                                <textarea
-                                  rows={6}
-                                  onChange={(event) =>
-                                    handleFormChange(ind, event)
-                                  }
-                                  name="detail"
-                                  value={inputFields[0].detail}
-                                  type="text"
-                                  className="form-control input100"
-                                  placeholder="Enter description here"
-                                />
-                              </div>
-                            </div>
-                          </>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                {loading ? (
-                  <Loading />
-                ) : (
-                  <>
-                    <button
-                      onClick={submitForm}
-                      type="sumbit"
-                      className="btn btn-outline-primary"
-                    >
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-danger"
-                      data-bs-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                  </>
-                )}
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

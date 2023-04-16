@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Sidenav from "../../component/Sidenav";
 import Loading from "../../component/loading";
-import { fetchuser, adduser } from "../../../../redux/reducer/slice/userSlice";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { fetchuser } from "../../../../redux/reducer/slice/userSlice";
 import Pagination from "../../component/pagination";
 import AddIcon from "@mui/icons-material/Add";
-import { Button, Fab } from "@mui/material";
+import { Fab } from "@mui/material";
+import useAddUser from "./Adduser";
+import { UserModel } from "./Usermodal";
+
 const Manageuser = () => {
   const [navcollapse, setNavcollapse] = useState(false);
   const user = useSelector((state) => state.user.user);
@@ -22,49 +23,7 @@ const Manageuser = () => {
     dispatch(fetchuser());
   }, []);
 
-  // add user  from
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    contact: "",
-    isDoctor: false,
-    isAdmin: false,
-    password: "",
-    checkpassword: "",
-  });
-
-  const addUser = async () => {
-    try {
-      var res = await axios.post(
-        `${import.meta.env.VITE_PROXY_URI}/register-user`,
-        formData
-      );
-      if (res.data.success) {
-        dispatch(adduser(res.data.data));
-        document.getElementById("exampleModal").classList.remove("show");
-        document
-          .querySelectorAll(".modal-backdrop")
-          .forEach((el) => el.classList.remove("modal-backdrop"));
-        setFormData({
-          username: "",
-          email: "",
-          contact: "",
-          isDoctor: "",
-          isAdmin: "",
-          password: "",
-          checkpassword: "",
-        });
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  };
-
-  // onchange event
-  const handleFormChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
-  };
+  const { formData, handleFormChange, addUser } = useAddUser();
 
   const [img, setImg] = useState("");
 
@@ -101,7 +60,7 @@ const Manageuser = () => {
               <Fab
                 size="medium"
                 data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                data-bs-target="#adduserModal"
                 className=" my-2 mx-2"
                 color="primary"
                 aria-label="add"
@@ -117,7 +76,7 @@ const Manageuser = () => {
                 ) : (
                   <div
                     className="border rounded shadow bg-light text-secondary mt-4 px-4"
-                    style={{ width: "100%", overflowX: "hidden" }}
+                    style={{ width: "100%", overflowX: "scroll" }}
                   >
                     <table class="table table-border">
                       <thead className="text-secondary">
@@ -142,143 +101,12 @@ const Manageuser = () => {
           </div>
         </div>
       </div>
-
       {/* Modal */}
-      <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex={-1}
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-3" id="">
-                Add User
-              </h1>
-              <button
-                type="button"
-                className="btn-close text-danger fas fa-times"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <div className="container  pb-5">
-                <div className="container bg-white d-block mx-auto">
-                  <div className="row">
-                    <>
-                      <div className="col-12 col-md-12 my-2">
-                        <div className="form-group">
-                          <label htmlFor="">Username</label>
-                          <input
-                            onChange={(event) => handleFormChange(event)}
-                            name="username"
-                            value={formData.username}
-                            type="text"
-                            className="form-control input100"
-                            placeholder="Enter title here"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-12 col-md-12 my-2">
-                        <div className="form-group">
-                          <label htmlFor="exampleInputEmail1">Email</label>
-                          <input
-                            onChange={(event) => handleFormChange(event)}
-                            name="email"
-                            value={formData.email}
-                            type="email"
-                            className="form-control input100"
-                            id=""
-                            aria-describedby="emailHelp"
-                            placeholder="Enter email here"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-12 col-md-12 my-2">
-                        <div className="form-group">
-                          <label htmlFor="">Admin</label>
-                          <select
-                            onChange={(e) => handleFormChange(e)}
-                            name="isAdmin"
-                            value={formData.isAdmin}
-                            className="form-select"
-                            aria-label="Default select example"
-                          >
-                            <option selected>Open this select menu</option>
-                            <option value={true}>True</option>
-                            <option value={false}>False</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-12 col-md-12 my-2">
-                        <div className="form-group">
-                          <label htmlFor="">Doctor</label>
-                          <select
-                            onChange={(e) => handleFormChange(e)}
-                            name="isDoctor"
-                            value={formData.isDoctor}
-                            className="form-select"
-                            aria-label="Default select example"
-                          >
-                            <option selected>Open this select menu</option>
-                            <option value={true}>True</option>
-                            <option value={false}>False</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="col-12 col-md-12 my-2">
-                        <div className="form-group">
-                          <label htmlFor="">Password</label>
-                          <input
-                            onChange={(event) => handleFormChange(event)}
-                            name="password"
-                            value={formData.password}
-                            type="password"
-                            className="form-control input100"
-                            placeholder="Enter title here"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-12 col-md-12 my-2">
-                        <div className="form-group">
-                          <label htmlFor="">Confirm Password</label>
-                          <input
-                            onChange={(event) => handleFormChange(event)}
-                            name="checkpassword"
-                            type="password"
-                            value={formData.checkpassword}
-                            className="form-control input100"
-                            placeholder="Enter title here"
-                          />
-                        </div>
-                      </div>
-                    </>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                onClick={addUser}
-                type="sumbit"
-                className="btn btn-outline-primary"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-danger"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <UserModel
+        handleFormChange={handleFormChange}
+        formData={formData}
+        addUser={addUser}
+      />
     </div>
   );
 };

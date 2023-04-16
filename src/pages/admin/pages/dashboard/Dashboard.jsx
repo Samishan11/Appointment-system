@@ -4,12 +4,33 @@ import { fetchAppointment } from "../../../../redux/reducer/slice/appointmentSli
 import Loading from "../../component/loading";
 import Sidenav from "../../component/Sidenav";
 import { fetchBooking } from "../../../../redux/reducer/slice/bookingSlice";
+import { Fab } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import useAddUser from "../user/Adduser";
+import { UserModel } from "../user/Usermodal";
+import { Button } from "@mui/material";
+import { Appointmentmodal } from "../appointment/Appointmentmodal";
+import useAddAppointment from "../appointment/Addappointment";
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [navcollapse, setNavcollapse] = useState(false);
   const appointmentd = useSelector((state) => state.appointment);
   const booking = useSelector((state) => state.booking.booking.slice(0, 8));
   const user = useSelector((state) => state.user.user);
+  // user modal
+  const { formData, handleFormChange, addUser } = useAddUser();
+  // appointment modal
+  const {
+    inputFields,
+    handleChange,
+    handleFormChangeAppointment,
+    loading,
+    submitForm,
+    transformedOptions,
+    selectedOption,
+    setImage,
+  } = useAddAppointment();
 
   //
   function onclick() {
@@ -59,7 +80,6 @@ const Dashboard = () => {
                     <p className="fs-5">Bookings</p>
                   </div>
                   <i class="fa-solid fa-calendar-check primary-text border rounded-full h2 secondary-bg p-3"></i>
-                  {/* <i className="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3" /> */}
                 </div>
               </div>
               <div className="col-md-4">
@@ -78,6 +98,34 @@ const Dashboard = () => {
                     <p className="fs-5">Events</p>
                   </div>
                   <i className="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3" />
+                </div>
+              </div>
+              <div className="row mt-4">
+                <div className="col-sm-6 mt-2 col-md-3 col-lg-2">
+                  <Button
+                    size="small"
+                    variant="contained"
+                    data-bs-toggle="modal"
+                    data-bs-target="#adduserModal"
+                    className=" my-2 mx-2"
+                    color="primary"
+                    aria-label="add"
+                  >
+                    <AddIcon /> User
+                  </Button>
+                </div>
+                <div className="col-sm-6 mt-2 col-md-3 col-lg-2">
+                  <Button
+                    size="small"
+                    variant="contained"
+                    data-bs-toggle="modal"
+                    data-bs-target="#apointmentModal"
+                    className=" my-2 mx-2"
+                    color="primary"
+                    aria-label="add"
+                  >
+                    <AddIcon /> Appointment
+                  </Button>
                 </div>
               </div>
             </div>
@@ -122,6 +170,23 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {/* add user modal */}
+      <UserModel
+        handleFormChange={handleFormChange}
+        formData={formData}
+        addUser={addUser}
+      />
+      {/* add appointment modal */}
+      <Appointmentmodal
+        inputFields={inputFields}
+        handleChange={handleChange}
+        handleFormChangeAppointment={handleFormChangeAppointment}
+        loading={loading}
+        submitForm={submitForm}
+        transformedOptions={transformedOptions}
+        selectedOption={selectedOption}
+        setImage={setImage}
+      />
     </div>
   );
 };

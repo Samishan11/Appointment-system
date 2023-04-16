@@ -55,7 +55,13 @@ const Managedoctor = () => {
         `${import.meta.env.VITE_PROXY_URI}/register-user`,
         formData
       );
-      dispatch(adduser(res.data.data));
+      if (res.data.success) {
+        dispatch(adduser(res.data.data));
+        document.getElementById("exampleModal").classList.remove("show");
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((el) => el.classList.remove("modal-backdrop"));
+      }
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -173,6 +179,7 @@ const Managedoctor = () => {
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="username"
+                            value={formData.username}
                             type="text"
                             className="form-control input100"
                             placeholder="Enter title here"
@@ -186,6 +193,7 @@ const Managedoctor = () => {
                             onChange={(event) => handleFormChange(event)}
                             name="email"
                             type="email"
+                            value={formData.email}
                             className="form-control input100"
                             aria-describedby=""
                             placeholder="Enter email here"
@@ -199,6 +207,7 @@ const Managedoctor = () => {
                             onChange={(event) => handleFormChange(event)}
                             name="phone"
                             type="number"
+                            value={formData.phone}
                             className="form-control input100"
                             placeholder="Enter contact here"
                           />
@@ -211,6 +220,7 @@ const Managedoctor = () => {
                             onChange={(event) => handleFormChange(event)}
                             name="address"
                             type="text"
+                            value={formData.address}
                             className="form-control input100"
                             placeholder="Enter address here"
                           />
@@ -222,6 +232,7 @@ const Managedoctor = () => {
                           <select
                             onChange={(e) => handleFormChange(e)}
                             name="isAdmin"
+                            value={formData.isAdmin}
                             className="form-select"
                             aria-label="Default select example"
                           >
@@ -237,6 +248,7 @@ const Managedoctor = () => {
                           <select
                             onChange={(e) => handleFormChange(e)}
                             name="isDoctor"
+                            value={formData.isDoctor}
                             className="form-select"
                             aria-label="Default select example"
                           >
@@ -253,6 +265,7 @@ const Managedoctor = () => {
                           <textarea
                             onChange={(e) => handleFormChange(e)}
                             name="about"
+                            value={formData.about}
                             className="form-control"
                             aria-label=""
                           />
@@ -264,6 +277,7 @@ const Managedoctor = () => {
                           <input
                             onChange={(e) => handleFormChange(e)}
                             name="specialities"
+                            value={formData.specialities}
                             className="form-control"
                           />
                         </div>
@@ -274,6 +288,7 @@ const Managedoctor = () => {
                           <textarea
                             onChange={(e) => handleFormChange(e)}
                             name="subspecialities"
+                            value={formData.subspecialities}
                             className="form-control"
                             aria-label=""
                           />
@@ -286,6 +301,7 @@ const Managedoctor = () => {
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="password"
+                            value={formData.password}
                             type="password"
                             className="form-control input100"
                             aria-describedby=""
@@ -300,6 +316,7 @@ const Managedoctor = () => {
                             onChange={(event) => handleFormChange(event)}
                             name="checkpassword"
                             type="password"
+                            value={formData.checkpassword}
                             className="form-control input100"
                             aria-describedby=""
                             placeholder="Enter title here"

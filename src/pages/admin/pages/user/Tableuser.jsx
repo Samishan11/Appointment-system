@@ -44,6 +44,15 @@ export const Tableuser = ({ items }) => {
         document
           .querySelectorAll(".modal-backdrop")
           .forEach((el) => el.classList.remove("modal-backdrop"));
+        setForm({
+          _id: "",
+          username: "",
+          email: "",
+          password: "",
+          isAdmin: "",
+          isDoctor: "",
+          checkpassword: "",
+        });
         dispatch(updateUser(res.data.data));
       }
     } catch (error) {
