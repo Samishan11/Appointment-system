@@ -39,7 +39,22 @@ const Manageuser = () => {
         `${import.meta.env.VITE_PROXY_URI}/register-user`,
         formData
       );
-      dispatch(adduser(res.data.data));
+      if (res.data.success) {
+        dispatch(adduser(res.data.data));
+        document.getElementById("exampleModal").classList.remove("show");
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((el) => el.classList.remove("modal-backdrop"));
+        setFormData({
+          username: "",
+          email: "",
+          contact: "",
+          isDoctor: "",
+          isAdmin: "",
+          password: "",
+          checkpassword: "",
+        });
+      }
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -159,6 +174,7 @@ const Manageuser = () => {
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="username"
+                            value={formData.username}
                             type="text"
                             className="form-control input100"
                             placeholder="Enter title here"
@@ -171,6 +187,7 @@ const Manageuser = () => {
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="email"
+                            value={formData.email}
                             type="email"
                             className="form-control input100"
                             id=""
@@ -185,6 +202,7 @@ const Manageuser = () => {
                           <select
                             onChange={(e) => handleFormChange(e)}
                             name="isAdmin"
+                            value={formData.isAdmin}
                             className="form-select"
                             aria-label="Default select example"
                           >
@@ -200,6 +218,7 @@ const Manageuser = () => {
                           <select
                             onChange={(e) => handleFormChange(e)}
                             name="isDoctor"
+                            value={formData.isDoctor}
                             className="form-select"
                             aria-label="Default select example"
                           >
@@ -216,6 +235,7 @@ const Manageuser = () => {
                           <input
                             onChange={(event) => handleFormChange(event)}
                             name="password"
+                            value={formData.password}
                             type="password"
                             className="form-control input100"
                             placeholder="Enter title here"
@@ -229,6 +249,7 @@ const Manageuser = () => {
                             onChange={(event) => handleFormChange(event)}
                             name="checkpassword"
                             type="password"
+                            value={formData.checkpassword}
                             className="form-control input100"
                             placeholder="Enter title here"
                           />

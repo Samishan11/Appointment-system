@@ -39,7 +39,13 @@ export const Tableuser = ({ items }) => {
         `${import.meta.env.VITE_PROXY_URI}/update-user/${form._id}`,
         form
       );
-      dispatch(updateUser(res.data.data));
+      if (res.data.success) {
+        document.getElementById("updatemodal").classList.remove("show");
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((el) => el.classList.remove("modal-backdrop"));
+        dispatch(updateUser(res.data.data));
+      }
     } catch (error) {
       toast.error(error.response.data.messgae);
     }

@@ -95,9 +95,7 @@ export const TableBody = ({ items }) => {
       dispatch(updateAppointment(res.data));
       toast.success(res.data.message);
       if (res.data.success) {
-        document
-          .getElementById("updatemodal")
-          .classList.remove("show", "d-block");
+        document.getElementById("updatemodal").classList.remove("show");
         document
           .querySelectorAll(".modal-backdrop")
           .forEach((el) => el.classList.remove("modal-backdrop"));

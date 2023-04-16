@@ -47,6 +47,7 @@ const userSlice = createSlice({
         isAdmin: action.payload.isAdmin,
         email: action.payload.email,
         password: action.payload.password,
+        createdOn: new Date().toDateString(),
       };
       toast.success("User Created.");
       state.user.push(user);
