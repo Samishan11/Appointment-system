@@ -485,3 +485,7 @@
 .cus_fab svg {
   font-size: 20px;
 }
+
+.css-12m5lms-MuiButtonBase-root-MuiFab-root {
+  z-index: 1 !important;
+}

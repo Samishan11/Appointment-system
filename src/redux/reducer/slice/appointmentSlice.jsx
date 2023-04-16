@@ -91,6 +91,7 @@ const appointmentSlice = createSlice({
       console.log(action.payload);
       const appointment = {
         _id: action.payload._id,
+        uuid: action.payload.uuid,
         title: action.payload.title,
         date: action.payload.date,
         time: action.payload.time,
@@ -109,6 +110,7 @@ const appointmentSlice = createSlice({
 
       const appointment = {
         _id: action.payload._id ? action.payload._id : "",
+        uuid: action.payload.uuid ? action.payload.uuid : "",
         title: action.payload.title ? action.payload.title : "",
         doctor: action.payload.doctor ? action.payload.doctor : "",
         time_end: action.payload.time_end ? action.payload.time_end : "",

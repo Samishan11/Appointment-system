@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchAppointment,
-  getInterval,
-} from "../../../../redux/reducer/slice/appointmentSlice";
+import { fetchAppointment } from "../../../../redux/reducer/slice/appointmentSlice";
 import Loading from "../../component/loading";
 import Sidenav from "../../component/Sidenav";
 import { fetchBooking } from "../../../../redux/reducer/slice/bookingSlice";
@@ -96,10 +93,10 @@ const Dashboard = () => {
                   <table class="table table-border">
                     <thead className="text-secondary">
                       <tr className="">
-                        <th scope="col">username</th>
-                        <th scope="col">email</th>
-                        <th scope="col">appointment id</th>
-                        <th scope="col">date</th>
+                        <th scope="col">USERNAME</th>
+                        <th scope="col">EMAIL</th>
+                        <th scope="col">APPOINTMENT ID</th>
+                        <th scope="col">DATE</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -109,7 +106,7 @@ const Dashboard = () => {
                             <tr className="py-4" key={ind + 1}>
                               <td>{data.username}</td>
                               <td>{`${data.email}`}</td>
-                              <td>{`${data.appointment}`}</td>
+                              <td>{`${data?.appointment?.uuid}`}</td>
                               <td>{new Date(data.booked_on).toDateString()}</td>
                             </tr>
                           );

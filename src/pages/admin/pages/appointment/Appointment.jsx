@@ -17,7 +17,6 @@ import short from "short-uuid";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
 import Pagination from "../../component/pagination";
-import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import { Box } from "@mui/material";
@@ -83,7 +82,7 @@ export const TableBody = ({ items }) => {
       formdata.append("image", image);
       formdata.append("title", inputFieldsUpdate[0].title);
       formdata.append("doctor", inputFieldsUpdate[0].doctor);
-      formdata.append("description", inputFieldsUpdate[0].description);
+      formdata.append("detail", inputFieldsUpdate[0].detail);
       formdata.append("subspecialities", inputFieldsUpdate[0].subspecialities);
       formdata.append("date", inputFieldsUpdate[0].date);
       formdata.append("time", inputFieldsUpdate[0].time);
@@ -323,11 +322,11 @@ const Appointment = () => {
   const [navcollapse, setNavcollapse] = useState(false);
 
   const appointmentd = useSelector((state) => state.appointment);
-
+  console.log(appointmentd.appointment);
   const user = useSelector((state) => state.user.user);
 
   const transformedOptions = user.map((option) => ({
-    value: option.username,
+    value: option._id,
     label: option.username,
   }));
   const [selectedOption, setSelectedOption] = useState(null);
@@ -350,10 +349,10 @@ const Appointment = () => {
   const [inputFields, setInputFields] = useState([
     {
       title: "",
-      detail: "",
       date: "",
       time: "",
       time_end: "",
+      detail: "",
       doctor: "",
     },
   ]);
@@ -369,6 +368,7 @@ const Appointment = () => {
     let data = [...inputFields];
     data[index][event.target.name] = event.target.value;
     setInputFields(data);
+    console.log(event.target.value);
     // searchDoctor(inputFields[0].doctor);
     // console.log(inputFields[0].doctor)
   };
@@ -386,7 +386,7 @@ const Appointment = () => {
       const formdata = new FormData();
       formdata.append("image", image);
       formdata.append("title", inputFields[0].title);
-      formdata.append("description", inputFields[0].description);
+      formdata.append("detail", inputFields[0].detail);
       formdata.append("date", inputFields[0].date);
       formdata.append("time", inputFields[0].time);
       formdata.append("time_end", inputFields[0].time_end);

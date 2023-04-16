@@ -76,7 +76,7 @@ export const TableBooking = ({ items }) => {
           <tr key={ind + 1}>
             <td>{data.username}</td>
             <td>{`${data.email}`}</td>
-            <td>{`${data.appointment}`}</td>
+            <td>{`${data?.appointment?.uuid}`}</td>
             <td>{new Date(data.booked_on).toDateString()}</td>
             <td className="py-2">
               <select

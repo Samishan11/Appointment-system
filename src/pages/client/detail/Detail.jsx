@@ -25,32 +25,34 @@ import Divider from "@mui/material/Divider";
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const user = useSelector((state) => state.user.user);
-  //
-  useEffect(() => {
-    dispatch(fetchSingleAppointment(id));
-    dispatch(fetchuser());
-  }, []);
-
   const appointmentData = useSelector(
     (state) => state.appointment.singleAppointment
   );
+  //
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    dispatch(fetchSingleAppointment(id));
+    dispatch(fetchuser());
+    if (appointmentData !== "") {
+      setLoading(false);
+    }
+  }, []);
 
   //   filter user and show data
-  const [loading, setLoading] = useState(true);
-  const [filteUser, setFilteruser] = useState({});
-  useEffect(() => {
-    const fiterDoctorByUsername = user.find((data) => {
-      if (
-        data?.username?.toLowerCase()?.replace(/\s/g, "") ===
-        appointmentData?.doctor?.toLowerCase()?.replace(/\s/g, "")
-      ) {
-        setLoading(false);
-        return data;
-      }
-    });
-    setFilteruser(fiterDoctorByUsername);
-  }, [user]);
+
+  // const [filteUser, setFilteruser] = useState({});
+  // useEffect(() => {
+  //   const fiterDoctorByUsername = user.find((data) => {
+  //     if (
+  //       data?.username?.toLowerCase()?.replace(/\s/g, "") ===
+  //       appointmentData?.doctor?.toLowerCase()?.replace(/\s/g, "")
+  //     ) {
+  //       setLoading(false);
+  //       return data;
+  //     }
+  //   });
+  //   setFilteruser(fiterDoctorByUsername);
+  // }, [user]);
 
   // book now
   const inputRef = useRef(null);
@@ -137,7 +139,7 @@ const Detail = () => {
               {!loading ? (
                 <img
                   className="rounded-circle me-2"
-                  src={filteUser?.image?.url}
+                  src={appointmentData?.doctor?.image?.url}
                   alt=""
                 />
               ) : (
@@ -150,8 +152,8 @@ const Detail = () => {
               )}
               {!loading ? (
                 <span className="fw-bold">
-                  {filteUser?.specialities} <></>
-                  {filteUser?.username}
+                  {appointmentData?.doctor?.specialities} <></>
+                  {appointmentData?.doctor?.username}
                 </span>
               ) : (
                 <Skeleton variant="rounded" width={200} height={20} />
@@ -160,7 +162,7 @@ const Detail = () => {
             {!loading ? (
               <div className="mx-2 mt-2">
                 <i className="fa-solid fa-envelope me-2"></i>
-                <span>{filteUser?.email}</span>
+                <span>{appointmentData?.doctor?.email}</span>
               </div>
             ) : (
               <Skeleton className="mb-2" variant="rounded" width={"10rem"} />
@@ -168,7 +170,7 @@ const Detail = () => {
             {!loading ? (
               <div className="mx-2 mt-2">
                 <i className="fa-solid fa-location-dot me-2"></i>
-                <span>{filteUser?.address}</span>
+                <span>{appointmentData?.doctor?.address}</span>
               </div>
             ) : (
               <Skeleton className="mb-2" variant="rounded" width={"10rem"} />
@@ -176,7 +178,7 @@ const Detail = () => {
             {!loading ? (
               <div className="mx-2 mt-2">
                 <i className="fa-solid fa-phone me-1"></i>
-                <span>+977-{filteUser?.phone}</span>
+                <span>+977-{appointmentData?.doctor?.phone}</span>
               </div>
             ) : (
               <Skeleton variant="rounded" width={"10rem"} />
@@ -185,7 +187,7 @@ const Detail = () => {
           <div className="overview mt-4 mx-auto px-2">
             {!loading ? (
               <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
-                About {appointmentData?.doctor}
+                About {appointmentData?.doctor?.usename}
               </p>
             ) : (
               <Skeleton
@@ -201,7 +203,7 @@ const Detail = () => {
                 variant="body1"
                 gutterBottom
               >
-                {filteUser?.about}
+                {appointmentData?.doctor?.about}
               </Typography>
             ) : (
               <Stack>
@@ -232,7 +234,7 @@ const Detail = () => {
                 variant="body1"
                 gutterBottom
               >
-                {filteUser?.subspecialities}
+                {appointmentData?.doctor?.subspecialities}
               </Typography>
             ) : (
               <Stack>
