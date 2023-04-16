@@ -33,26 +33,13 @@ const Detail = () => {
   useEffect(() => {
     dispatch(fetchSingleAppointment(id));
     dispatch(fetchuser());
-    if (appointmentData !== "") {
-      setLoading(false);
+    if (appointmentData !== {}) {
+      setLoading(!loading);
+    } else {
+      setLoading(loading);
     }
   }, []);
-
-  //   filter user and show data
-
-  // const [filteUser, setFilteruser] = useState({});
-  // useEffect(() => {
-  //   const fiterDoctorByUsername = user.find((data) => {
-  //     if (
-  //       data?.username?.toLowerCase()?.replace(/\s/g, "") ===
-  //       appointmentData?.doctor?.toLowerCase()?.replace(/\s/g, "")
-  //     ) {
-  //       setLoading(false);
-  //       return data;
-  //     }
-  //   });
-  //   setFilteruser(fiterDoctorByUsername);
-  // }, [user]);
+  console.log(loading);
 
   // book now
   const inputRef = useRef(null);
@@ -98,7 +85,7 @@ const Detail = () => {
     <div className="container-fluid pb-4">
       <div className="row">
         <div className="col-md-7 m-0 p-0 mx-auto">
-          {!loading ? (
+          {appointmentData.doctor ? (
             <div className="top rounded border">
               <div className="row mx-auto">
                 <div
@@ -136,7 +123,7 @@ const Detail = () => {
           )}
           <div className="docotor_info ">
             <div className="profile mt-2 d-flex align-items-center">
-              {!loading ? (
+              {appointmentData?.doctor?.image?.url ? (
                 <img
                   className="rounded-circle me-2"
                   src={appointmentData?.doctor?.image?.url}
@@ -150,7 +137,7 @@ const Detail = () => {
                   height={40}
                 />
               )}
-              {!loading ? (
+              {appointmentData?.doctor ? (
                 <span className="fw-bold">
                   {appointmentData?.doctor?.specialities} <></>
                   {appointmentData?.doctor?.username}
@@ -159,7 +146,7 @@ const Detail = () => {
                 <Skeleton variant="rounded" width={200} height={20} />
               )}
             </div>
-            {!loading ? (
+            {appointmentData?.doctor ? (
               <div className="mx-2 mt-2">
                 <i className="fa-solid fa-envelope me-2"></i>
                 <span>{appointmentData?.doctor?.email}</span>
@@ -167,7 +154,7 @@ const Detail = () => {
             ) : (
               <Skeleton className="mb-2" variant="rounded" width={"10rem"} />
             )}
-            {!loading ? (
+            {appointmentData?.doctor ? (
               <div className="mx-2 mt-2">
                 <i className="fa-solid fa-location-dot me-2"></i>
                 <span>{appointmentData?.doctor?.address}</span>
@@ -175,7 +162,7 @@ const Detail = () => {
             ) : (
               <Skeleton className="mb-2" variant="rounded" width={"10rem"} />
             )}
-            {!loading ? (
+            {appointmentData?.doctor ? (
               <div className="mx-2 mt-2">
                 <i className="fa-solid fa-phone me-1"></i>
                 <span>+977-{appointmentData?.doctor?.phone}</span>
@@ -185,7 +172,7 @@ const Detail = () => {
             )}
           </div>
           <div className="overview mt-4 mx-auto px-2">
-            {!loading ? (
+            {appointmentData?.doctor ? (
               <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
                 About {appointmentData?.doctor?.usename}
               </p>
@@ -197,7 +184,7 @@ const Detail = () => {
                 className="mb-2"
               />
             )}
-            {!loading ? (
+            {appointmentData?.doctor ? (
               <Typography
                 style={{ width: "100%", textAlign: "justify" }}
                 variant="body1"
@@ -216,7 +203,7 @@ const Detail = () => {
             )}
           </div>
           <div className="overview mt-5 mx-auto px-2">
-            {!loading ? (
+            {appointmentData?.doctor ? (
               <p className="h4 fw-bold mb-2" style={{ color: "#005963" }}>
                 Subspecialities
               </p>
@@ -228,7 +215,7 @@ const Detail = () => {
                 className="mb-2"
               />
             )}
-            {!loading ? (
+            {appointmentData?.doctor ? (
               <Typography
                 style={{ width: "100%", textAlign: "justify" }}
                 variant="body1"
@@ -249,7 +236,7 @@ const Detail = () => {
         </div>
         <div className="col-md-4 mx-auto pb-2">
           <div>
-            {!loading ? (
+            {appointmentData.doctor ? (
               <div className="booking pt-3 mb-5">
                 {!loading ? (
                   <p
@@ -390,7 +377,7 @@ const Detail = () => {
               </Stack>
             )}
             <div className="booking related pt-3">
-              {!loading ? (
+              {nextAppointment ? (
                 <p className="h4 fw-bolder title" style={{ color: "#005963" }}>
                   Appointments
                 </p>
@@ -407,7 +394,7 @@ const Detail = () => {
                     }}
                   >
                     {nextAppointment.map((data, ind) => {
-                      return !loading ? (
+                      return nextAppointment?.length >= 0 ? (
                         <>
                           <ListItem key={ind} className="bg-light">
                             <ListItemAvatar>
@@ -456,7 +443,7 @@ const Detail = () => {
                     })}
                   </List>
                 </div>
-              ) : !loading ? (
+              ) : nextAppointment?.length === 0 ? (
                 <Loading />
               ) : (
                 <Skeleton
