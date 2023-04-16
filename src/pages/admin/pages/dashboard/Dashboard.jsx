@@ -4,7 +4,6 @@ import { fetchAppointment } from "../../../../redux/reducer/slice/appointmentSli
 import Loading from "../../component/loading";
 import Sidenav from "../../component/Sidenav";
 import { fetchBooking } from "../../../../redux/reducer/slice/bookingSlice";
-import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import useAddUser from "../user/Adduser";
 import { UserModel } from "../user/Usermodal";
