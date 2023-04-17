@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { enGB } from "date-fns/locale";
-import { DatePicker } from "react-nice-dates";
 import "react-nice-dates/build/style.css";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -22,7 +20,6 @@ import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import Divider from "@mui/material/Divider";
-import { AccessTime, DateRange } from "@mui/icons-material";
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
