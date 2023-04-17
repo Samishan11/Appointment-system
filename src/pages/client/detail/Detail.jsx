@@ -22,6 +22,7 @@ import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import Divider from "@mui/material/Divider";
+import { AccessTime, DateRange } from "@mui/icons-material";
 const Detail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -273,49 +274,6 @@ const Detail = () => {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="forms">
-                    <div className="form mt-4">
-                      <div class="input-group date" data-provide="datepicker">
-                        <input
-                          disabled
-                          type="date"
-                          style={{ position: "relative" }}
-                          className={
-                            "form-control my-form rounded text-sm text-secondary"
-                          }
-                          value={appointmentData?.date}
-                          placeholder=" Expiry date"
-                        />
-                        <i
-                          style={{
-                            position: "absolute",
-                            right: "5%",
-                            top: "25%",
-                          }}
-                          className="fa-solid fa-calendar"
-                        ></i>
-                      </div>
-                    </div>
-                    <div className="form mt-4">
-                      <div class="input-group date" data-provide="datepicker">
-                        <input
-                          className="form-control my-form"
-                          disabled
-                          type="time"
-                          value={appointmentData?.time}
-                        />
-                        <i
-                          style={{
-                            position: "absolute",
-                            right: "5%",
-                            top: "25%",
-                          }}
-                          className="fa-solid fa-clock"
-                        ></i>
-                      </div>
-                    </div>
-
                     <div className="button_book mt-4">
                       <button
                         onClick={handleSubmit((data) =>
