@@ -33,10 +33,10 @@ const Detail = () => {
   }, []);
 
   // book now
-  const inputRef = useRef(null);
+  const ref = useRef(null);
 
   const handleClick = () => {
-    inputRef.current.click();
+    ref.current.children[0].focus();
   };
   const {
     register,
@@ -242,11 +242,10 @@ const Detail = () => {
                 <div className="booking_form mt-4 position-relative">
                   <div className="contact_form mt-3">
                     <div className="form-group">
-                      <div className="font-control">
+                      <div ref={ref} className="font-control">
                         <input
                           id="username"
                           placeholder="Username"
-                          ref={inputRef}
                           name="username"
                           {...register("username", {
                             required: true,
